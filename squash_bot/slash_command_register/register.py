@@ -39,7 +39,7 @@ def _build_dict_for_option(
     return {
         "name": command_option.name,
         "description": command_option.description,
-        "type": command_option.type,
+        "type": command_option.type.value,
         "required": command_option.required,
     }
 
