@@ -55,17 +55,11 @@ class RecordMatchCommand(_command.Command[RecordMatchContext]):
     def parse_arguments(
         self, base_context: dict[str, typing.Any]
     ) -> RecordMatchContext:
-        winner_name = base_context["winner"]
-        winner_score = base_context["winner_score"]
-
-        loser_name = base_context["loser"]
-        loser_score = base_context["loser_score"]
-
         return RecordMatchContext(
-            winner=winner_name,
-            winner_score=winner_score,
-            loser=loser_name,
-            loser_score=loser_score,
+            winner="Test1",
+            winner_score=11,
+            loser="Test2",
+            loser_score=2,
         )
 
     def _handle(self, context: RecordMatchContext) -> None:
