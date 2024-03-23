@@ -2,13 +2,23 @@ import os
 import importlib
 
 
+class ImproperlyConfigured(Exception):
+    """
+    An exception raised when a setting is improperly configured.
+    """
+
+
 class BaseSettings:
     """
     Base settings class
     """
 
 
-settings_module = os.environ["SETTINGS_MODULE"]
+try:
+    settings_module = os.environ["SETTINGS_MODULE"]
+except KeyError:
+    raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set")
+
 settings = importlib.import_module(settings_module).Settings()
 
 
