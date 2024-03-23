@@ -2,7 +2,7 @@ import typing
 
 import attrs
 
-from squash_bot.core import command as _command, command_registry
+from squash_bot.core import command as _command, command_registry, response
 
 
 @attrs.frozen
@@ -62,5 +62,5 @@ class RecordMatchCommand(_command.Command[RecordMatchContext]):
             loser_score=2,
         )
 
-    def _handle(self, context: RecordMatchContext) -> None:
+    def _handle(self, context: RecordMatchContext) -> response.Response:
         pass
