@@ -8,6 +8,7 @@ T_command_context = typing.TypeVar("T_command_context", bound=attrs.AttrsInstanc
 
 class Command(typing.Generic[T_command_context]):
     name: str
+    description: str
 
     def __init__(self) -> None: ...
 
