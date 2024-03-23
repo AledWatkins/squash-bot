@@ -63,4 +63,9 @@ class RecordMatchCommand(_command.Command[RecordMatchContext]):
         )
 
     def _handle(self, context: RecordMatchContext) -> response.Response:
-        pass
+        return response.Response(
+            status_code=200,
+            body_data={
+                "content": f"Match recorded: {context.winner} {context.winner_score} - {context.loser_score} {context.loser}"
+            },
+        )
