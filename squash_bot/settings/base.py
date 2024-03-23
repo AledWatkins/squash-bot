@@ -13,6 +13,10 @@ class BaseSettings:
     Base settings class
     """
 
+    APP_ID: str | None = os.environ.get("APP_ID")
+    SERVER_ID: str | None = os.environ.get("SERVER_ID")
+    BOT_TOKEN: str | None = os.environ.get("BOT_TOKEN")
+
 
 try:
     settings_module = os.environ["SETTINGS_MODULE"]
