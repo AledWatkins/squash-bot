@@ -42,4 +42,11 @@ class Registry:
         return self._commands
 
 
+def all_commands() -> list[_command.Command]:
+    """
+    Return all registered commands.
+    """
+    return list(registry.commands.values())
+
+
 registry = Registry()

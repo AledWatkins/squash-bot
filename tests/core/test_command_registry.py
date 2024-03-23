@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 
 from squash_bot.core import command_registry
@@ -26,3 +28,24 @@ class TestRegistry:
             @registry.register
             class TestCommandTwo(_command.Command):
                 name = "test"
+
+
+class TestAllCommands:
+    @mock.patch("squash_bot.core.command_registry.registry")
+    def test_returns_all_commands(self, mock_registry):
+        class TestCommandOne(_command.Command):
+            name = "test-one"
+
+        class TestCommandTwo(_command.Command):
+            name = "test-two"
+
+        mock_registry.commands = {
+            "test-one": TestCommandOne(),
+            "test-two": TestCommandTwo(),
+        }
+
+        all_commands = command_registry.all_commands()
+        assert len(all_commands) == 2
+
+        command_names = sorted([command.name for command in all_commands])
+        assert command_names == ["test-one", "test-two"]
