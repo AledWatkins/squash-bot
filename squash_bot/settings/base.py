@@ -1,5 +1,6 @@
 import os
 import importlib
+from envparse import env
 
 
 class ImproperlyConfigured(Exception):
@@ -35,6 +36,7 @@ try:
 except KeyError:
     raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set")
 
+env.read_envfile(path=os.environ.get("ENV_FILE_PATH", ".env"))
 settings = importlib.import_module(settings_module).Settings()
 settings.install_commands()
 
