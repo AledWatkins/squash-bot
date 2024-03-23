@@ -2,7 +2,7 @@ import enum
 import json
 import typing
 
-import attrs
+from squash_bot.core import response
 
 
 class InteractionTypeEnum(enum.Enum):
@@ -13,18 +13,6 @@ class InteractionTypeEnum(enum.Enum):
     @classmethod
     def _missing_(cls, value) -> "InteractionTypeEnum":
         return cls.UNKNOWN
-
-
-@attrs.frozen
-class Response:
-    status_code: int
-    body_data: dict[str, typing.Any] | str
-
-    def as_dict(self) -> dict[str, typing.Any]:
-        return {
-            "statusCode": self.status_code,
-            "body": json.dumps(self.body_data),
-        }
 
 
 def lambda_handler(
@@ -42,19 +30,19 @@ def lambda_handler(
     return interaction_handler(body).as_dict()
 
 
-def ping_handler(body: dict[str, typing.Any]) -> Response:
-    return Response(
+def ping_handler(body: dict[str, typing.Any]) -> response.Response:
+    return response.Response(
         status_code=200,
         body_data={"type": InteractionTypeEnum.PING.value},
     )
 
 
-def command_handler(body: dict[str, typing.Any]) -> Response:
+def command_handler(body: dict[str, typing.Any]) -> response.Response:
     pass
 
 
-def unknown_handler(body: dict[str, typing.Any]) -> Response:
-    return Response(
+def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
+    return response.Response(
         status_code=400,
         body_data="Unknown interaction type",
     )
