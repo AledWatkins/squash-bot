@@ -26,8 +26,8 @@ class BaseSettings:
         """
         Install all commands in the installed_commands list.
         """
-        for command in self.installed_commands:
-            importlib.import_module(command)
+        for command_module_string in self.installed_commands:
+            importlib.import_module(command_module_string)
 
 
 try:
