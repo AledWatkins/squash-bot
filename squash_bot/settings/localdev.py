@@ -10,8 +10,4 @@ class Settings(base.BaseSettings):
         "squash_bot.match_tracker.commands",
     ]
 
-    APP_ID = "[APP_ID]"
-    SERVER_ID = "[SERVER_ID]"
-    BOT_TOKEN = "[BOT_TOKEN]"
-
     OUTPUTER = "squash_bot.slash_command_register.outputer.PrintOutputer"

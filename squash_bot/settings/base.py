@@ -16,9 +16,9 @@ class BaseSettings:
 
     installed_commands: list[str] = []
 
-    APP_ID: str | None
-    SERVER_ID: str | None
-    BOT_TOKEN: str | None
+    APP_ID: str = os.environ.get("APP_ID")
+    SERVER_ID: str = os.environ.get("SERVER_ID")
+    BOT_TOKEN: str = os.environ.get("BOT_TOKEN")
 
     # Outputer for registering slash commands
     OUTPUTER: str
