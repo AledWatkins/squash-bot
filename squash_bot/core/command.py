@@ -9,7 +9,7 @@ T_command_context = typing.TypeVar("T_command_context", bound=attrs.AttrsInstanc
 class CommandOption:
     name: str
     description: str
-    type: str
+    type: int
     required: bool
 
 
