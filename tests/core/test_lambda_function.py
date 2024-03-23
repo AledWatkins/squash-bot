@@ -1,11 +1,11 @@
 import json
 
-from squash_bot.core import main
+from squash_bot.core import lambda_function
 
 
 class TestLambdaHandler:
     def test_ping_response(self):
-        response = main.lambda_handler(
+        response = lambda_function.lambda_handler(
             {
                 "body": json.dumps({"type": 1}),
             },
@@ -17,7 +17,7 @@ class TestLambdaHandler:
         }
 
     def test_unknown_type_response(self):
-        response = main.lambda_handler(
+        response = lambda_function.lambda_handler(
             {
                 "body": json.dumps({"type": 31}),
             },
