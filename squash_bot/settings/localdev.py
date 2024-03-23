@@ -9,3 +9,5 @@ class Settings(base.BaseSettings):
     APP_ID = "[APP_ID]"
     SERVER_ID = "[SERVER_ID]"
     BOT_TOKEN = "[BOT_TOKEN]"
+
+    OUTPUTER = "squash_bot.slash_command_register.outputer.PrintOutputer"

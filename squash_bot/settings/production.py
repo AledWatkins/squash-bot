@@ -11,3 +11,5 @@ class Settings(base.BaseSettings):
     APP_ID = os.environ.get("APP_ID")
     SERVER_ID = os.environ.get("SERVER_ID")
     BOT_TOKEN = os.environ.get("BOT_TOKEN")
+
+    OUTPUTER = "squash_bot.slash_command_register.outputer.RequestsOutputer"

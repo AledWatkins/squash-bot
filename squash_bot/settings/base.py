@@ -19,6 +19,9 @@ class BaseSettings:
     SERVER_ID: str | None
     BOT_TOKEN: str | None
 
+    # Outputer for registering slash commands
+    OUTPUTER: str
+
     def install_commands(self) -> None:
         """
         Install all commands in the installed_commands list.
