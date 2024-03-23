@@ -15,9 +15,9 @@ class BaseSettings:
 
     installed_commands: list[str] = []
 
-    APP_ID: str | None = os.environ.get("APP_ID")
-    SERVER_ID: str | None = os.environ.get("SERVER_ID")
-    BOT_TOKEN: str | None = os.environ.get("BOT_TOKEN")
+    APP_ID: str | None
+    SERVER_ID: str | None
+    BOT_TOKEN: str | None
 
     def install_commands(self) -> None:
         """
