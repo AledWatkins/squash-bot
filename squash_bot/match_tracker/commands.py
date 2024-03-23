@@ -13,43 +13,35 @@ class RecordMatchContext:
     loser_score: int
 
 
-class WinnerOption(_command.CommandOption):
-    name = "winner"
-    description = "The name of the winner"
-    type = _command.CommandOptionType.USER
-    required = True
-
-
-class WinnerScoreOption(_command.CommandOption):
-    name = "winner_score"
-    description = "The score of the winner"
-    type = _command.CommandOptionType.INTEGER
-    required = True
-
-
-class LoserOption(_command.CommandOption):
-    name = "loser"
-    description = "The name of the loser"
-    type = _command.CommandOptionType.USER
-    required = True
-
-
-class LoserScoreOption(_command.CommandOption):
-    name = "loser_score"
-    description = "The score of the loser"
-    type = _command.CommandOptionType.INTEGER
-    required = True
-
-
 @command_registry.registry.register
 class RecordMatchCommand(_command.Command[RecordMatchContext]):
     name = "record-match"
     description = "Record a match between two players"
     options = [
-        WinnerOption(),
-        WinnerScoreOption(),
-        LoserOption(),
-        LoserScoreOption(),
+        _command.CommandOption(
+            name="winner",
+            description="The name of the winner",
+            type=_command.CommandOptionType.USER,
+            required=True,
+        ),
+        _command.CommandOption(
+            name="winner-score",
+            description="The score of the winner",
+            type=_command.CommandOptionType.INTEGER,
+            required=True,
+        ),
+        _command.CommandOption(
+            name="loser",
+            description="The name of the losers",
+            type=_command.CommandOptionType.USER,
+            required=True,
+        ),
+        _command.CommandOption(
+            name="loser-score",
+            description="The score of the loser",
+            type=_command.CommandOptionType.INTEGER,
+            required=True,
+        ),
     ]
 
     def parse_arguments(

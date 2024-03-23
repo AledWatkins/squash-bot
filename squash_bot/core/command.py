@@ -19,6 +19,7 @@ class CommandOptionType(enum.Enum):
     ROLE = 8
 
 
+@attrs.frozen
 class CommandOption:
     name: str
     description: str
