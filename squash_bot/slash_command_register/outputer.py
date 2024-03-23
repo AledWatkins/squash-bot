@@ -15,4 +15,5 @@ class PrintOutputer(Outputer):
 
 class RequestsOutputer(Outputer):
     def send(self, data: dict[str, typing.Any]) -> None:
-        requests.put(data["url"], headers=data["headers"], json=data["json"])
+        response = requests.put(data["url"], headers=data["headers"], json=data["json"])
+        print(response)
