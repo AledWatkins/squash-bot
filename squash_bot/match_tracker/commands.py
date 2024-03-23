@@ -20,7 +20,7 @@ class RecordMatchCommand(_command.Command[RecordMatchContext]):
     options = [
         _command.CommandOption(
             name="winner",
-            description="The name of the winner",
+            description="The winner",
             type=_command.CommandOptionType.USER,
             required=True,
         ),
@@ -32,7 +32,7 @@ class RecordMatchCommand(_command.Command[RecordMatchContext]):
         ),
         _command.CommandOption(
             name="loser",
-            description="The name of the losers",
+            description="The loser",
             type=_command.CommandOptionType.USER,
             required=True,
         ),
