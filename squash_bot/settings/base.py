@@ -13,9 +13,18 @@ class BaseSettings:
     Base settings class
     """
 
+    installed_commands: list[str] = []
+
     APP_ID: str | None = os.environ.get("APP_ID")
     SERVER_ID: str | None = os.environ.get("SERVER_ID")
     BOT_TOKEN: str | None = os.environ.get("BOT_TOKEN")
+
+    def install_commands(self) -> None:
+        """
+        Install all commands in the installed_commands list.
+        """
+        for command in self.installed_commands:
+            importlib.import_module(command)
 
 
 try:
@@ -24,6 +33,7 @@ except KeyError:
     raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set")
 
 settings = importlib.import_module(settings_module).Settings()
+settings.install_commands()
 
 
 def get_class_from_string(class_path: str) -> type[object]:
