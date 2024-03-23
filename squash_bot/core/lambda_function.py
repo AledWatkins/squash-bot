@@ -3,6 +3,7 @@ import json
 import typing
 
 from squash_bot.core import response
+from squash_bot.core import command_registry
 
 
 class InteractionTypeEnum(enum.Enum):
@@ -43,7 +44,8 @@ def ping_handler(body: dict[str, typing.Any]) -> response.Response:
 
 
 def command_handler(body: dict[str, typing.Any]) -> response.Response:
-    pass
+    command_name = body["data"]["name"]
+    return command_registry.command_by_name(command_name).handle(body)
 
 
 def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
