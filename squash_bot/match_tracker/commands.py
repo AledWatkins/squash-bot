@@ -36,10 +36,7 @@ class RecordMatchCommand(_command.Command):
 
     def _handle(
         self, options: dict[str, typing.Any], base_context: dict[str, typing.Any]
-    ) -> response.Response:
-        return response.Response(
-            status_code=200,
-            body_data={
-                "content": f"Match recorded: {options['winner']} {options['winner-score']} - {options['loser-score']} {options['loser']}"
-            },
-        )
+    ) -> dict[str, typing.Any]:
+        return {
+            "content": f"Match recorded: {options['winner']} {options['winner-score']} - {options['loser-score']} {options['loser']}"
+        }
