@@ -3,8 +3,6 @@ import enum
 import attrs
 import typing
 
-T_command_context = typing.TypeVar("T_command_context", bound=attrs.AttrsInstance)
-
 
 class CommandError(Exception):
     """
