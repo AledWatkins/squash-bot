@@ -1,10 +1,11 @@
 import enum
-import json
 import typing
 import logging
 
+from squash_bot.settings import base as settings_base
 from squash_bot.core import response
 from squash_bot.core import command_registry
+from squash_bot.core import verify
 
 
 logger = logging.getLogger()
@@ -30,6 +31,14 @@ def lambda_handler(
     event: dict[str, typing.Any], context: dict["str", typing.Any]
 ) -> dict[str, typing.Any]:
     body = event["body"]
+    try:
+        verify_body(body)
+    except verify.CouldNotVerifyRequest as e:
+        logger.error("Could not verify request")
+        return response.Response(
+            status_code=401,
+            body_data="Could not verify request",
+        ).as_dict()
 
     interaction_type = InteractionTypeEnum(body["type"])
     logger.info(f"Received interaction of type {interaction_type}")
@@ -41,6 +50,11 @@ def lambda_handler(
     }[interaction_type]
 
     return interaction_handler(body).as_dict()
+
+
+def verify_body(body: dict[str, typing.Any]) -> None:
+    verifyier = _verifyier_from_settings()
+    verifyier.verify(body)
 
 
 def ping_handler(body: dict[str, typing.Any]) -> response.Response:
@@ -71,3 +85,8 @@ def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
         status_code=400,
         body_data="Unknown interaction type",
     )
+
+
+def _verifyier_from_settings() -> verify.Verifyier:
+    verifyier_class = settings_base.settings.VERIFYIER
+    return settings_base.get_class_from_string(verifyier_class)()
