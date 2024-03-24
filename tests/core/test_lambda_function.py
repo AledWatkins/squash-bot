@@ -1,6 +1,7 @@
 import json
 
 from squash_bot.core import lambda_function
+from tests import utils
 
 
 class TestLambdaHandler:
@@ -26,4 +27,18 @@ class TestLambdaHandler:
         assert response == {
             "statusCode": 400,
             "body": json.dumps("Unknown interaction type"),
+        }
+
+    def test_with_unknown_command(self):
+        path = utils.fixture_path("example-unknown-event.json")
+        with open(path) as f:
+            example_event = json.load(f)
+
+        response = lambda_function.lambda_handler(
+            example_event,
+            {},
+        )
+        assert response == {
+            "statusCode": 400,
+            "body": json.dumps("Unknown command"),
         }
