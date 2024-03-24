@@ -11,5 +11,9 @@ mkdir -p package
 # Install dependencies
 pip install -r requirements.txt --target ./package
 
+cd package
+zip -r ../deployment-package.zip . -x "*__pycache__/*"
+cd ..
+
 # Add the Lambda function code to the deployment package
-zip -r deployment-package.zip package/ squash_bot/ lambda_function.py -x "*/__pycache__/*"
+zip -r deployment-package.zip squash_bot/ lambda_function.py -x "*__pycache__/*"
