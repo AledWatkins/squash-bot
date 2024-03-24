@@ -2,5 +2,5 @@ venv/
 .idea
 __pycache__
 .env
-squash_bot.zip
+deployment-package.zip
 package
