@@ -19,6 +19,7 @@ class BaseSettings:
     APP_ID: str = os.environ.get("APP_ID")
     SERVER_ID: str = os.environ.get("SERVER_ID")
     BOT_TOKEN: str = os.environ.get("BOT_TOKEN")
+    PUBLIC_KEY: str = os.environ.get("PUBLIC_KEY")
 
     # Outputer for registering slash commands
     OUTPUTER: str
