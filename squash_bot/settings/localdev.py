@@ -11,3 +11,4 @@ class Settings(base.BaseSettings):
     ]
 
     OUTPUTER = "squash_bot.slash_command_register.outputer.PrintOutputer"
+    VERIFYIER = "squash_bot.core.verify.NoopVerifier"

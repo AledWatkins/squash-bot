@@ -17,3 +17,4 @@ class Settings(base.BaseSettings):
     BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
     OUTPUTER = "squash_bot.slash_command_register.outputer.RequestsOutputer"
+    VERIFYIER = "squash_bot.core.verify.NACLVerifier"
