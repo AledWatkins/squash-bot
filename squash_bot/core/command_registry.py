@@ -7,6 +7,12 @@ class ImproperlyConfigured(Exception):
     """
 
 
+class UnknownCommand(Exception):
+    """
+    An exception raised when a command is not found in the registry.
+    """
+
+
 class Registry:
     """
     A registry for Commands.
@@ -46,7 +52,10 @@ def command_by_name(name: str) -> _command.Command:
     """
     Return the command with the given name.
     """
-    return registry.commands[name]
+    try:
+        return registry.commands[name]
+    except KeyError:
+        raise UnknownCommand(f"Command with name {name} not found")
 
 
 def all_commands() -> list[_command.Command]:
