@@ -53,7 +53,14 @@ def ping_handler(body: dict[str, typing.Any]) -> response.Response:
 
 def command_handler(body: dict[str, typing.Any]) -> response.Response:
     command_name = body["data"]["name"]
-    command = command_registry.command_by_name(command_name)
+    try:
+        command = command_registry.command_by_name(command_name)
+    except command_registry.UnknownCommand:
+        logger.info(f"Unknown command {command_name}")
+        return response.Response(
+            status_code=400,
+            body_data="Unknown command",
+        )
     logger.info(f"Handling command {command_name}")
     return command.handle(body)
 
