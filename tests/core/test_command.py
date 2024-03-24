@@ -18,7 +18,10 @@ class TestParseOptions:
             ]
 
         command = TestCommand()
-        with pytest.raises(_command.CommandVerificationError):
+        with pytest.raises(
+            _command.CommandVerificationError,
+            match="Missing required options: required-option",
+        ):
             command.parse_options({"options": []})
 
     def test_options_passed_to_handle(self):
