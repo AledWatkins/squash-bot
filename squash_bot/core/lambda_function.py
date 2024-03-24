@@ -76,7 +76,11 @@ def command_handler(body: dict[str, typing.Any]) -> response.Response:
             body_data="Unknown command",
         )
     logger.info(f"Handling command {command_name}")
-    return command.handle(body)
+    command_response_data = command.handle(body)
+    return response.Response(
+        status_code=200,
+        body_data=command_response_data,
+    )
 
 
 def unknown_handler(body: dict[str, typing.Any]) -> response.Response:

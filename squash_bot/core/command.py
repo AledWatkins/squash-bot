@@ -3,8 +3,6 @@ import enum
 import attrs
 import typing
 
-from squash_bot.core import response
-
 T_command_context = typing.TypeVar("T_command_context", bound=attrs.AttrsInstance)
 
 
@@ -60,11 +58,11 @@ class Command:
 
         return {option["name"]: option["value"] for option in options}
 
-    def handle(self, base_context: dict[str, typing.Any]) -> response.Response:
+    def handle(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
         command_options = self.parse_options(base_context)
         return self._handle(options=command_options, base_context=base_context)
 
     def _handle(
         self, options: dict[str, typing.Any], base_context: dict[str, typing.Any]
-    ) -> response.Response:
+    ) -> dict[str, typing.Any]:
         raise NotImplementedError
