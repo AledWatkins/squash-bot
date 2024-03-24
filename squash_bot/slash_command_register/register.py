@@ -1,7 +1,5 @@
 import typing
 
-import requests
-
 from squash_bot.core import command_registry
 from squash_bot.core import command as _command
 from squash_bot.settings import base as settings_base
