@@ -1,9 +1,14 @@
 import enum
 import json
 import typing
+import logging
 
 from squash_bot.core import response
 from squash_bot.core import command_registry
+
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class InteractionTypeEnum(enum.Enum):
@@ -27,6 +32,8 @@ def lambda_handler(
     body = json.loads(event["body"])
 
     interaction_type = InteractionTypeEnum(body["type"])
+    logger.info(f"Received interaction of type {interaction_type}")
+
     interaction_handler = {
         InteractionTypeEnum.PING: ping_handler,
         InteractionTypeEnum.APPLICATION_COMMAND: command_handler,
@@ -37,6 +44,7 @@ def lambda_handler(
 
 
 def ping_handler(body: dict[str, typing.Any]) -> response.Response:
+    logger.info(f"Handling ping")
     return response.Response(
         status_code=200,
         body_data={"type": InteractionResponseType.PONG.value},
@@ -45,10 +53,13 @@ def ping_handler(body: dict[str, typing.Any]) -> response.Response:
 
 def command_handler(body: dict[str, typing.Any]) -> response.Response:
     command_name = body["data"]["name"]
-    return command_registry.command_by_name(command_name).handle(body)
+    command = command_registry.command_by_name(command_name)
+    logger.info(f"Handling command {command_name}")
+    return command.handle(body)
 
 
 def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
+    logger.info(f"Handling unknown interaction type")
     return response.Response(
         status_code=400,
         body_data="Unknown interaction type",
