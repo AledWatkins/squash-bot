@@ -22,7 +22,7 @@ class TestParseOptions:
             _command.CommandVerificationError,
             match="Missing required options: required-option",
         ):
-            command.parse_options({"options": []})
+            command.parse_options({"data": {"options": []}})
 
     def test_options_passed_to_handle(self):
         class TestCommand(_command.Command):
@@ -41,5 +41,5 @@ class TestParseOptions:
                 return options
 
         assert TestCommand().handle(
-            {"options": [{"name": "required-option", "value": "value"}]}
+            {"data": {"options": [{"name": "required-option", "value": "value"}]}}
         ) == {"required-option": "value"}
