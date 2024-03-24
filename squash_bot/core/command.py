@@ -45,7 +45,7 @@ class Command:
     def parse_options(
         self, base_context: dict[str, typing.Any]
     ) -> dict[str, typing.Any]:
-        options = base_context.get("options", [])
+        options = base_context["data"].get("options", [])
         provided_options = {option["name"] for option in options}
         required_options = {option.name for option in self.options if option.required}
 
