@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# Delete the existing deployment package
+rm deployment-package.zip
+
+# Delete the package directory
+rm -r package
+
 # Create a deployment package for AWS Lambda
 mkdir -p package
 
