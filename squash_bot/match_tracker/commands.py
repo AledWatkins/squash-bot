@@ -1,20 +1,10 @@
 import typing
 
-import attrs
-
 from squash_bot.core import command as _command, command_registry, response
 
 
-@attrs.frozen
-class RecordMatchContext:
-    winner: str
-    winner_score: int
-    loser: str
-    loser_score: int
-
-
 @command_registry.registry.register
-class RecordMatchCommand(_command.Command[RecordMatchContext]):
+class RecordMatchCommand(_command.Command):
     name = "record-match"
     description = "Record a match between two players"
     options = [
@@ -44,20 +34,12 @@ class RecordMatchCommand(_command.Command[RecordMatchContext]):
         ),
     ]
 
-    def parse_arguments(
-        self, base_context: dict[str, typing.Any]
-    ) -> RecordMatchContext:
-        return RecordMatchContext(
-            winner="Test1",
-            winner_score=11,
-            loser="Test2",
-            loser_score=2,
-        )
-
-    def _handle(self, context: RecordMatchContext) -> response.Response:
+    def _handle(
+        self, options: dict[str, typing.Any], base_context: dict[str, typing.Any]
+    ) -> response.Response:
         return response.Response(
             status_code=200,
             body_data={
-                "content": f"Match recorded: {context.winner} {context.winner_score} - {context.loser_score} {context.loser}"
+                "content": f"Match recorded: {options['winner']} {options['winner-score']} - {options['loser-score']} {options['loser']}"
             },
         )
