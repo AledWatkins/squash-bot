@@ -13,4 +13,4 @@ class Settings(base.BaseSettings):
     ]
 
     OUTPUTER = "squash_bot.slash_command_register.outputer.RequestsOutputer"
-    VERIFYIER = "squash_bot.core.verify.NACLVerifier"
+    VERIFYIER = "squash_bot.core.verify.NACLVerifyier"
