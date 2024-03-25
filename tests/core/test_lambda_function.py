@@ -9,7 +9,7 @@ class TestLambdaHandler:
     def test_ping_response(self):
         response = lambda_function.lambda_handler(
             {
-                "body": {"type": 1},
+                "body": json.dumps({"type": 1}),
             },
             {},
         )
@@ -21,7 +21,7 @@ class TestLambdaHandler:
     def test_unknown_type_response(self):
         response = lambda_function.lambda_handler(
             {
-                "body": {"type": 31},
+                "body": json.dumps({"type": 31}),
             },
             {},
         )
@@ -31,12 +31,12 @@ class TestLambdaHandler:
         }
 
     def test_with_unknown_command(self):
-        path = utils.fixture_path("example-unknown-event.json")
+        path = utils.fixture_path("example-unknown-body.json")
         with open(path) as f:
-            example_event = json.load(f)
+            example_body = json.load(f)
 
         response = lambda_function.lambda_handler(
-            example_event,
+            {"body": json.dumps(example_body)},
             {},
         )
         assert response == {
