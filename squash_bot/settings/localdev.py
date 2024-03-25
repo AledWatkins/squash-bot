@@ -9,4 +9,4 @@ class Settings(base.BaseSettings):
     installed_commands = ("squash_bot.match_tracker.commands",)
 
     OUTPUTER = "squash_bot.slash_command_register.outputer.PrintOutputer"
-    VERIFYIER = "squash_bot.core.verify.NoopVerifier"
+    VERIFIER = "squash_bot.core.verify.NoopVerifier"

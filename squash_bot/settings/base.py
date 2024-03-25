@@ -25,8 +25,8 @@ class BaseSettings:
     # Outputer for registering slash commands
     OUTPUTER: str
 
-    # Verifyier for verifying event body
-    VERIFYIER: str
+    # Verifier for verifying event body
+    VERIFIER: str
 
     def install_commands(self) -> None:
         """

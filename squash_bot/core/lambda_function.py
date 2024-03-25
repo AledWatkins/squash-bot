@@ -53,8 +53,8 @@ def lambda_handler(
 
 
 def verify_event(event: dict[str, typing.Any]) -> None:
-    verifyier = _verifyier_from_settings()
-    verifyier.verify(event)
+    verifier = _verifier_from_settings()
+    verifier.verify(event)
 
 
 def ping_handler(body: dict[str, typing.Any]) -> response.Response:
@@ -91,6 +91,6 @@ def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
     )
 
 
-def _verifyier_from_settings() -> verify.Verifyier:
-    verifyier_class = settings_base.settings.VERIFYIER
-    return settings_base.get_class_from_string(verifyier_class)()
+def _verifier_from_settings() -> verify.Verifier:
+    verifier_class = settings_base.settings.VERIFIER
+    return settings_base.get_class_from_string(verifier_class)()

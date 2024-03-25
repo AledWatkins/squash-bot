@@ -12,7 +12,7 @@ class CouldNotVerifyRequest(Exception):
     """
 
 
-class Verifyier:
+class Verifier:
     def verify(self, event: dict[str, typing.Any]) -> None:
         """
         Verify a request event
@@ -22,7 +22,7 @@ class Verifyier:
         raise NotImplementedError
 
 
-class NACLVerifyier(Verifyier):
+class NACLVerifier(Verifier):
     def verify(self, event: dict[str, typing.Any]) -> None:
         signature = event["headers"]["x-signature-ed25519"]
         timestamp = event["headers"]["x-signature-timestamp"]
@@ -39,5 +39,5 @@ class NACLVerifyier(Verifyier):
             raise CouldNotVerifyRequest from e
 
 
-class NoopVerifier(Verifyier):
+class NoopVerifier(Verifier):
     def verify(self, body: dict[str, typing.Any]) -> None: ...
