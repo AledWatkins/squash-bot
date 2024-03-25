@@ -4,3 +4,4 @@ __pycache__
 .env
 deployment-package.zip
 package
+.venv
