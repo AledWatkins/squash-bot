@@ -43,3 +43,38 @@ class TestParseOptions:
         assert TestCommand().handle(
             {"data": {"options": [{"name": "required-option", "value": "value"}]}}
         ) == {"required-option": "value"}
+
+    def test_user_options_include_username(self):
+        class TestCommand(_command.Command):
+            name = "test-command"
+            description = "Test command"
+            options = (
+                _command.CommandOption(
+                    name="user",
+                    description="User",
+                    type=_command.CommandOptionType.USER,
+                    required=True,
+                ),
+            )
+
+            def _handle(self, options, base_context):
+                return options
+
+        assert TestCommand().handle(
+            {
+                "data": {
+                    "options": [
+                        {"name": "user", "type": 6, "value": "1"},
+                    ],
+                    "resolved": {
+                        "users": {
+                            "1": {
+                                "id": "1",
+                                "username": "name",
+                                "global_name": "global-name",
+                            }
+                        }
+                    },
+                }
+            }
+        ) == {"user": {"id": "1", "username": "name", "global_name": "global-name"}}

@@ -47,16 +47,35 @@ class Command:
     def __init__(self) -> None: ...
 
     def parse_options(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
-        options = base_context["data"].get("options", [])
+        data = base_context["data"]
+        options = data.get("options", [])
         provided_options = {option["name"] for option in options}
         required_options = {option.name for option in self.options if option.required}
+        command_options_by_name = {option.name: option for option in self.options}
 
         if missing_required_options := required_options - provided_options:
             raise CommandVerificationError(
                 f"Missing required options: {','.join(missing_required_options)}"
             )
 
-        return {option["name"]: option["value"] for option in options}
+        return_options = {}
+        for option in options:
+            option_name = option["name"]
+            command_option = command_options_by_name[option_name]
+
+            if command_option.is_user:
+                user_data = data.get("resolved", {}).get("users", {}).get(option["value"], None)
+                value = {
+                    "id": user_data["id"],
+                    "username": user_data["username"],
+                    "global_name": user_data["global_name"],
+                }
+            else:
+                value = option["value"]
+
+            return_options[option_name] = value
+
+        return return_options
 
     def handle(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
         command_options = self.parse_options(base_context)
