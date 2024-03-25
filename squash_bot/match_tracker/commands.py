@@ -39,5 +39,8 @@ class RecordMatchCommand(_command.Command):
         self, options: dict[str, typing.Any], base_context: dict[str, typing.Any]
     ) -> dict[str, typing.Any]:
         return {
-            "content": f"Match recorded: {options['winner']} {options['winner-score']} - {options['loser-score']} {options['loser']}"
+            "type": 4,
+            "data": {
+                "content": f"Match recorded: {options['winner']} {options['winner-score']} - {options['loser-score']} {options['loser']}"
+            },
         }
