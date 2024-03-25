@@ -7,7 +7,7 @@ from squash_bot.core import command as _command, command_registry, response
 class RecordMatchCommand(_command.Command):
     name = "record-match"
     description = "Record a match between two players"
-    options = [
+    options = (
         _command.CommandOption(
             name="winner",
             description="The winner",
@@ -32,7 +32,7 @@ class RecordMatchCommand(_command.Command):
             type=_command.CommandOptionType.INTEGER,
             required=True,
         ),
-    ]
+    )
 
     def _handle(
         self, options: dict[str, typing.Any], base_context: dict[str, typing.Any]

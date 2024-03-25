@@ -38,7 +38,7 @@ class CommandOption:
 class Command:
     name: str
     description: str
-    options: list[CommandOption]
+    options: tuple[CommandOption]
 
     def __init__(self) -> None: ...
 
