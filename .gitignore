@@ -6,3 +6,4 @@ deployment-package.zip
 package
 .venv
 .vscode
+*.pkg
