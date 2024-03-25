@@ -44,8 +44,6 @@ class Command:
     description: str
     options: tuple[CommandOption]
 
-    def __init__(self) -> None: ...
-
     def parse_options(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
         data = base_context["data"]
         options = data.get("options", [])
