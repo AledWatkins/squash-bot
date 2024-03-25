@@ -1,7 +1,7 @@
 import json
 import typing
 
-from nacl import signing, exceptions
+from nacl import exceptions, signing
 
 from squash_bot.settings import base as settings_base
 

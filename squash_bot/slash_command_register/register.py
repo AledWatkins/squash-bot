@@ -1,7 +1,7 @@
 import typing
 
-from squash_bot.core import command_registry
 from squash_bot.core import command as _command
+from squash_bot.core import command_registry
 from squash_bot.settings import base as settings_base
 from squash_bot.slash_command_register import outputer
 
@@ -13,9 +13,7 @@ def register_commands() -> None:
     SERVER_ID = settings_base.settings.SERVER_ID
     BOT_TOKEN = settings_base.settings.BOT_TOKEN
 
-    url = (
-        f"https://discord.com/api/v10/applications/{APP_ID}/guilds/{SERVER_ID}/commands"
-    )
+    url = f"https://discord.com/api/v10/applications/{APP_ID}/guilds/{SERVER_ID}/commands"
     headers = {"Authorization": f"Bot {BOT_TOKEN}"}
     json = [_build_dict_for_command(command) for command in commands_in_registry]
 

@@ -1,6 +1,7 @@
 import json
 
 from squash_bot.core import lambda_function
+
 from tests import utils
 
 

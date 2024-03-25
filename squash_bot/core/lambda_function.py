@@ -1,12 +1,9 @@
 import enum
-import typing
 import logging
+import typing
 
+from squash_bot.core import command_registry, response, verify
 from squash_bot.settings import base as settings_base
-from squash_bot.core import response
-from squash_bot.core import command_registry
-from squash_bot.core import verify
-
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -58,7 +55,7 @@ def verify_body(body: dict[str, typing.Any]) -> None:
 
 
 def ping_handler(body: dict[str, typing.Any]) -> response.Response:
-    logger.info(f"Handling ping")
+    logger.info("Handling ping")
     return response.Response(
         status_code=200,
         body_data={"type": InteractionResponseType.PONG.value},
@@ -84,7 +81,7 @@ def command_handler(body: dict[str, typing.Any]) -> response.Response:
 
 
 def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
-    logger.info(f"Handling unknown interaction type")
+    logger.info("Handling unknown interaction type")
     return response.Response(
         status_code=400,
         body_data="Unknown interaction type",
