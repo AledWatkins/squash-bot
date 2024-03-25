@@ -57,6 +57,7 @@ def lambda_handler(
 def verify_event(event: dict[str, typing.Any]) -> None:
     verifier = _verifier_from_settings()
     verifier.verify(event)
+    logger.info(f"Request verified with {verifier.__class__.__name__}")
 
 
 def ping_handler(body: dict[str, typing.Any]) -> response.Response:
