@@ -20,10 +20,10 @@ class BaseSettings:
 
     installed_commands: tuple[str] = ()
 
-    APP_ID: str = env.str("APP_ID")
-    SERVER_ID: str = env.str("SERVER_ID")
-    BOT_TOKEN: str = env.str("BOT_TOKEN")
-    PUBLIC_KEY: str = env.str("PUBLIC_KEY")
+    APP_ID: str = env.str("APP_ID", default="")
+    SERVER_ID: str = env.str("SERVER_ID", default="")
+    BOT_TOKEN: str = env.str("BOT_TOKEN", default="")
+    PUBLIC_KEY: str = env.str("PUBLIC_KEY", default="")
 
     # Outputer for registering slash commands
     OUTPUTER: str
