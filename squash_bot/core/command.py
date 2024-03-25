@@ -34,6 +34,10 @@ class CommandOption:
     type: CommandOptionType
     required: bool
 
+    @property
+    def is_user(self) -> bool:
+        return self.type == CommandOptionType.USER
+
 
 class Command:
     name: str
