@@ -8,10 +8,10 @@ class TestRecordMatchCommand:
             {
                 "data": {
                     "options": [
-                        {"name": "winner", "type": 6, "value": "1"},
-                        {"name": "winner-score", "type": 4, "value": 11},
-                        {"name": "loser", "type": 6, "value": "2"},
-                        {"name": "loser-score", "type": 4, "value": 3},
+                        {"name": "player-one", "type": 6, "value": "1"},
+                        {"name": "player-one-score", "type": 4, "value": 3},
+                        {"name": "player-two", "type": 6, "value": "2"},
+                        {"name": "player-two-score", "type": 4, "value": 11},
                     ],
                     "resolved": {
                         "users": {
@@ -31,5 +31,5 @@ class TestRecordMatchCommand:
             }
         ) == {
             "type": 4,
-            "data": {"content": "Match recorded: global-user1 11 - 3 global-user2"},
+            "data": {"content": "Match recorded: global-user2 11 - 3 global-user1"},
         }
