@@ -54,8 +54,8 @@ def command_by_name(name: str) -> _command.Command:
     """
     try:
         return registry.commands[name]
-    except KeyError:
-        raise UnknownCommand(f"Command with name {name} not found")
+    except KeyError as e:
+        raise UnknownCommand(f"Command with name {name} not found") from e
 
 
 def all_commands() -> list[_command.Command]:
