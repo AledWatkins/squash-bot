@@ -5,3 +5,4 @@ __pycache__
 deployment-package.zip
 package
 .venv
+.vscode
