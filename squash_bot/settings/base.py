@@ -10,6 +10,9 @@ class ImproperlyConfigured(Exception):
     """
 
 
+env.read_envfile(path=os.environ.get("ENV_FILE_PATH", ".env"))
+
+
 class BaseSettings:
     """
     Base settings class
@@ -17,10 +20,10 @@ class BaseSettings:
 
     installed_commands: tuple[str] = ()
 
-    APP_ID: str = os.environ.get("APP_ID")
-    SERVER_ID: str = os.environ.get("SERVER_ID")
-    BOT_TOKEN: str = os.environ.get("BOT_TOKEN")
-    PUBLIC_KEY: str = os.environ.get("PUBLIC_KEY")
+    APP_ID: str = env.str("APP_ID")
+    SERVER_ID: str = env.str("SERVER_ID")
+    BOT_TOKEN: str = env.str("BOT_TOKEN")
+    PUBLIC_KEY: str = env.str("PUBLIC_KEY")
 
     # Outputer for registering slash commands
     OUTPUTER: str
@@ -41,7 +44,6 @@ try:
 except KeyError as e:
     raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set") from e
 
-env.read_envfile(path=os.environ.get("ENV_FILE_PATH", ".env"))
 settings = importlib.import_module(settings_module).Settings()
 settings.install_commands()
 
