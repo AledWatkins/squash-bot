@@ -1,5 +1,3 @@
-import os
-
 from squash_bot.settings import base
 
 

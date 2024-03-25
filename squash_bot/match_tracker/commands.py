@@ -1,6 +1,7 @@
 import typing
 
-from squash_bot.core import command as _command, command_registry, response
+from squash_bot.core import command as _command
+from squash_bot.core import command_registry
 
 
 @command_registry.registry.register

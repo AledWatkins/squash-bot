@@ -2,8 +2,8 @@ from unittest import mock
 
 import pytest
 
-from squash_bot.core import command_registry
 from squash_bot.core import command as _command
+from squash_bot.core import command_registry
 
 
 class TestRegistry:
