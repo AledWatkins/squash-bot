@@ -28,6 +28,8 @@ class InteractionResponseType(enum.Enum):
 def lambda_handler(
     event: dict[str, typing.Any], context: dict["str", typing.Any]
 ) -> dict[str, typing.Any]:
+    logger.info(f"Received event: {event}")
+
     body = event["body"]
     body_dict = json.loads(body)
 
