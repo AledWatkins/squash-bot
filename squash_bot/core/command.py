@@ -28,6 +28,13 @@ class CommandOptionType(enum.Enum):
 
 
 @attrs.frozen
+class User:
+    id: str
+    username: str
+    global_name: str
+
+
+@attrs.frozen
 class CommandOption:
     name: str
     description: str
@@ -63,11 +70,11 @@ class Command:
 
             if command_option.is_user:
                 user_data = data.get("resolved", {}).get("users", {}).get(option["value"], None)
-                value = {
-                    "id": user_data["id"],
-                    "username": user_data["username"],
-                    "global_name": user_data["global_name"],
-                }
+                value = User(
+                    id=user_data["id"],
+                    username=user_data["username"],
+                    global_name=user_data["global_name"],
+                )
             else:
                 value = option["value"]
 

@@ -77,4 +77,4 @@ class TestParseOptions:
                     },
                 }
             }
-        ) == {"user": {"id": "1", "username": "name", "global_name": "global-name"}}
+        ) == {"user": _command.User(id="1", username="name", global_name="global-name")}
