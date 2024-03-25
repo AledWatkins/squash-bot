@@ -31,5 +31,5 @@ class TestRecordMatchCommand:
             }
         ) == {
             "type": 4,
-            "data": {"content": "Match recorded: user1 11 - 3 user2"},
+            "data": {"content": "Match recorded: global-user1 11 - 3 global-user2"},
         }
