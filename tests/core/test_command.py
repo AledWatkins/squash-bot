@@ -8,14 +8,14 @@ class TestParseOptions:
         class TestCommand(_command.Command):
             name = "test-command"
             description = "Test command"
-            options = [
+            options = (
                 _command.CommandOption(
                     name="required-option",
                     description="A required option",
                     type=_command.CommandOptionType.STRING,
                     required=True,
                 ),
-            ]
+            )
 
         command = TestCommand()
         with pytest.raises(
@@ -28,14 +28,14 @@ class TestParseOptions:
         class TestCommand(_command.Command):
             name = "test-command"
             description = "Test command"
-            options = [
+            options = (
                 _command.CommandOption(
                     name="required-option",
                     description="A required option",
                     type=_command.CommandOptionType.STRING,
                     required=True,
                 ),
-            ]
+            )
 
             def _handle(self, options, base_context):
                 return options

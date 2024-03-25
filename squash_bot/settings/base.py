@@ -14,7 +14,7 @@ class BaseSettings:
     Base settings class
     """
 
-    installed_commands: list[str] = []
+    installed_commands: tuple[str] = ()
 
     APP_ID: str = os.environ.get("APP_ID")
     SERVER_ID: str = os.environ.get("SERVER_ID")
