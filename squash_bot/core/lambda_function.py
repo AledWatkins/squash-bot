@@ -32,7 +32,7 @@ def lambda_handler(
     body_dict = json.loads(body)
 
     try:
-        verify_body(body)
+        verify_event(event)
     except verify.CouldNotVerifyRequest as e:
         logger.error("Could not verify request")
         return response.Response(
@@ -52,9 +52,9 @@ def lambda_handler(
     return interaction_handler(body_dict).as_dict()
 
 
-def verify_body(body: dict[str, typing.Any]) -> None:
+def verify_event(event: dict[str, typing.Any]) -> None:
     verifyier = _verifyier_from_settings()
-    verifyier.verify(body)
+    verifyier.verify(event)
 
 
 def ping_handler(body: dict[str, typing.Any]) -> response.Response:

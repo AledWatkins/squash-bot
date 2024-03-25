@@ -13,9 +13,9 @@ class CouldNotVerifyRequest(Exception):
 
 
 class Verifyier:
-    def verify(self, body: dict[str, typing.Any]) -> None:
+    def verify(self, event: dict[str, typing.Any]) -> None:
         """
-        Verify a request body
+        Verify a request event
 
         :raises CouldNotVerifyRequest: If the request could not be verified
         """
@@ -23,14 +23,15 @@ class Verifyier:
 
 
 class NACLVerifyier(Verifyier):
-    def verify(self, body: dict[str, typing.Any]) -> None:
-        signature = body["headers"]["x-signature-ed25519"]
-        timestamp = body["headers"]["x-signature-timestamp"]
+    def verify(self, event: dict[str, typing.Any]) -> None:
+        signature = event["headers"]["x-signature-ed25519"]
+        timestamp = event["headers"]["x-signature-timestamp"]
 
         public_key = settings_base.settings.PUBLIC_KEY
 
         verify_key = signing.VerifyKey(bytes.fromhex(public_key))
-        message = timestamp + json.dumps(body, separators=(",", ":"))
+        body_json = json.loads(event["body"])
+        message = timestamp + json.dumps(body_json, separators=(",", ":"))
 
         try:
             verify_key.verify(message.encode(), signature=bytes.fromhex(signature))
