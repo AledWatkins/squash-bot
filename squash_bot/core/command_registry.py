@@ -36,9 +36,7 @@ class Registry:
 
         # Check if a command with the same name already exists and raise an error if it does
         if command.name in self.commands:
-            raise ImproperlyConfigured(
-                f"Command with name {command.name} already exists"
-            )
+            raise ImproperlyConfigured(f"Command with name {command.name} already exists")
 
         self.commands[command.name] = command
         return command_class
