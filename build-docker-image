@@ -1,0 +1,14 @@
+#!/usr/bin/env bash -e
+URL_STRING=".dkr.ecr.eu-north-1.amazonaws.com"
+CONTAINER_STRING="squash-bot"
+IMAGE_STRING="latest"
+ECR_IMAGE_URI="$AWS_ACCOUNT_ID$URL_STRING/$CONTAINER_STRING:$IMAGE_STRING"
+
+# Login to ECR and Docker
+aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID$URL_STRING"
+
+# Build and push new image
+docker build --tag "$CONTAINER_STRING" .
+docker tag $CONTAINER_STRING:latest "$ECR_IMAGE_URI"
+docker push "$ECR_IMAGE_URI"
+
