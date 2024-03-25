@@ -37,8 +37,8 @@ class BaseSettings:
 
 try:
     settings_module = os.environ["SETTINGS_MODULE"]
-except KeyError:
-    raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set")
+except KeyError as e:
+    raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set") from e
 
 env.read_envfile(path=os.environ.get("ENV_FILE_PATH", ".env"))
 settings = importlib.import_module(settings_module).Settings()
