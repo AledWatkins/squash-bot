@@ -1,0 +1,34 @@
+default_stages: [pre-commit]
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace # Trims trailing whitespace.
+        args: [--markdown-linebreak-ext=md]
+        stages: [pre-commit, manual] # Do not run when pushing, as we may have rebased on top of merged issues
+      - id: check-case-conflict # Checks for files that would conflict in case-insensitive filesystems.
+      - id: check-json # Attempts to load all json files to verify syntax
+      - id: check-merge-conflict # Check for files that contain merge conflict strings
+      - id: end-of-file-fixer # Makes sure files end in a newline and only a newline.
+        stages: [pre-commit, manual] # Do not run when pushing, as we may have rebased on top of merged issues
+      - id: no-commit-to-branch # Protect specific branches from direct checkins (`master` by default)
+        stages: [commit]
+      - id: debug-statements # Check for debugger imports and py37+ breakpoint() calls in python source
+      - id: check-added-large-files # Prevent giant files from being committed
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.3
+    hooks:
+      - id: ruff # Run `ruff` linter
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format # Run `ruff` formatter
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        language: system
+        types: [python]
+        entry: pytest
+        files: src/.*
+        require_serial: true # Do not try to split files into batches
