@@ -1,4 +1,5 @@
 import enum
+import json
 import logging
 import typing
 
@@ -28,6 +29,8 @@ def lambda_handler(
     event: dict[str, typing.Any], context: dict["str", typing.Any]
 ) -> dict[str, typing.Any]:
     body = event["body"]
+    body_dict = json.loads(body)
+
     try:
         verify_body(body)
     except verify.CouldNotVerifyRequest as e:
@@ -37,7 +40,7 @@ def lambda_handler(
             body_data="Could not verify request",
         ).as_dict()
 
-    interaction_type = InteractionTypeEnum(body["type"])
+    interaction_type = InteractionTypeEnum(body_dict["type"])
     logger.info(f"Received interaction of type {interaction_type}")
 
     interaction_handler = {
@@ -46,7 +49,7 @@ def lambda_handler(
         InteractionTypeEnum.UNKNOWN: unknown_handler,
     }[interaction_type]
 
-    return interaction_handler(body).as_dict()
+    return interaction_handler(body_dict).as_dict()
 
 
 def verify_body(body: dict[str, typing.Any]) -> None:
