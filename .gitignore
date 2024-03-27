@@ -7,3 +7,4 @@ __pycache__
 deployment-package.zip
 *.pkg
 package
+/tests/fixtures/match_results.json
