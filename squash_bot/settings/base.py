@@ -34,6 +34,10 @@ class BaseSettings:
     # Verifier for verifying event body
     VERIFIER: str
 
+    # Match tracker settings
+    MATCH_RESULTS_PATH: str = env.str("MATCH_RESULTS_PATH", default="")
+    MATCH_RESULTS_FILE: str = env.str("MATCH_RESULTS_FILE", default="")
+
     def install_commands(self) -> None:
         """
         Install all commands in the installed_commands list.
