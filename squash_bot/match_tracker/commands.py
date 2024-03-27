@@ -1,18 +1,8 @@
 import typing
 
-import attrs
-
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
-from squash_bot.core.data import user
-
-
-@attrs.frozen
-class MatchResult:
-    winner: user.User
-    winner_score: int
-    loser_score: int
-    loser: user.User
+from squash_bot.match_tracker.data import dataclasses
 
 
 @command_registry.registry.register
@@ -56,7 +46,7 @@ class RecordMatchCommand(_command.Command):
             ],
             key=lambda x: x[1],
         )
-        match_result = MatchResult(
+        match_result = dataclasses.MatchResult(
             winner=winner[0], winner_score=winner[1], loser_score=loser[1], loser=loser[0]
         )
 
