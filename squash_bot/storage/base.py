@@ -33,5 +33,10 @@ def store_file(file_path: str, file_name: str, contents: str) -> None:
     get_storage_backend().store_file(file_path, file_name, contents)
 
 
+def read_file(file_path: str, file_name: str) -> str:
+    logger.info(f"Reading file: {file_path} / {file_name}")
+    return get_storage_backend().read_file(file_path, file_name)
+
+
 def get_storage_backend() -> StorageBackend:
     return settings_base.get_class_from_string(settings_base.settings.STORAGE_BACKEND)()
