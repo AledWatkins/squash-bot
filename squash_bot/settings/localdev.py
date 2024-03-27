@@ -8,7 +8,7 @@ class Settings(base.BaseSettings):
 
     installed_commands = ("squash_bot.match_tracker.commands",)
 
-    OUTPUTER = "squash_bot.slash_command_register.outputer.PrintOutputer"
+    OUTPUTER = "slash_command_register.outputer.PrintOutputer"
     VERIFIER = "squash_bot.core.verify.NoopVerifier"
     STORAGE_BACKEND = "squash_bot.storage.base.LocalStorage"
 

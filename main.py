@@ -1,4 +1,4 @@
-from squash_bot.slash_command_register import register
+from slash_command_register import register
 
 
 def main():
