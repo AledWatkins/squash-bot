@@ -1,9 +1,13 @@
 import datetime
+import logging
 import typing
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
 from squash_bot.match_tracker.data import dataclasses
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 @command_registry.registry.register
@@ -56,6 +60,8 @@ class RecordMatchCommand(_command.Command):
             played_at=datetime.datetime.now(),
             logged_at=datetime.datetime.now(),
         )
+
+        logger.info(f"Recording match: {match_result}")
 
         return {
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
