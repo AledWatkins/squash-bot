@@ -3,7 +3,7 @@ import typing
 
 import attrs
 
-from core.data import user
+from squash_bot.core.data import user
 
 
 class CommandError(Exception):
