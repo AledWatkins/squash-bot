@@ -1,5 +1,6 @@
 import importlib
 import os
+import pathlib
 
 from envparse import env
 
@@ -11,6 +12,8 @@ class ImproperlyConfigured(Exception):
 
 
 env.read_envfile(path=os.environ.get("ENV_FILE_PATH", ".env"))
+BASE_DIR = pathlib.Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PROJECT_ROOT = BASE_DIR.parent
 
 
 class BaseSettings:
