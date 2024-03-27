@@ -1,7 +1,11 @@
 import abc
+import logging
 import pathlib
 
 from squash_bot.settings import base as settings_base
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class StorageBackend(abc.ABC):
@@ -22,6 +26,11 @@ class LocalStorage(StorageBackend):
         full_file_path = pathlib.Path(file_path) / file_name
         with open(full_file_path) as f:
             return f.read()
+
+
+def store_file(file_path: str, file_name: str, contents: str) -> None:
+    logger.info(f"Storing file: {file_path} / {file_name}")
+    get_storage_backend().store_file(file_path, file_name, contents)
 
 
 def get_storage_backend() -> StorageBackend:
