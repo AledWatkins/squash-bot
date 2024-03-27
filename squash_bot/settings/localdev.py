@@ -10,6 +10,7 @@ class Settings(base.BaseSettings):
 
     OUTPUTER = "squash_bot.slash_command_register.outputer.PrintOutputer"
     VERIFIER = "squash_bot.core.verify.NoopVerifier"
+    STORAGE_BACKEND = "squash_bot.storage.base.LocalStorage"
 
     # Match tracker settings
     MATCH_RESULTS_PATH = base.PROJECT_ROOT / "tests" / "fixtures"

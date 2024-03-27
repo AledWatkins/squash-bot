@@ -34,6 +34,9 @@ class BaseSettings:
     # Verifier for verifying event body
     VERIFIER: str
 
+    # Storage backend
+    STORAGE_BACKEND: str
+
     # Match tracker settings
     MATCH_RESULTS_PATH: str = env.str("MATCH_RESULTS_PATH", default="")
     MATCH_RESULTS_FILE: str = env.str("MATCH_RESULTS_FILE", default="")
