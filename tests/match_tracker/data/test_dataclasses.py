@@ -26,3 +26,31 @@ class TestMatchResult:
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
         )
         assert str(match_result) == "winner beat loser 11-3 on 2021-01-01"
+
+    def test_from_dict(self):
+        match_result = dataclasses.MatchResult.from_dict(
+            {
+                "winner": {
+                    "id": "1",
+                    "username": "winner",
+                    "global_name": "global-winner",
+                },
+                "winner_score": 11,
+                "loser_score": 3,
+                "loser": {
+                    "id": "2",
+                    "username": "loser",
+                    "global_name": "global-loser",
+                },
+                "played_at": "2021-01-01T12:00:00",
+                "logged_at": "2021-01-01T12:00:00",
+            }
+        )
+        assert match_result == dataclasses.MatchResult(
+            winner=user.User(id="1", username="winner", global_name="global-winner"),
+            winner_score=11,
+            loser_score=3,
+            loser=user.User(id="2", username="loser", global_name="global-loser"),
+            played_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+        )
