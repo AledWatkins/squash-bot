@@ -1,9 +1,9 @@
 venv/
-.idea
-__pycache__
-.env
-deployment-package.zip
-package
 .venv
+.env
+.idea
 .vscode
+__pycache__
+deployment-package.zip
 *.pkg
+package
