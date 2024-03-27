@@ -3,6 +3,8 @@ import typing
 
 import attrs
 
+from core.data import user
+
 
 class CommandError(Exception):
     """
@@ -63,7 +65,7 @@ class Command:
 
             if command_option.is_user:
                 user_data = data.get("resolved", {}).get("users", {}).get(option["value"], None)
-                value = data.User(
+                value = user.User(
                     id=user_data["id"],
                     username=user_data["username"],
                     global_name=user_data["global_name"],
