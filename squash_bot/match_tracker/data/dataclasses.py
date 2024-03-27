@@ -32,3 +32,13 @@ class MatchResult:
             played_at=datetime.datetime.fromisoformat(data["played_at"]),
             logged_at=datetime.datetime.fromisoformat(data["logged_at"]),
         )
+
+    def to_dict(self) -> dict[str, typing.Any]:
+        return {
+            "winner": user.User.to_dict(self.winner),
+            "winner_score": self.winner_score,
+            "loser_score": self.loser_score,
+            "loser": user.User.to_dict(self.loser),
+            "played_at": self.played_at.isoformat(),
+            "logged_at": self.logged_at.isoformat(),
+        }
