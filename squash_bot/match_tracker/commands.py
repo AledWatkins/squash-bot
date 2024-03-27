@@ -53,6 +53,6 @@ class RecordMatchCommand(_command.Command):
         return {
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             "data": {
-                "content": f"Match recorded: {match_result.winner.global_name} {match_result.winner_score} - {match_result.loser_score} {match_result.loser.global_name}"
+                "content": f"Match recorded: {match_result.winner.name} {match_result.winner_score} - {match_result.loser_score} {match_result.loser.name}"
             },
         }
