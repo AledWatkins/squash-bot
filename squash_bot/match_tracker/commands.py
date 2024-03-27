@@ -1,4 +1,5 @@
 import typing
+from datetime import datetime
 
 import attrs
 
@@ -12,6 +13,26 @@ class MatchResult:
     winner_score: int
     loser_score: int
     loser: dict[str, typing.Any]
+    logged_at: datetime
+
+    def as_dict(self) -> dict[str, typing.Any]:
+        return {
+            "winner": self.winner,
+            "winner_score": self.winner_score,
+            "loser_score": self.loser_score,
+            "loser": self.loser,
+            "logged_at": self.logged_at.isoformat(),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, typing.Any]) -> "MatchResult":
+        return cls(
+            winner=data["winner"],
+            winner_score=data["winner_score"],
+            loser=data["loser"],
+            loser_score=data["loser_score"],
+            logged_at=data["logged_at"].fromisoformat(),
+        )
 
 
 @command_registry.registry.register
@@ -56,9 +77,13 @@ class RecordMatchCommand(_command.Command):
             key=lambda x: x[1],
         )
         match_result = MatchResult(
-            winner=winner[0], winner_score=winner[1], loser_score=loser[1], loser=loser[0]
+            winner=winner[0],
+            winner_score=winner[1],
+            loser_score=loser[1],
+            loser=loser[0],
+            logged_at=datetime.now(),
         )
-
+        # TODO: Load results here and add new match result
         return {
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             "data": {

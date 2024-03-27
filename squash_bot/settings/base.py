@@ -31,6 +31,9 @@ class BaseSettings:
     # Verifier for verifying event body
     VERIFIER: str
 
+    # How/where to store data
+    STORAGE: str
+
     def install_commands(self) -> None:
         """
         Install all commands in the installed_commands list.
