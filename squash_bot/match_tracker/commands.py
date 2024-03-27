@@ -4,7 +4,7 @@ import typing
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
-from squash_bot.match_tracker.data import dataclasses
+from squash_bot.match_tracker.data import dataclasses, storage
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -62,6 +62,7 @@ class RecordMatchCommand(_command.Command):
         )
 
         logger.info(f"Recording match: {match_result}")
+        storage.store_match_result(match_result)
 
         return {
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
