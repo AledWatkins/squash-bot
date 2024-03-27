@@ -1,3 +1,5 @@
+import datetime
+
 import attrs
 
 from squash_bot.core.data import user
@@ -9,3 +11,5 @@ class MatchResult:
     winner_score: int
     loser_score: int
     loser: user.User
+    played_at: datetime.datetime
+    logged_at: datetime.datetime

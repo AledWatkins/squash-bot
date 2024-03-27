@@ -1,3 +1,4 @@
+import datetime
 import typing
 
 from squash_bot.core import command as _command
@@ -47,7 +48,13 @@ class RecordMatchCommand(_command.Command):
             key=lambda x: x[1],
         )
         match_result = dataclasses.MatchResult(
-            winner=winner[0], winner_score=winner[1], loser_score=loser[1], loser=loser[0]
+            winner=winner[0],
+            winner_score=winner[1],
+            loser_score=loser[1],
+            loser=loser[0],
+            # We currently don't distinguish between the time the match was played and the time it was logged
+            played_at=datetime.datetime.now(),
+            logged_at=datetime.datetime.now(),
         )
 
         return {
