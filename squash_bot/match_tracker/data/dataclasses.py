@@ -13,3 +13,7 @@ class MatchResult:
     loser: user.User
     played_at: datetime.datetime
     logged_at: datetime.datetime
+
+    @property
+    def played_on(self) -> datetime.date:
+        return self.played_at.date()
