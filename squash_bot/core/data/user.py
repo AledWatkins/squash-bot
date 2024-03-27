@@ -18,3 +18,10 @@ class User:
             username=data["username"],
             global_name=data["global_name"],
         )
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "id": self.id,
+            "username": self.username,
+            "global_name": self.global_name,
+        }
