@@ -4,14 +4,15 @@ import attrs
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
+from squash_bot.core.data import user
 
 
 @attrs.frozen
 class MatchResult:
-    winner: dict[str, typing.Any]
+    winner: user.User
     winner_score: int
     loser_score: int
-    loser: dict[str, typing.Any]
+    loser: user.User
 
 
 @command_registry.registry.register
