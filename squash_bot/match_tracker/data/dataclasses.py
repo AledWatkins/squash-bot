@@ -52,3 +52,13 @@ class MatchResult:
             "logged_by": core_dataclasses.User.to_dict(self.logged_by),
             "result_id": str(self.result_id),
         }
+
+
+@attrs.frozen
+class Matches:
+    matches: list[MatchResult]
+
+    def sort_by(self, field: str, reverse: bool = False) -> "Matches":
+        return Matches(
+            matches=sorted(self.matches, key=lambda x: getattr(x, field), reverse=reverse)
+        )
