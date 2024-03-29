@@ -33,7 +33,7 @@ class TestGetAllMatchResultsAsDict:
             contents=json.dumps(fake_results),
         )
 
-        assert storage.get_all_match_results_as_dict(guild=guild) == [result.to_dict()]
+        assert storage.get_all_match_results_as_list(guild=guild) == [result.to_dict()]
 
 
 class TestGetAllMatchResults:

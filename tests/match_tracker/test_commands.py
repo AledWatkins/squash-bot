@@ -86,7 +86,7 @@ class TestRecordMatchCommand:
 
     def test_stores_result(self):
         command = commands.RecordMatchCommand()
-        with mock.patch.object(storage, "get_all_match_results_as_dict", return_value=[]):
+        with mock.patch.object(storage, "get_all_match_results_as_list", return_value=[]):
             command.handle(
                 {
                     "data": {

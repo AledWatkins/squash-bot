@@ -6,7 +6,7 @@ from squash_bot.settings import base as settings_base
 from squash_bot.storage import base
 
 
-def get_all_match_results_as_dict(guild: core_dataclasses.Guild) -> list:
+def get_all_match_results_as_list(guild: core_dataclasses.Guild) -> list:
     file_contents = base.read_file(
         file_path=settings_base.settings.MATCH_RESULTS_PATH,
         file_name=_results_file_name(guild),
@@ -16,7 +16,7 @@ def get_all_match_results_as_dict(guild: core_dataclasses.Guild) -> list:
 
 
 def get_all_match_results(guild: core_dataclasses.Guild) -> dataclasses.Matches:
-    return dataclasses.Matches.from_match_results(get_all_match_results_as_dict(guild=guild))
+    return dataclasses.Matches.from_match_results(get_all_match_results_as_list(guild=guild))
 
 
 def convert_match_results_to_dicts(matches: dataclasses.Matches) -> list[dict]:
