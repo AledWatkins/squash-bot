@@ -87,7 +87,7 @@ class RecordMatchCommand(_command.Command):
 @command_registry.registry.register
 class ShowMatchesCommand(_command.Command):
     name = "show-matches"
-    description = ""
+    description = "Show saved matches."
     options = (
         _command.CommandOption(
             name="sort-by",
