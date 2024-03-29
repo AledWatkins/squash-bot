@@ -23,17 +23,19 @@ class PlayedAtFormatter(Formatter):
             pretty_date = played_at.strftime("%A, %-d %B %Y")
             inner_message += f"\n\n{pretty_date}:"
             for match in matches:
-                inner_message += f"\n\t{match}"
+                match_string = _match_string(match)
+                inner_message += f"\n\t{match_string}"
 
         return f"```{inner_message}```"
 
-    def _match_string(self, match: dataclasses.MatchResult) -> str:
-        served_marker = "*"
-        if match.served == match.winner:
-            winner_name = f"{match.winner.name}{served_marker}"
-            loser_name = f"{match.loser.name}"
-        else:
-            winner_name = f"{match.winner.name}"
-            loser_name = f"{match.loser.name}{served_marker}"
 
-        return f"{winner_name} {match.winner_score} - {match.loser_score} {loser_name}"
+def _match_string(match: dataclasses.MatchResult) -> str:
+    served_marker = "*"
+    if match.served == match.winner:
+        winner_name = f"{match.winner.name}{served_marker}"
+        loser_name = f"{match.loser.name}"
+    else:
+        winner_name = f"{match.winner.name}"
+        loser_name = f"{match.loser.name}{served_marker}"
+
+    return f"{winner_name} {match.winner_score} - {match.loser_score} {loser_name}"
