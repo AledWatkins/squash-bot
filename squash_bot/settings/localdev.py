@@ -15,3 +15,7 @@ class Settings(base.BaseSettings):
     # Match tracker settings
     MATCH_RESULTS_PATH = base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing"
     MATCH_RESULTS_FILE = "match_results.json"
+
+    API_URL = "foo"
+    ACTIVITY_ID = "1"
+    LOCATION_ID = "2"

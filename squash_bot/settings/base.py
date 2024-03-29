@@ -46,6 +46,11 @@ class BaseSettings:
     MATCH_RESULTS_PATH: str = env.str("MATCH_RESULTS_PATH", default="")
     MATCH_RESULTS_FILE: str = env.str("MATCH_RESULTS_FILE", default="")
 
+    # List timetable settings
+    API_URL: str = env.str("API_URL", default="")
+    ACTIVITY_ID: str = env.str("ACTIVITY_ID", default="")
+    LOCATION_ID: str = env.str("LOCATION_ID", default="")
+
     def install_commands(self) -> None:
         """
         Install all commands in the installed_commands list.
