@@ -11,6 +11,7 @@ class TestMatchResult:
             winner_score=11,
             loser_score=3,
             loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
+            served=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_by=core_dataclasses.User(
@@ -25,6 +26,7 @@ class TestMatchResult:
             winner_score=11,
             loser_score=3,
             loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
+            served=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_by=core_dataclasses.User(
@@ -48,6 +50,11 @@ class TestMatchResult:
                     "username": "loser",
                     "global_name": "global-loser",
                 },
+                "served": {
+                    "id": "1",
+                    "username": "winner",
+                    "global_name": "global-winner",
+                },
                 "played_at": "2021-01-01T12:00:00",
                 "logged_at": "2021-01-01T12:00:00",
                 "logged_by": {
@@ -62,6 +69,7 @@ class TestMatchResult:
             winner_score=11,
             loser_score=3,
             loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
+            served=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_by=core_dataclasses.User(

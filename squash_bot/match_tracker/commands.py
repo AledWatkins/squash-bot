@@ -62,6 +62,8 @@ class RecordMatchCommand(_command.Command):
             winner_score=winner[1],
             loser_score=loser[1],
             loser=loser[0],
+            # We currently assume that the first player is the one who served
+            served=options["player-one"],
             # We currently don't distinguish between the time the match was played and the time it was logged
             played_at=datetime.datetime.now(),
             logged_at=datetime.datetime.now(),

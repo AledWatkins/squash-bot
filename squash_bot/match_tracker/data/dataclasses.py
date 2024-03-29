@@ -12,6 +12,7 @@ class MatchResult:
     winner_score: int
     loser_score: int
     loser: core_dataclasses.User
+    served: core_dataclasses.User
     played_at: datetime.datetime
     logged_at: datetime.datetime
     logged_by: core_dataclasses.User
@@ -30,6 +31,7 @@ class MatchResult:
             winner_score=data["winner_score"],
             loser_score=data["loser_score"],
             loser=core_dataclasses.User.from_dict(data["loser"]),
+            served=core_dataclasses.User.from_dict(data["served"]),
             played_at=datetime.datetime.fromisoformat(data["played_at"]),
             logged_at=datetime.datetime.fromisoformat(data["logged_at"]),
             logged_by=core_dataclasses.User.from_dict(data["logged_by"]),
@@ -41,6 +43,7 @@ class MatchResult:
             "winner_score": self.winner_score,
             "loser_score": self.loser_score,
             "loser": core_dataclasses.User.to_dict(self.loser),
+            "served": core_dataclasses.User.to_dict(self.served),
             "played_at": self.played_at.isoformat(),
             "logged_at": self.logged_at.isoformat(),
             "logged_by": core_dataclasses.User.to_dict(self.logged_by),

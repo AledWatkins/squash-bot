@@ -18,6 +18,7 @@ class TestGetAllMatchResultsAsDict:
             loser=core_dataclasses.User(
                 id="2", username="player_2", global_name="global-player_2"
             ),
+            served=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_by=core_dataclasses.User(
@@ -45,6 +46,7 @@ class TestGetAllMatchResults:
             loser=core_dataclasses.User(
                 id="2", username="player_2", global_name="global-player_2"
             ),
+            served=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_by=core_dataclasses.User(
