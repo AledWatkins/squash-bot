@@ -40,20 +40,20 @@ class LocalStorage(StorageBackend):
 
 class S3Storage(StorageBackend):
     def store_file(self, file_path: str, file_name: str, contents: str) -> None:
-        bucket = self._get_bucket(file_path)
+        client = self._client()
         contents_bytes = io.BytesIO(contents.encode("utf-8"))
-        return bucket.upload_fileobj(contents_bytes, file_name)
+        return client.put_object(Key=file_name, Bucket=file_path, Body=contents_bytes)
 
     def read_file(self, file_path: str, file_name: str) -> str:
-        bucket = self._get_bucket(file_path)
+        client = self._client()
         try:
-            return bucket.download_file(file_name, file_path)
+            response = client.get_object(Bucket=file_path, Key=file_name)
         except botocore_exceptions.ClientError as exc:
             raise FileMissing from exc
+        return response["Body"].read().decode("utf-8")
 
-    def _get_bucket(self, bucket_name: str):
-        s3_resource = boto3.resource("s3")
-        return s3_resource.Bucket(bucket_name)
+    def _client(self):
+        return boto3.client("s3")
 
 
 def store_file(file_path: str, file_name: str, contents: str) -> None:

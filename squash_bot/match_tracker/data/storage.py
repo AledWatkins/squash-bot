@@ -9,6 +9,7 @@ def get_all_match_results_as_dict() -> dict:
     file_contents = base.read_file(
         file_path=settings_base.settings.MATCH_RESULTS_PATH,
         file_name=settings_base.settings.MATCH_RESULTS_FILE,
+        create_if_missing=True,
     )
     return json.loads(file_contents)
 
