@@ -35,6 +35,7 @@ class CommandOption:
     description: str
     type: CommandOptionType
     required: bool
+    default: typing.Any | None = None
 
     @property
     def is_user(self) -> bool:
@@ -72,6 +73,9 @@ class Command:
                 )
             else:
                 value = option["value"]
+
+            if not value and command_option.default:
+                value = command_option.default
 
             return_options[option_name] = value
 

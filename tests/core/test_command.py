@@ -100,6 +100,25 @@ class TestParseOptions:
             }
         ) == {"user": core_dataclasses.User(id="1", username="name", global_name="global-name")}
 
+    def test_default(self):
+        class TestCommand(_command.Command):
+            name = "test-command"
+            description = "Test command"
+            options = (
+                _command.CommandOption(
+                    name="required-option",
+                    description="A required option",
+                    type=_command.CommandOptionType.STRING,
+                    required=False,
+                    default="default-value",
+                ),
+            )
+
+        command = TestCommand()
+        assert command.parse_options(
+            {"data": {"options": [{"name": "required-option", "value": ""}]}}
+        ) == {"required-option": "default-value"}
+
 
 class TestParseGuild:
     def test_guild(self):
