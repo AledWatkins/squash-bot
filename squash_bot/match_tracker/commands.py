@@ -5,7 +5,7 @@ import typing
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
 from squash_bot.core.data import dataclasses as core_dataclasses
-from squash_bot.match_tracker import utils, validate
+from squash_bot.match_tracker import formatters, queries, utils, validate
 from squash_bot.match_tracker.data import dataclasses, storage
 
 logger = logging.getLogger(__name__)
@@ -80,5 +80,44 @@ class RecordMatchCommand(_command.Command):
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             "data": {
                 "content": utils.build_match_string(match_result),
+            },
+        }
+
+
+@command_registry.registry.register
+class ShowMatchesCommand(_command.Command):
+    name = "show-matches"
+    description = ""
+    options = (
+        _command.CommandOption(
+            name="sort-by",
+            description="The field to sort the matches by. Defaults to `played_at`.",
+            type=_command.CommandOptionType.STRING,
+            required=False,
+            default="played_at",
+        ),
+    )
+
+    def _handle(
+        self,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
+    ) -> dict[str, typing.Any]:
+        matches = queries.get_matches(guild)
+
+        sort_by = options["sort-by"]
+        matches = matches.sort_by(sort_by)
+
+        if matches:
+            content = formatters.PlayedAtFormatter.format_matches(matches)
+        else:
+            content = "No matches have been recorded."
+
+        return {
+            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
+            "data": {
+                "content": content,
             },
         }

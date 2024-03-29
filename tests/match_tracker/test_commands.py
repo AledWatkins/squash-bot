@@ -1,8 +1,11 @@
+import datetime
 from unittest import mock
 
 from squash_bot.core.data import dataclasses as core_dataclasses
-from squash_bot.match_tracker import commands
+from squash_bot.match_tracker import commands, queries
 from squash_bot.match_tracker.data import dataclasses, storage
+
+from tests.factories import match_tracker as match_tracker_factories
 
 
 class TestRecordMatchCommand:
@@ -142,3 +145,57 @@ class TestRecordMatchCommand:
             ),
             result_id=mock.ANY,
         )
+
+
+class TestShowMatches:
+    def test_show_matches_with_no_matches(self):
+        command = commands.ShowMatchesCommand()
+        with mock.patch.object(storage, "get_all_match_results_as_list", return_value=[]):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [{"name": "sort-by", "value": ""}],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            )
+
+        assert "No matches have been recorded" in response["data"]["content"]
+
+    def test_show_matches(self):
+        match_one_played_at = datetime.datetime(2021, 1, 1, 12, 0)
+        match_one = match_tracker_factories.MatchResultFactory(played_at=match_one_played_at)
+
+        match_two_played_at = datetime.datetime(2021, 1, 2, 12, 0)
+        match_two = match_tracker_factories.MatchResultFactory(played_at=match_two_played_at)
+
+        matches = dataclasses.Matches(match_results=[match_one, match_two])
+
+        command = commands.ShowMatchesCommand()
+        with mock.patch.object(queries, "get_matches", return_value=matches):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [{"name": "sort-by", "value": ""}],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            )
+
+        content = response["data"]["content"]
+        assert str(match_one) in content
+        assert str(match_two) in content
