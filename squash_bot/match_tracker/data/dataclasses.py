@@ -7,6 +7,12 @@ import attrs
 from squash_bot.core.data import dataclasses as core_dataclasses
 
 
+class FieldDoesNotExist(Exception):
+    """
+    Error raised when trying to sort by a field that does not exist
+    """
+
+
 @attrs.frozen
 class MatchResult:
     winner: core_dataclasses.User
@@ -58,6 +64,9 @@ class MatchResult:
 class Matches:
     match_results: list[MatchResult]
 
+    def __bool__(self) -> bool:
+        return bool(self.match_results)
+
     @classmethod
     def from_match_results(cls, match_results: list[dict[str, typing.Any]]) -> "Matches":
         return Matches(
@@ -68,8 +77,11 @@ class Matches:
         return Matches(match_results=self.match_results + [match_result])
 
     def sort_by(self, field: str, reverse: bool = False) -> "Matches":
-        return Matches(
-            match_results=sorted(
-                self.match_results, key=lambda x: getattr(x, field), reverse=reverse
+        try:
+            return Matches(
+                match_results=sorted(
+                    self.match_results, key=lambda x: getattr(x, field), reverse=reverse
+                )
             )
-        )
+        except AttributeError as e:
+            raise FieldDoesNotExist(field) from e
