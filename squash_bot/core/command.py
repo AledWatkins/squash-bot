@@ -52,6 +52,7 @@ class Command:
         options = data.get("options", [])
         provided_options = {option["name"] for option in options}
         required_options = {option.name for option in self.options if option.required}
+        options_with_default = {option.name for option in self.options if option.default}
         command_options_by_name = {option.name: option for option in self.options}
 
         if missing_required_options := required_options - provided_options:
@@ -78,6 +79,10 @@ class Command:
                 value = command_option.default
 
             return_options[option_name] = value
+
+        for option_name in options_with_default - provided_options:
+            command_option = command_options_by_name[option_name]
+            return_options[option_name] = command_option.default
 
         return return_options
 

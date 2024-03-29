@@ -119,6 +119,25 @@ class TestParseOptions:
             {"data": {"options": [{"name": "required-option", "value": ""}]}}
         ) == {"required-option": "default-value"}
 
+    def test_default_when_option_not_in_data(self):
+        class TestCommand(_command.Command):
+            name = "test-command"
+            description = "Test command"
+            options = (
+                _command.CommandOption(
+                    name="required-option",
+                    description="A required option",
+                    type=_command.CommandOptionType.STRING,
+                    required=False,
+                    default="default-value",
+                ),
+            )
+
+        command = TestCommand()
+        assert command.parse_options({"data": {"options": []}}) == {
+            "required-option": "default-value"
+        }
+
 
 class TestParseGuild:
     def test_guild(self):
