@@ -25,3 +25,8 @@ class User:
             "username": self.username,
             "global_name": self.global_name,
         }
+
+
+@attrs.frozen
+class Guild:
+    guild_id: str
