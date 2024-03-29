@@ -38,11 +38,11 @@ class TestParseOptions:
                 ),
             )
 
-            def _handle(self, options, base_context):
+            def _handle(self, options, base_context, guild):
                 return options
 
         assert TestCommand().handle(
-            {"data": {"options": [{"name": "required-option", "value": "value"}]}}
+            {"data": {"options": [{"name": "required-option", "value": "value"}], "guild_id": "1"}}
         ) == {"required-option": "value"}
 
     def test_user_options_include_username(self):
@@ -58,7 +58,7 @@ class TestParseOptions:
                 ),
             )
 
-            def _handle(self, options, base_context):
+            def _handle(self, options, base_context, guild):
                 return options
 
         assert TestCommand().handle(
@@ -76,6 +76,20 @@ class TestParseOptions:
                             }
                         }
                     },
+                    "guild_id": "1",
                 }
             }
         ) == {"user": core_dataclasses.User(id="1", username="name", global_name="global-name")}
+
+    def test_guild(self):
+        class TestCommand(_command.Command):
+            name = "test-command"
+            description = "Test command"
+            options = ()
+
+            def _handle(self, options, base_context, guild):
+                return guild
+
+        assert TestCommand().handle({"data": {"guild_id": "1"}}) == core_dataclasses.Guild(
+            guild_id="1"
+        )

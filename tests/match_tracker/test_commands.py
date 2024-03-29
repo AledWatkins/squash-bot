@@ -31,6 +31,7 @@ class TestRecordMatchCommand:
                             },
                         }
                     },
+                    "guild_id": "1",
                 }
             }
         ) == {
@@ -63,6 +64,7 @@ class TestRecordMatchCommand:
                             },
                         }
                     },
+                    "guild_id": "1",
                 }
             }
         ) == {
@@ -96,6 +98,7 @@ class TestRecordMatchCommand:
                                 },
                             }
                         },
+                        "guild_id": "1",
                     }
                 }
             )

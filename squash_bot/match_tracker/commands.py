@@ -4,6 +4,7 @@ import typing
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
+from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses, storage
 
 logger = logging.getLogger(__name__)
@@ -42,7 +43,10 @@ class RecordMatchCommand(_command.Command):
     )
 
     def _handle(
-        self, options: dict[str, typing.Any], base_context: dict[str, typing.Any]
+        self,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
     ) -> dict[str, typing.Any]:
         loser, winner = sorted(
             [
