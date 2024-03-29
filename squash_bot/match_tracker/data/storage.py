@@ -12,7 +12,7 @@ def get_all_match_results_as_dict(guild: core_dataclasses.Guild) -> dict:
         file_name=_results_file_name(guild),
         create_if_missing=True,
     )
-    return json.loads(file_contents)
+    return json.loads(file_contents or "{}")
 
 
 def get_all_match_results(guild: core_dataclasses.Guild) -> list[dataclasses.MatchResult]:
