@@ -5,7 +5,7 @@ import typing
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
 from squash_bot.core.data import dataclasses as core_dataclasses
-from squash_bot.match_tracker import utils
+from squash_bot.match_tracker import utils, validate
 from squash_bot.match_tracker.data import dataclasses, storage
 
 logger = logging.getLogger(__name__)
@@ -69,6 +69,9 @@ class RecordMatchCommand(_command.Command):
             logged_at=datetime.datetime.now(),
             logged_by=user,
         )
+
+        # Validate the match result
+        validate.validate_match_result(match_result)
 
         logger.info(f"Recording match: {match_result}")
         storage.store_match_result(match_result, guild)
