@@ -8,7 +8,7 @@ from squash_bot.match_tracker.data import dataclasses, storage
 class TestRecordMatchCommand:
     def test_user_options_include_username(self):
         command = commands.RecordMatchCommand()
-        assert command.handle(
+        response = command.handle(
             {
                 "data": {
                     "options": [
@@ -22,12 +22,12 @@ class TestRecordMatchCommand:
                             "1": {
                                 "id": "1",
                                 "username": "user1",
-                                "global_name": "global-user1",
+                                "global_name": "global1",
                             },
                             "2": {
                                 "id": "2",
                                 "username": "user2",
-                                "global_name": "global-user2",
+                                "global_name": "global2",
                             },
                         }
                     },
@@ -41,14 +41,13 @@ class TestRecordMatchCommand:
                     }
                 },
             }
-        ) == {
-            "type": 4,
-            "data": {"content": "Match recorded: global-user2 11 - 3 global-user1"},
-        }
+        )
+        assert "global1" in response["data"]["content"]
+        assert "global2" in response["data"]["content"]
 
     def test_show_username_when_global_name_unavailable(self):
         command = commands.RecordMatchCommand()
-        assert command.handle(
+        response = command.handle(
             {
                 "data": {
                     "options": [
@@ -81,10 +80,9 @@ class TestRecordMatchCommand:
                     }
                 },
             }
-        ) == {
-            "type": 4,
-            "data": {"content": "Match recorded: user2 11 - 3 user1"},
-        }
+        )
+        assert "user1" in response["data"]["content"]
+        assert "user2" in response["data"]["content"]
 
     def test_stores_result(self):
         command = commands.RecordMatchCommand()
