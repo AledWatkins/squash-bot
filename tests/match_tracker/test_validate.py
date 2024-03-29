@@ -33,3 +33,42 @@ class TestValidateMatchResult:
         )
         with pytest.raises(validate.ValidationError, match=error_message):
             validate.validate_match_result(match_result)
+
+    def test_validate_same_player(self):
+        match_result = dataclasses.MatchResult(
+            winner=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
+            winner_score=11,
+            loser=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
+            loser_score=3,
+            served=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
+            played_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="3", username="different-name", global_name="different-global-name"
+            ),
+        )
+        with pytest.raises(
+            validate.ValidationError, match="Winner and loser must be different players"
+        ):
+            validate.validate_match_result(match_result)
+
+    def test_validate_server(self):
+        match_result = dataclasses.MatchResult(
+            winner=core_dataclasses.User(id="1", username="winner", global_name="global-winner"),
+            winner_score=11,
+            loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
+            loser_score=3,
+            served=core_dataclasses.User(
+                id="3", username="different", global_name="global-different"
+            ),
+            played_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="3", username="different-name", global_name="different-global-name"
+            ),
+        )
+        with pytest.raises(
+            validate.ValidationError,
+            match="The player who served must be one of the players in the match",
+        ):
+            validate.validate_match_result(match_result)
