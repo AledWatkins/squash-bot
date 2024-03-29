@@ -29,6 +29,7 @@ class StorageBackend(abc.ABC):
 class LocalStorage(StorageBackend):
     def store_file(self, file_path: str, file_name: str, contents: str) -> None:
         full_file_path = pathlib.Path(file_path) / file_name
+        full_file_path.parent.mkdir(exist_ok=True, parents=True)
         with open(full_file_path, "w") as f:
             f.write(contents)
 

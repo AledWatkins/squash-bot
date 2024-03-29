@@ -71,7 +71,7 @@ class RecordMatchCommand(_command.Command):
         )
 
         logger.info(f"Recording match: {match_result}")
-        storage.store_match_result(match_result)
+        storage.store_match_result(match_result, guild)
 
         return {
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,

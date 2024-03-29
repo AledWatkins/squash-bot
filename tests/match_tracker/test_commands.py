@@ -122,7 +122,9 @@ class TestRecordMatchCommand:
                 }
             )
 
-        all_match_results = storage.get_all_match_results()
+        all_match_results = storage.get_all_match_results(
+            guild=core_dataclasses.Guild(guild_id="1")
+        )
         assert len(all_match_results) == 1
 
         match_result = all_match_results[0]

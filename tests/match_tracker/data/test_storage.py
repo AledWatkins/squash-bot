@@ -26,13 +26,14 @@ class TestGetAllMatchResultsAsDict:
             ),
         )
         fake_results = [result.to_dict()]
+        guild = core_dataclasses.Guild(guild_id="1")
         storage_base.LocalStorage().store_file(
             file_path=settings_base.settings.MATCH_RESULTS_PATH,
-            file_name=settings_base.settings.MATCH_RESULTS_FILE,
+            file_name=storage._results_file_name(guild),
             contents=json.dumps(fake_results),
         )
 
-        assert storage.get_all_match_results_as_dict() == [result.to_dict()]
+        assert storage.get_all_match_results_as_dict(guild=guild) == [result.to_dict()]
 
 
 class TestGetAllMatchResults:
@@ -54,10 +55,11 @@ class TestGetAllMatchResults:
             ),
         )
         fake_results = [result.to_dict()]
+        guild = core_dataclasses.Guild(guild_id="1")
         storage_base.LocalStorage().store_file(
             file_path=settings_base.settings.MATCH_RESULTS_PATH,
-            file_name=settings_base.settings.MATCH_RESULTS_FILE,
+            file_name=storage._results_file_name(guild),
             contents=json.dumps(fake_results),
         )
 
-        assert storage.get_all_match_results() == [result]
+        assert storage.get_all_match_results(guild) == [result]
