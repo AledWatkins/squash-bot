@@ -14,6 +14,7 @@ class MatchResult:
     loser: core_dataclasses.User
     played_at: datetime.datetime
     logged_at: datetime.datetime
+    logged_by: core_dataclasses.User
 
     @property
     def played_on(self) -> datetime.date:
@@ -31,6 +32,7 @@ class MatchResult:
             loser=core_dataclasses.User.from_dict(data["loser"]),
             played_at=datetime.datetime.fromisoformat(data["played_at"]),
             logged_at=datetime.datetime.fromisoformat(data["logged_at"]),
+            logged_by=core_dataclasses.User.from_dict(data["logged_by"]),
         )
 
     def to_dict(self) -> dict[str, typing.Any]:
@@ -41,4 +43,5 @@ class MatchResult:
             "loser": core_dataclasses.User.to_dict(self.loser),
             "played_at": self.played_at.isoformat(),
             "logged_at": self.logged_at.isoformat(),
+            "logged_by": core_dataclasses.User.to_dict(self.logged_by),
         }

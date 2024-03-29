@@ -135,4 +135,7 @@ class TestRecordMatchCommand:
             loser=core_dataclasses.User(id="1", global_name="global-user1", username="user1"),
             played_at=mock.ANY,
             logged_at=mock.ANY,
+            logged_by=core_dataclasses.User(
+                id="1", global_name="different-global-name", username="different-name"
+            ),
         )

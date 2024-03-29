@@ -20,6 +20,9 @@ class TestGetAllMatchResultsAsDict:
             ),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="3", username="different-name", global_name="different-global-name"
+            ),
         )
         fake_results = [result.to_dict()]
         storage_base.LocalStorage().store_file(
@@ -44,6 +47,9 @@ class TestGetAllMatchResults:
             ),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="3", username="different-name", global_name="different-global-name"
+            ),
         )
         fake_results = [result.to_dict()]
         storage_base.LocalStorage().store_file(

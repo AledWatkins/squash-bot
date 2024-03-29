@@ -64,6 +64,7 @@ class RecordMatchCommand(_command.Command):
             # We currently don't distinguish between the time the match was played and the time it was logged
             played_at=datetime.datetime.now(),
             logged_at=datetime.datetime.now(),
+            logged_by=user,
         )
 
         logger.info(f"Recording match: {match_result}")

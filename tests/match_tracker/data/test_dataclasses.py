@@ -13,6 +13,9 @@ class TestMatchResult:
             loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="1", username="different-user", global_name="global-different-user"
+            ),
         )
         assert match_result.played_on == datetime.date(2021, 1, 1)
 
@@ -24,6 +27,9 @@ class TestMatchResult:
             loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="1", username="different-user", global_name="global-different-user"
+            ),
         )
         assert str(match_result) == "winner beat loser 11-3 on 2021-01-01"
 
@@ -44,6 +50,11 @@ class TestMatchResult:
                 },
                 "played_at": "2021-01-01T12:00:00",
                 "logged_at": "2021-01-01T12:00:00",
+                "logged_by": {
+                    "id": "1",
+                    "username": "different-user",
+                    "global_name": "global-different-user",
+                },
             }
         )
         assert match_result == dataclasses.MatchResult(
@@ -53,4 +64,7 @@ class TestMatchResult:
             loser=core_dataclasses.User(id="2", username="loser", global_name="global-loser"),
             played_at=datetime.datetime(2021, 1, 1, 12, 0),
             logged_at=datetime.datetime(2021, 1, 1, 12, 0),
+            logged_by=core_dataclasses.User(
+                id="1", username="different-user", global_name="global-different-user"
+            ),
         )
