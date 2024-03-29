@@ -1,7 +1,7 @@
 import pytest
 
 from squash_bot.core import command as _command
-from squash_bot.core.data import user
+from squash_bot.core.data import dataclasses as core_dataclasses
 
 
 class TestParseOptions:
@@ -78,4 +78,4 @@ class TestParseOptions:
                     },
                 }
             }
-        ) == {"user": user.User(id="1", username="name", global_name="global-name")}
+        ) == {"user": core_dataclasses.User(id="1", username="name", global_name="global-name")}

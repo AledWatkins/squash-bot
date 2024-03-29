@@ -1,6 +1,6 @@
 from unittest import mock
 
-from squash_bot.core.data import user
+from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import commands
 from squash_bot.match_tracker.data import dataclasses, storage
 
@@ -105,10 +105,10 @@ class TestRecordMatchCommand:
 
         match_result = all_match_results[0]
         assert match_result == dataclasses.MatchResult(
-            winner=user.User(id="2", global_name="global-user2", username="user2"),
+            winner=core_dataclasses.User(id="2", global_name="global-user2", username="user2"),
             winner_score=11,
             loser_score=3,
-            loser=user.User(id="1", global_name="global-user1", username="user1"),
+            loser=core_dataclasses.User(id="1", global_name="global-user1", username="user1"),
             played_at=mock.ANY,
             logged_at=mock.ANY,
         )

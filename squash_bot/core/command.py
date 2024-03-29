@@ -3,7 +3,7 @@ import typing
 
 import attrs
 
-from squash_bot.core.data import user
+from squash_bot.core.data import dataclasses as core_dataclasses
 
 
 class CommandError(Exception):
@@ -65,7 +65,7 @@ class Command:
 
             if command_option.is_user:
                 user_data = data.get("resolved", {}).get("users", {}).get(option["value"], None)
-                value = user.User(
+                value = core_dataclasses.User(
                     id=user_data["id"],
                     username=user_data["username"],
                     global_name=user_data["global_name"],
