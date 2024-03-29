@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses
@@ -62,6 +63,7 @@ class TestMatchResult:
                     "username": "different-user",
                     "global_name": "global-different-user",
                 },
+                "result_id": "00000000-0000-0000-0000-000000000000",
             }
         )
         assert match_result == dataclasses.MatchResult(
@@ -75,4 +77,5 @@ class TestMatchResult:
             logged_by=core_dataclasses.User(
                 id="1", username="different-user", global_name="global-different-user"
             ),
+            result_id=uuid.UUID("00000000-0000-0000-0000-000000000000"),
         )

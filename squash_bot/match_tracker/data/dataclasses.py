@@ -1,5 +1,6 @@
 import datetime
 import typing
+import uuid
 
 import attrs
 
@@ -16,6 +17,7 @@ class MatchResult:
     played_at: datetime.datetime
     logged_at: datetime.datetime
     logged_by: core_dataclasses.User
+    result_id: uuid.UUID = attrs.Factory(uuid.uuid4)
 
     @property
     def played_on(self) -> datetime.date:
@@ -35,6 +37,7 @@ class MatchResult:
             played_at=datetime.datetime.fromisoformat(data["played_at"]),
             logged_at=datetime.datetime.fromisoformat(data["logged_at"]),
             logged_by=core_dataclasses.User.from_dict(data["logged_by"]),
+            result_id=uuid.UUID(data["result_id"]),
         )
 
     def to_dict(self) -> dict[str, typing.Any]:
@@ -47,4 +50,5 @@ class MatchResult:
             "played_at": self.played_at.isoformat(),
             "logged_at": self.logged_at.isoformat(),
             "logged_by": core_dataclasses.User.to_dict(self.logged_by),
+            "result_id": str(self.result_id),
         }

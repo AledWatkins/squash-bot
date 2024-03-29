@@ -139,4 +139,5 @@ class TestRecordMatchCommand:
             logged_by=core_dataclasses.User(
                 id="1", global_name="different-global-name", username="different-name"
             ),
+            result_id=mock.ANY,
         )
