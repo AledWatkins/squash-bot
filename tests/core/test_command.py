@@ -100,6 +100,8 @@ class TestParseOptions:
             }
         ) == {"user": core_dataclasses.User(id="1", username="name", global_name="global-name")}
 
+
+class TestParseGuild:
     def test_guild(self):
         class TestCommand(_command.Command):
             name = "test-command"
@@ -122,6 +124,8 @@ class TestParseOptions:
             }
         ) == core_dataclasses.Guild(guild_id="1")
 
+
+class TestParseUser:
     def test_user(self):
         class TestCommand(_command.Command):
             name = "test-command"
