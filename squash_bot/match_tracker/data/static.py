@@ -1,4 +1,4 @@
-# A string to describe how the match for a "strength" value to represent how strong the language is on a scale of 1-5.
+# A string to describe how the match ended, with a "strength" value to represent how strong the language is on a scale of 1-5.
 winner_loser_strings = {
     1: [
         "{winner} barely beat {loser}",
