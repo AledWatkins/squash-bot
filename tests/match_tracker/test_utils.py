@@ -12,7 +12,7 @@ class TestCalculateLanguageStrength:
             (9, 2, 3),
             (8, 3, 2),
             (7, 4, 1),
-            (6, 5, 0),
+            (6, 5, 1),
         ],
     )
     def test_calculate(self, winner_score, loser_score, expected):
