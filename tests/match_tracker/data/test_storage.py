@@ -62,4 +62,4 @@ class TestGetAllMatchResults:
             contents=json.dumps(fake_results),
         )
 
-        assert storage.get_all_match_results(guild) == [result]
+        assert storage.get_all_match_results(guild).match_results == [result]

@@ -6,24 +6,21 @@ from squash_bot.settings import base as settings_base
 from squash_bot.storage import base
 
 
-def get_all_match_results_as_dict(guild: core_dataclasses.Guild) -> dict:
+def get_all_match_results_as_dict(guild: core_dataclasses.Guild) -> list:
     file_contents = base.read_file(
         file_path=settings_base.settings.MATCH_RESULTS_PATH,
         file_name=_results_file_name(guild),
         create_if_missing=True,
     )
-    return json.loads(file_contents or "{}")
+    return json.loads(file_contents or "[]")
 
 
-def get_all_match_results(guild: core_dataclasses.Guild) -> list[dataclasses.MatchResult]:
-    return [
-        dataclasses.MatchResult.from_dict(result)
-        for result in get_all_match_results_as_dict(guild=guild)
-    ]
+def get_all_match_results(guild: core_dataclasses.Guild) -> dataclasses.Matches:
+    return dataclasses.Matches.from_match_results(get_all_match_results_as_dict(guild=guild))
 
 
-def convert_match_results_to_dicts(results: list[dataclasses.MatchResult]) -> list[dict]:
-    return [result.to_dict() for result in results]
+def convert_match_results_to_dicts(matches: dataclasses.Matches) -> list[dict]:
+    return [match_result.to_dict() for match_result in matches.match_results]
 
 
 def store_match_result(
@@ -33,7 +30,7 @@ def store_match_result(
     Get the current match results, add the new result, and store the updated list
     """
     all_results = get_all_match_results(guild)
-    all_results.append(match_result)
+    all_results = all_results.add(match_result)
 
     match_results_as_dicts = convert_match_results_to_dicts(all_results)
     base.store_file(

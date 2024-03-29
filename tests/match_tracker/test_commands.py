@@ -86,7 +86,7 @@ class TestRecordMatchCommand:
 
     def test_stores_result(self):
         command = commands.RecordMatchCommand()
-        with mock.patch.object(storage, "get_all_match_results_as_dict", return_value={}):
+        with mock.patch.object(storage, "get_all_match_results_as_dict", return_value=[]):
             command.handle(
                 {
                     "data": {
@@ -124,7 +124,8 @@ class TestRecordMatchCommand:
 
         all_match_results = storage.get_all_match_results(
             guild=core_dataclasses.Guild(guild_id="1")
-        )
+        ).match_results
+
         assert len(all_match_results) == 1
 
         match_result = all_match_results[0]

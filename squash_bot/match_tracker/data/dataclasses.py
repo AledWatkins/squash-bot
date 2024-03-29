@@ -56,9 +56,20 @@ class MatchResult:
 
 @attrs.frozen
 class Matches:
-    matches: list[MatchResult]
+    match_results: list[MatchResult]
+
+    @classmethod
+    def from_match_results(cls, match_results: list[dict[str, typing.Any]]) -> "Matches":
+        return Matches(
+            match_results=[MatchResult.from_dict(match_result) for match_result in match_results]
+        )
+
+    def add(self, match_result: MatchResult) -> "Matches":
+        return Matches(match_results=self.match_results + [match_result])
 
     def sort_by(self, field: str, reverse: bool = False) -> "Matches":
         return Matches(
-            matches=sorted(self.matches, key=lambda x: getattr(x, field), reverse=reverse)
+            match_results=sorted(
+                self.match_results, key=lambda x: getattr(x, field), reverse=reverse
+            )
         )
