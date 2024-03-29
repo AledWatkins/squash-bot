@@ -15,7 +15,7 @@ logger.setLevel(logging.INFO)
 @command_registry.registry.register
 class RecordMatchCommand(_command.Command):
     name = "record-match"
-    description = "Record a match between two players"
+    description = "Record a match between two players. The first player is assumed to have served."
     options = (
         _command.CommandOption(
             name="player-one",
