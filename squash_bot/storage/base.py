@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+client = boto3.client("s3")
+
+
 class FileMissing(Exception):
     """
     Raised when a file is not found
@@ -54,7 +57,7 @@ class S3Storage(StorageBackend):
         return response["Body"].read().decode("utf-8")
 
     def _client(self):
-        return boto3.client("s3")
+        return client
 
 
 def store_file(file_path: str, file_name: str, contents: str) -> None:
