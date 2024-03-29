@@ -6,7 +6,10 @@ class Settings(base.BaseSettings):
     Settings class for localdev and testing
     """
 
-    installed_commands = ("squash_bot.match_tracker.commands",)
+    installed_commands = (
+        "squash_bot.match_tracker.commands",
+        "squash_bot.list_timetable.commands",
+    )
 
     OUTPUTER = "slash_command_register.outputer.PrintOutputer"
     VERIFIER = "squash_bot.core.verify.NoopVerifier"
