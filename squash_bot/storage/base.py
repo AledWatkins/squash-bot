@@ -61,9 +61,18 @@ def store_file(file_path: str, file_name: str, contents: str) -> None:
     get_storage_backend().store_file(file_path, file_name, contents)
 
 
-def read_file(file_path: str, file_name: str) -> str:
+def read_file(file_path: str, file_name: str, create_if_missing: bool = False) -> str:
     logger.info(f"Reading file: {file_path} / {file_name}")
-    return get_storage_backend().read_file(file_path, file_name)
+    storage_backend = get_storage_backend()
+    try:
+        return storage_backend.read_file(file_path, file_name)
+    except FileMissing:
+        if create_if_missing:
+            logger.info("File not found, creating")
+            storage_backend.store_file(file_path, file_name, "")
+            return ""
+        else:
+            raise
 
 
 def get_storage_backend() -> StorageBackend:
