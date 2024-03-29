@@ -26,3 +26,14 @@ class PlayedAtFormatter(Formatter):
                 inner_message += f"\n\t{match}"
 
         return f"```{inner_message}```"
+
+    def _match_string(self, match: dataclasses.MatchResult) -> str:
+        served_marker = "*"
+        if match.served == match.winner:
+            winner_name = f"{match.winner.name}{served_marker}"
+            loser_name = f"{match.loser.name}"
+        else:
+            winner_name = f"{match.winner.name}"
+            loser_name = f"{match.loser.name}{served_marker}"
+
+        return f"{winner_name} {match.winner_score} - {match.loser_score} {loser_name}"
