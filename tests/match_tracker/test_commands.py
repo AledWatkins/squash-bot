@@ -197,5 +197,7 @@ class TestShowMatches:
             )
 
         content = response["data"]["content"]
-        assert str(match_one) in content
-        assert str(match_two) in content
+        assert (
+            content
+            == "```\n\nFriday, 1 January 2021:\n\tPaul* 11 - 3 Paul\n\nSaturday, 2 January 2021:\n\tPaul* 11 - 3 Paul```"
+        )

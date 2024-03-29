@@ -13,10 +13,7 @@ class Formatter(abc.ABC):
 class PlayedAtFormatter(Formatter):
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches) -> str:
-        groups = itertools.groupby(
-            sorted(matches.match_results, key=lambda match: match.played_at),
-            key=lambda match: match.played_at,
-        )
+        groups = itertools.groupby(matches.match_results, key=lambda match: match.played_on)
 
         inner_message = ""
         for played_at, matches in groups:
