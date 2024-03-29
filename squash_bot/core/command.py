@@ -104,4 +104,13 @@ class Command:
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
     ) -> dict[str, typing.Any]:
+        """
+        Should be implemented by subclasses to handle the command.
+
+        :param options: The parsed options, provided as a dictionary keyed by option name
+        :param base_context: The base context provided by the Discord API
+        :param guild: A `Guild` dataclass representing guild the command was executed in
+        :param user: A `User` dataclass representing the user who executed the command
+        :return: A dictionary representing the response to the command
+        """
         raise NotImplementedError
