@@ -25,4 +25,4 @@ def calculate_language_strength(winner_score: int, loser_score: int) -> int:
     """
     max_difference = 11
     difference = winner_score - loser_score
-    return int(((difference / max_difference) * 100) // 20)
+    return max(int(((difference / max_difference) * 100) // 20), 1)
