@@ -10,3 +10,8 @@ class Settings(base.BaseSettings):
 
     OUTPUTER = "slash_command_register.outputer.RequestsOutputer"
     VERIFIER = "squash_bot.core.verify.NACLVerifier"
+    STORAGE_BACKEND = "squash_bot.storage.base.S3Storage"
+
+    # Match tracker settings
+    MATCH_RESULTS_PATH = "squash-bot"
+    MATCH_RESULTS_FILE = "match_tracker/results/match_results.json"
