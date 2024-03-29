@@ -37,6 +37,11 @@ class BaseSettings:
     # Storage backend
     STORAGE_BACKEND: str
 
+    # AWS S3 settings
+    S3_REGION: str = env.str("S3_REGION", default="")
+    AWS_ACCESS_KEY_ID: str = env.str("AWS_ACCESS_KEY_ID", default="")
+    AWS_SECRET_ACCESS_KEY: str = env.str("AWS_SECRET_ACCESS_KEY", default="")
+
     # Match tracker settings
     MATCH_RESULTS_PATH: str = env.str("MATCH_RESULTS_PATH", default="")
     MATCH_RESULTS_FILE: str = env.str("MATCH_RESULTS_FILE", default="")
