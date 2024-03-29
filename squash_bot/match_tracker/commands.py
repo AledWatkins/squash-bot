@@ -47,6 +47,7 @@ class RecordMatchCommand(_command.Command):
         options: dict[str, typing.Any],
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
     ) -> dict[str, typing.Any]:
         loser, winner = sorted(
             [

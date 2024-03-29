@@ -32,7 +32,14 @@ class TestRecordMatchCommand:
                         }
                     },
                     "guild_id": "1",
-                }
+                },
+                "member": {
+                    "user": {
+                        "id": "1",
+                        "username": "different-name",
+                        "global_name": "different-global-name",
+                    }
+                },
             }
         ) == {
             "type": 4,
@@ -65,7 +72,14 @@ class TestRecordMatchCommand:
                         }
                     },
                     "guild_id": "1",
-                }
+                },
+                "member": {
+                    "user": {
+                        "id": "1",
+                        "username": "different-name",
+                        "global_name": "different-global-name",
+                    }
+                },
             }
         ) == {
             "type": 4,
@@ -99,7 +113,14 @@ class TestRecordMatchCommand:
                             }
                         },
                         "guild_id": "1",
-                    }
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
                 }
             )
 

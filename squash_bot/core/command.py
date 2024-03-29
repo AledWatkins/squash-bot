@@ -81,15 +81,27 @@ class Command:
         guild_id = base_context["data"]["guild_id"]
         return core_dataclasses.Guild(guild_id=guild_id)
 
+    def parse_user(self, base_context: dict[str, typing.Any]) -> core_dataclasses.User:
+        user_data = base_context["member"]["user"]
+        return core_dataclasses.User(
+            id=user_data["id"],
+            username=user_data["username"],
+            global_name=user_data["global_name"],
+        )
+
     def handle(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
         command_options = self.parse_options(base_context)
         guild = self.parse_guild(base_context)
-        return self._handle(options=command_options, base_context=base_context, guild=guild)
+        user = self.parse_user(base_context)
+        return self._handle(
+            options=command_options, base_context=base_context, guild=guild, user=user
+        )
 
     def _handle(
         self,
         options: dict[str, typing.Any],
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
     ) -> dict[str, typing.Any]:
         raise NotImplementedError
