@@ -146,7 +146,7 @@ class LeagueTableCommand(_command.Command):
         matches = queries.get_matches(guild)
 
         if from_date_string := options.get("include-matches-from"):
-            from_date = datetime.datetime.fromisoformat(from_date_string)
+            from_date = datetime.date.fromisoformat(from_date_string)
             matches = matches.from_date(from_date)
 
         if matches:
