@@ -199,5 +199,5 @@ class TestShowMatches:
         content = response["data"]["content"]
         assert (
             content
-            == "```\n\nFriday, 1 January 2021:\n\tPaul* 11 - 3 Paul\n\nSaturday, 2 January 2021:\n\tPaul* 11 - 3 Paul```"
+            == "```\n\nFriday, 1 January 2021:\n\tPaul*\t11 - 3\tPaul\n\nSaturday, 2 January 2021:\n\tPaul*\t11 - 3\tPaul```"
         )
