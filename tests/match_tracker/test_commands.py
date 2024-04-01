@@ -201,3 +201,62 @@ class TestShowMatches:
             content
             == "```\n\nFriday, 1 January 2021:\n\tPaul*\t11 - 3\tPaul\n\nSaturday, 2 January 2021:\n\tPaul*\t11 - 3\tPaul```"
         )
+
+
+class TestLeagueTable:
+    def test_league_table_with_no_matches(self):
+        command = commands.LeagueTableCommand()
+        with mock.patch.object(storage, "get_all_match_results_as_list", return_value=[]):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            )
+
+        assert "No matches have been recorded" in response["data"]["content"]
+
+    def test_league_table_with_matches(self):
+        user_one = core_dataclasses.User(id="1", username="user1", global_name="global-user1")
+        user_two = core_dataclasses.User(id="2", username="user2", global_name="global-user2")
+
+        match_one = match_tracker_factories.MatchResultFactory(
+            winner=user_one, winner_score=11, loser=user_two, loser_score=5
+        )
+        match_two = match_tracker_factories.MatchResultFactory(
+            winner=user_two, loser=user_one, winner_score=13, loser_score=11
+        )
+
+        matches = dataclasses.Matches(match_results=[match_one, match_two])
+
+        command = commands.LeagueTableCommand()
+        with mock.patch.object(queries, "get_matches", return_value=matches):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            )
+
+        assert (
+            response["data"]["content"]
+            == "```Player\tWins\tLosses\tPoint Difference\n\nglobal-user1\t1\t1\t4\nglobal-user2\t1\t1\t-4```"
+        )

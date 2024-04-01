@@ -85,3 +85,12 @@ class Matches:
             )
         except AttributeError as e:
             raise FieldDoesNotExist(field) from e
+
+    def from_date(self, from_date: datetime.date) -> "Matches":
+        return Matches(
+            match_results=[
+                match_result
+                for match_result in self.match_results
+                if match_result.played_on >= from_date
+            ]
+        )
