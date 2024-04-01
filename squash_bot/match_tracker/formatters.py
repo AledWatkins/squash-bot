@@ -2,6 +2,8 @@ import abc
 import collections
 import itertools
 
+import tabulate
+
 from squash_bot.match_tracker.data import dataclasses
 
 
@@ -45,14 +47,22 @@ class LeagueTable(Formatter):
                 player_results[match.loser].get("point_difference", 0) - point_difference
             )
 
-        inner_message = ""
+        player_rows = []
         for player, results in player_results.items():
             wins = results.get("wins", 0)
             losses = results.get("losses", 0)
-            point_difference = results.get("point_difference", 0)
-            inner_message += f"\n{player.name}\t{wins}\t{losses}\t{point_difference}"
 
-        return f"```Player\tWins\tLosses\tPoint Difference\n{inner_message}```"
+            point_difference = results.get("point_difference", 0)
+            point_difference_sign = "+" if point_difference > 0 else ""
+            point_difference_str = f"{point_difference_sign}{point_difference}"
+
+            player_rows.append([player.name, wins, losses, point_difference_str])
+
+        inner_message = tabulate.tabulate(
+            player_rows, ["Player", "Wins", "Losses", "PD"], tablefmt="rounded_grid"
+        )
+
+        return f"```{inner_message}```"
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
