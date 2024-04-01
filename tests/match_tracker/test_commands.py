@@ -256,10 +256,9 @@ class TestLeagueTable:
                 }
             )
 
-        assert (
-            response["data"]["content"]
-            == "```Player\tWins\tLosses\tPoint Difference\n\nglobal-user1\t1\t1\t4\nglobal-user2\t1\t1\t-4```"
-        )
+        content = response["data"]["content"]
+        assert "global-user1 │      1 │        1 │   +4" in content
+        assert "global-user2 │      1 │        1 │   -4" in content
 
     def test_league_table_with_datetime_filter(self):
         user_one = core_dataclasses.User(id="1", username="user1", global_name="global-user1")
@@ -300,7 +299,6 @@ class TestLeagueTable:
                 }
             )
 
-        assert (
-            response["data"]["content"]
-            == "```Player\tWins\tLosses\tPoint Difference\n\nglobal-user2\t1\t0\t2\nglobal-user1\t0\t1\t-2```"
-        )
+        content = response["data"]["content"]
+        assert "global-user2 │      1 │        0 │   +2" in content
+        assert "global-user1 │      0 │        1 │   -2" in content
