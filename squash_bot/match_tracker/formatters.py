@@ -35,4 +35,4 @@ def _match_string(match: dataclasses.MatchResult) -> str:
         winner_name = f"{match.winner.name}"
         loser_name = f"{match.loser.name}{served_marker}"
 
-    return f"{winner_name} {match.winner_score} - {match.loser_score} {loser_name}"
+    return f"{winner_name}\t{match.winner_score} - {match.loser_score}\t{loser_name}"
