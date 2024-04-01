@@ -260,3 +260,47 @@ class TestLeagueTable:
             response["data"]["content"]
             == "```Player\tWins\tLosses\tPoint Difference\n\nglobal-user1\t1\t1\t4\nglobal-user2\t1\t1\t-4```"
         )
+
+    def test_league_table_with_datetime_filter(self):
+        user_one = core_dataclasses.User(id="1", username="user1", global_name="global-user1")
+        user_two = core_dataclasses.User(id="2", username="user2", global_name="global-user2")
+
+        match_one = match_tracker_factories.MatchResultFactory(
+            winner=user_one,
+            winner_score=11,
+            loser=user_two,
+            loser_score=5,
+            played_at=datetime.datetime(2021, 1, 1, 12, 0),
+        )
+        match_two = match_tracker_factories.MatchResultFactory(
+            winner=user_two,
+            loser=user_one,
+            winner_score=13,
+            loser_score=11,
+            played_at=datetime.datetime(2021, 2, 1, 12, 0),
+        )
+
+        matches = dataclasses.Matches(match_results=[match_one, match_two])
+
+        command = commands.LeagueTableCommand()
+        with mock.patch.object(queries, "get_matches", return_value=matches):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [{"name": "include-matches-from", "value": "2021-01-02"}],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            )
+
+        assert (
+            response["data"]["content"]
+            == "```Player\tWins\tLosses\tPoint Difference\n\nglobal-user2\t1\t0\t2\nglobal-user1\t0\t1\t-2```"
+        )
