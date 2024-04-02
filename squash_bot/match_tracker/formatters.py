@@ -10,23 +10,19 @@ from squash_bot.match_tracker.data import dataclasses
 class Formatter(abc.ABC):
     @classmethod
     @abc.abstractmethod
-    def format_matches(cls, matches: dataclasses.Matches) -> str: ...
+    def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str: ...
 
 
 class BasicFormatter(Formatter):
     @classmethod
-    def format_matches(cls, matches: dataclasses.Matches) -> str:
-        inner_message = ""
-        for match in matches.match_results:
-            match_string = _match_string(match)
-            inner_message += f"\n{match_string}"
-
+    def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
+        inner_message = "\n".join(_match_string(match) for match in matches.match_results)
         return f"```{inner_message}```"
 
 
 class PlayedAtFormatter(Formatter):
     @classmethod
-    def format_matches(cls, matches: dataclasses.Matches) -> str:
+    def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
         groups = itertools.groupby(matches.match_results, key=lambda match: match.played_on)
 
         inner_message = ""
@@ -42,7 +38,7 @@ class PlayedAtFormatter(Formatter):
 
 class LeagueTable(Formatter):
     @classmethod
-    def format_matches(cls, matches: dataclasses.Matches) -> str:
+    def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
         player_results = collections.defaultdict(dict)
         for match in matches.match_results:
             player_results[match.winner]["wins"] = player_results[match.winner].get("wins", 0) + 1
