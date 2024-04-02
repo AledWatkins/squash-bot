@@ -13,6 +13,17 @@ class Formatter(abc.ABC):
     def format_matches(cls, matches: dataclasses.Matches) -> str: ...
 
 
+class BasicFormatter(Formatter):
+    @classmethod
+    def format_matches(cls, matches: dataclasses.Matches) -> str:
+        inner_message = ""
+        for match in matches.match_results:
+            match_string = _match_string(match)
+            inner_message += f"\n{match_string}"
+
+        return f"```{inner_message}```"
+
+
 class PlayedAtFormatter(Formatter):
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches) -> str:
