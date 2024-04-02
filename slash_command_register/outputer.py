@@ -14,9 +14,10 @@ class Outputer:
 
 class PrintOutputer(Outputer):
     def send(self, data: dict[str, typing.Any]) -> None:
-        logger.info(f"Outputer: {data}")
+        print(data)  # noqa: T201
 
 
 class RequestsOutputer(Outputer):
     def send(self, data: dict[str, typing.Any]) -> None:
-        requests.put(data["url"], headers=data["headers"], json=data["json"])
+        response = requests.put(data["url"], headers=data["headers"], json=data["json"])
+        print(response.status_code)  # noqa: T201
