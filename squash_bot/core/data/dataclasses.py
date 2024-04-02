@@ -4,8 +4,8 @@ import attrs
 @attrs.frozen
 class User:
     id: str
-    username: str
-    global_name: str
+    username: str = attrs.field(eq=False)
+    global_name: str = attrs.field(eq=False)
 
     @property
     def name(self) -> str:
