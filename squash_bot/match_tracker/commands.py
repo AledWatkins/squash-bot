@@ -5,7 +5,7 @@ import typing
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
 from squash_bot.core.data import dataclasses as core_dataclasses
-from squash_bot.match_tracker import formatters, queries, utils, validate
+from squash_bot.match_tracker import filterers, formatters, orderers, queries, utils, validate
 from squash_bot.match_tracker.data import dataclasses, storage
 
 logger = logging.getLogger(__name__)
@@ -80,6 +80,36 @@ class RecordMatchCommand(_command.Command):
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             "data": {
                 "content": utils.build_match_string(match_result),
+            },
+        }
+
+
+class FilterOrderFormatMatchesMixin:
+    filterer: type[filterers.Filterer] = filterers.NoopFilterer
+    orderer: type[orderers.Orderer] = orderers.NoopOrderer
+    formatter: type[formatters.Formatter] = formatters.BasicFormatter
+
+    def _handle(
+        self,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
+    ) -> dict[str, typing.Any]:
+        matches = queries.get_matches(guild)
+
+        filtered_matches = self.filterer.filter(matches, **options)
+        ordered_matches = self.orderer.order(filtered_matches, **options)
+
+        if ordered_matches:
+            content = self.formatter.format_matches(ordered_matches, **options)
+        else:
+            content = "No matches have been recorded."
+
+        return {
+            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
+            "data": {
+                "content": content,
             },
         }
 
