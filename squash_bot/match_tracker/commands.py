@@ -130,7 +130,7 @@ class LeagueTableCommand(_command.Command):
     options = (
         _command.CommandOption(
             name="include-matches-from",
-            description="Only include matches played after this date. Defaults to all time.",
+            description="Only include matches played on or after this date. Defaults to all time.",
             type=_command.CommandOptionType.STRING,
             required=False,
         ),
