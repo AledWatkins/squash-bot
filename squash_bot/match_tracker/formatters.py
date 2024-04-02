@@ -39,27 +39,15 @@ class LeagueTable(Formatter):
                 player_results[match.loser].get("losses", 0) + 1
             )
 
-            point_difference = match.winner_score - match.loser_score
-            player_results[match.winner]["point_difference"] = (
-                player_results[match.winner].get("point_difference", 0) + point_difference
-            )
-            player_results[match.loser]["point_difference"] = (
-                player_results[match.loser].get("point_difference", 0) - point_difference
-            )
-
         player_rows = []
         for player, results in player_results.items():
             wins = results.get("wins", 0)
             losses = results.get("losses", 0)
 
-            point_difference = results.get("point_difference", 0)
-            point_difference_sign = "+" if point_difference > 0 else ""
-            point_difference_str = f"{point_difference_sign}{point_difference}"
-
-            player_rows.append([player.name, wins, losses, point_difference_str])
+            player_rows.append([player.name, wins, losses])
 
         inner_message = tabulate.tabulate(
-            player_rows, ["Player", "Wins", "Losses", "PD"], tablefmt="rounded_grid"
+            player_rows, ["Player", "Wins", "Losses"], tablefmt="rounded_grid"
         )
 
         return f"```{inner_message}```"

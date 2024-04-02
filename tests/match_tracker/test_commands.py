@@ -257,8 +257,8 @@ class TestLeagueTable:
             )
 
         content = response["data"]["content"]
-        assert "global-user1 │      1 │        1 │   +4" in content
-        assert "global-user2 │      1 │        1 │   -4" in content
+        assert "global-user1 │      1 │        1" in content
+        assert "global-user2 │      1 │  " in content
 
     def test_league_table_with_datetime_filter(self):
         user_one = core_dataclasses.User(id="1", username="user1", global_name="global-user1")
@@ -300,5 +300,5 @@ class TestLeagueTable:
             )
 
         content = response["data"]["content"]
-        assert "global-user2 │      1 │        0 │   +2" in content
-        assert "global-user1 │      0 │        1 │   -2" in content
+        assert "global-user2 │      1 │        0" in content
+        assert "global-user1 │      0 │        1" in content
