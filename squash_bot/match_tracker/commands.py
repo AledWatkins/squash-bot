@@ -154,7 +154,7 @@ class ShowMatchesCommand(_command.Command):
 
 
 @command_registry.registry.register
-class LeagueTableCommand(_command.Command):
+class LeagueTableCommand(FilterOrderFormatMatchesMixin, _command.Command):
     name = "league-table"
     description = "Show league table."
     options = (
@@ -166,27 +166,5 @@ class LeagueTableCommand(_command.Command):
         ),
     )
 
-    def _handle(
-        self,
-        options: dict[str, typing.Any],
-        base_context: dict[str, typing.Any],
-        guild: core_dataclasses.Guild,
-        user: core_dataclasses.User,
-    ) -> dict[str, typing.Any]:
-        matches = queries.get_matches(guild)
-
-        if from_date_string := options.get("include-matches-from"):
-            from_date = datetime.date.fromisoformat(from_date_string)
-            matches = matches.from_date(from_date)
-
-        if matches:
-            content = formatters.LeagueTable.format_matches(matches)
-        else:
-            content = "No matches have been recorded."
-
-        return {
-            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
-            "data": {
-                "content": content,
-            },
-        }
+    filterer = filterers.OptionalFromDateFilterer
+    formatter = formatters.LeagueTable
