@@ -3,6 +3,7 @@ import json
 import logging
 import typing
 
+from squash_bot.core import command as _command
 from squash_bot.core import command_registry, response, verify
 from squash_bot.settings import base as settings_base
 
@@ -77,7 +78,17 @@ def command_handler(body: dict[str, typing.Any]) -> response.Response:
             body_data="Unknown command",
         )
     logger.info(f"Handling command {command_name}")
-    command_response_data = command.handle(body)
+    try:
+        command_response_data = command.handle(body)
+    except _command.CommandVerificationError as e:
+        return response.Response(
+            status_code=500,
+            body_data=str(e),
+        )
+    except _command.CommandError as e:
+        logger.error(f"Error handling command {command_name}: {e}")
+        raise e
+
     return response.Response(
         status_code=200,
         body_data=command_response_data,
