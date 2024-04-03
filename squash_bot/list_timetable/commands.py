@@ -81,8 +81,14 @@ class ListTimetableCommand(_command.Command):
 
         # return early if no available sessions
         if not filtered_timetable_sessions:
+            message = "No available sessions"
+            if days == 1:
+                message += f" on {from_date_str}"
+            else:
+                message += f" between {from_date_str} and {to_date_str}"
+
             return {
-                "content": f"No available sessions between {from_date_str} and {to_date_str}",
+                "content": message,
                 "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             }
 

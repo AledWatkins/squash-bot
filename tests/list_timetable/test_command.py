@@ -125,6 +125,6 @@ class TestCommand:
                 )
 
         assert response == {
-            "content": "No available sessions between 25-03 and 26-03",
+            "content": "No available sessions on 25-03",
             "type": 4,
         }
