@@ -34,8 +34,8 @@ class ListTimetableCommand(_command.Command):
             description="The specified time of day to filter specific squash sessions. Default = Any",
             type=_command.CommandOptionType.STRING,
             default=timetable.TimeOfDayType.ANY.value,
-            required=False
-        )
+            required=False,
+        ),
     )
     _timetable = timetable.CelticLeisureTimetable()
 

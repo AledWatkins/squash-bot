@@ -56,22 +56,18 @@ class Timetable(abc.ABC):
         if len(sessions) == 0 or time_of_day is TimeOfDayType.ANY:
             return sessions
 
-        filtered_sessions = []
-        for session in sessions:
-            if (
-                show_unavailable_slots
-                or session.available_slots > 0
-                and any(
-                    (
-                        time_of_day is TimeOfDayType.MORNING and session.start_datetime.hour < 12,
-                        time_of_day is TimeOfDayType.AFTERNOON
-                        and 12 <= session.start_datetime.hour < 17,
-                        time_of_day is TimeOfDayType.EVENING and session.start_datetime.hour >= 17,
-                    )
-                )
-            ):
-                filtered_sessions.append(session)
-        return filtered_sessions
+        target_hours = {
+            TimeOfDayType.MORNING: range(0, 12),
+            TimeOfDayType.AFTERNOON: range(12, 17),
+            TimeOfDayType.EVENING: range(17, 24),
+        }[time_of_day]
+
+        return [
+            session
+            for session in sessions
+            if (show_unavailable_slots or session.available_slots > 0)
+            and session.start_datetime.hour in target_hours
+        ]
 
 
 class CelticLeisureTimetable(Timetable):
