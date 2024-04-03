@@ -1,39 +1,43 @@
 import json
-from unittest import mock
-
 import responses
-
-from squash_bot.list_timetable import commands
+import datetime
+import time_machine
 
 from tests import utils
+
+from squash_bot.list_timetable import commands, timetable
+
+TEST_DATETIME = datetime.datetime(2024, 3, 25, 12)
 
 
 class TestCommand:
     def test_list_timetable(self):
         api_url = "https://foo.com"
+        api_endpoint = timetable.CelticLeisureTimetable._API_TIMETABLE_ENDPOINT
         with responses.RequestsMock() as requests:
             requests.post(
-                url=f"{api_url}/enterprise/Timetable/GetClassTimeTable",
+                url=f"{api_url}/{api_endpoint}",
                 status=200,
                 json=json.load(
                     open(utils.fixture_path("example-list-timetable-api-response.json"))
                 ),
             )
             command = commands.ListTimetableCommand()
-            with mock.patch.object(command, "_api_url", return_value=api_url):
+            command._timetable._API_URL = api_url
+            with time_machine.travel(TEST_DATETIME):
                 response = command.handle(
                     {
                         "data": {
                             "options": [
                                 {
-                                    "type": 3,
-                                    "name": "from-date",
-                                    "value": "2024-03-24T18:00:00+00:00",
+                                    "type": 4,
+                                    "name": "days",
+                                    "value": "1",
                                 },
                                 {
                                     "type": 3,
-                                    "name": "to-date",
-                                    "value": "2024-03-24T21:45:00+00:00",
+                                    "name": "time-of-day",
+                                    "value": "Any",
                                 },
                             ],
                             "resolved": {
@@ -63,33 +67,35 @@ class TestCommand:
                 )
 
         assert response == {
-            "content": f"2024-03-24T18:00:00+00:00 - 2024-03-24T21:45:00+00:00:\n* [2024-03-25T21:00:00]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
+            "content": f"Any slots (25-03):\n* [25-03 21:00: 2 slots available]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
             "type": 4,
         }
 
     def test_no_available_sessions(self):
         api_url = "https://foo.com"
+        api_endpoint = timetable.CelticLeisureTimetable._API_TIMETABLE_ENDPOINT
         with responses.RequestsMock() as requests:
             requests.post(
-                url=f"{api_url}/enterprise/Timetable/GetClassTimeTable",
+                url=f"{api_url}/{api_endpoint}",
                 status=200,
                 json={"Results": []},
             )
             command = commands.ListTimetableCommand()
-            with mock.patch.object(command, "_api_url", return_value=api_url):
+            command._timetable._API_URL = api_url
+            with time_machine.travel(TEST_DATETIME):
                 response = command.handle(
                     {
                         "data": {
                             "options": [
                                 {
-                                    "type": 3,
-                                    "name": "from-date",
-                                    "value": "2024-03-24T18:00:00+00:00",
+                                    "type": 4,
+                                    "name": "days",
+                                    "value": "1",
                                 },
                                 {
                                     "type": 3,
-                                    "name": "to-date",
-                                    "value": "2024-03-24T21:45:00+00:00",
+                                    "name": "time-of-day",
+                                    "value": "Any",
                                 },
                             ],
                             "resolved": {
@@ -119,6 +125,6 @@ class TestCommand:
                 )
 
         assert response == {
-            "content": "No available sessions between 2024-03-24T18:00:00+00:00 and 2024-03-24T21:45:00+00:00",
+            "content": "No available sessions between 25-03 and 26-03",
             "type": 4,
         }
