@@ -1,32 +1,43 @@
+import datetime
+import enum
 import typing
-from urllib.parse import urljoin
 
-import requests
+from . import timetable
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
+from squash_bot.core.command import CommandVerificationError
 from squash_bot.core.data import dataclasses as core_dataclasses
-from squash_bot.settings import base as settings_base
+
+
+DISCORD_COMMAND_DATETIME_FORMAT = "%d-%m"
+
+
+class ListTimetableOptionType(enum.Enum):
+    DAYS = "days"
+    TIME_OF_DAY = "time-of-day"
 
 
 @command_registry.registry.register
 class ListTimetableCommand(_command.Command):
     name = "list-timetable"
-    description = "List the timetable between two datetimes "
+    description = "Get a list of squash timetable sessions for the coming days"
     options = (
         _command.CommandOption(
-            name="from-date",
-            description="Datetime string in the format YYYY-MM-DDTHH:mm:ss+00:00",
-            type=_command.CommandOptionType.STRING,
+            name=ListTimetableOptionType.DAYS.value,
+            description="The amount of days to check for squash sessions",
+            type=_command.CommandOptionType.INTEGER,
             required=True,
         ),
         _command.CommandOption(
-            name="to-date",
-            description="Datetime string in the format YYYY-MM-DDTHH:mm:ss+00:00",
+            name=ListTimetableOptionType.TIME_OF_DAY.value,
+            description="The specified time of day to filter specific squash sessions. Default = Any",
             type=_command.CommandOptionType.STRING,
-            required=True,
-        ),
+            default=timetable.TimeOfDayType.ANY.value,
+            required=False
+        )
     )
+    _timetable = timetable.CelticLeisureTimetable()
 
     def _handle(
         self,
@@ -35,48 +46,65 @@ class ListTimetableCommand(_command.Command):
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
     ) -> dict[str, typing.Any]:
-        from_date = options["from-date"]
-        to_date = options["to-date"]
-        timetable = self._get_timetable(from_date, to_date)
+        # From today's date
+        from_date = datetime.datetime.now()
 
-        message = f"{from_date} - {to_date}:\n"
-        available_sessions = []
-
-        for result in timetable["Results"]:
-            if result["AvailableSlots"] <= 0:
-                continue
-            available_sessions.append(
-                f"* [{result['start']}]({self._booking_link(result['ResourceScheduleId'])})"
+        # Check days is valid
+        try:
+            days = int(options["days"])
+        except ValueError:
+            raise CommandVerificationError(
+                f"Don't be daft now.. {options['days']} must be an integer"
             )
 
-        if not available_sessions:
+        if days < 1:
+            raise CommandVerificationError(f"Don't be daft now.. {days} must be > 0")
+
+        # Check time of day - as it is not required (or could be invalid), default to ANY
+        try:
+            time_of_day = timetable.TimeOfDayType[
+                options[ListTimetableOptionType.TIME_OF_DAY.value].upper()
+            ]
+        except KeyError:
+            raise CommandVerificationError(f"Invalid time of day")
+
+        to_date = from_date + datetime.timedelta(days=days)
+
+        from_date_str = from_date.strftime(DISCORD_COMMAND_DATETIME_FORMAT)
+        to_date_str = to_date.strftime(DISCORD_COMMAND_DATETIME_FORMAT)
+
+        # Get the available sessions
+        timetable_sessions = self._timetable.get_sessions(from_date, to_date)
+        filtered_timetable_sessions = self._timetable.filter_sessions(
+            timetable_sessions, time_of_day, False
+        )
+
+        # return early if no available sessions
+        if not filtered_timetable_sessions:
             return {
-                "content": f"No available sessions between {from_date} and {to_date}",
+                "content": f"No available sessions between {from_date_str} and {to_date_str}",
                 "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             }
 
-        message += "\n".join(available_sessions)
+        # Store the time period (default is 'from_date' if only 1 day requested) for the response message header
+        time_period_str = from_date_str
+        if days > 1:
+            time_period_str += f" - {to_date_str}"
+
         return {
-            "content": message,
+            "content": self._get_response_message(
+                filtered_timetable_sessions, f"{time_of_day.value} slots ({time_period_str})"
+            ),
             "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
         }
 
-    def _get_timetable(self, from_date: str, to_date: str) -> dict[str, typing.Any]:
-        return requests.post(
-            urljoin(self._api_url(), "enterprise/Timetable/GetClassTimeTable"),
-            json={
-                "ResourceSubTypeIdList": settings_base.settings.ACTIVITY_ID,
-                "FacilityLocationIdList": settings_base.settings.LOCATION_ID,
-                "DateFrom": from_date,
-                "DateTo": to_date,
-            },
-        ).json()
-
-    def _api_url(self) -> str:
-        return settings_base.settings.API_URL
-
-    def _booking_link(self, schedule_id: int) -> str:
-        return urljoin(
-            self._api_url(),
-            f"enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId={schedule_id}",
+    def _get_response_message(
+        self, sessions: list[timetable.TimetableSession], header: str
+    ) -> str:
+        message = f"{header}:\n"
+        message += "\n".join(
+            f"* [{session}]({self._timetable.get_booking_link(session.schedule_id)})"
+            for session in sessions
         )
+
+        return message
