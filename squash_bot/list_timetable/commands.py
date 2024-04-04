@@ -3,7 +3,7 @@ import enum
 import typing
 
 from squash_bot.core import command as _command
-from squash_bot.core import command_registry, lambda_function
+from squash_bot.core import command_registry, response_message
 from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 
@@ -94,7 +94,7 @@ class ListTimetableCommand(_command.Command):
 
             return {
                 "content": message,
-                "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
+                "type": response_message.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
             }
 
         # Store the time period (default is 'from_date' if only 1 day requested) for the response message header
@@ -106,7 +106,7 @@ class ListTimetableCommand(_command.Command):
             "content": self._get_response_message(
                 filtered_timetable_sessions, f"{time_of_day.value} slots ({time_period_str})"
             ),
-            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
+            "type": response_message.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
         }
 
     def _get_response_message(
