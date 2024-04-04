@@ -2,6 +2,7 @@ import typing
 
 import attrs
 
+from squash_bot.core import response_message
 from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 
@@ -103,7 +104,7 @@ class Command:
             global_name=user_data["global_name"],
         )
 
-    def handle(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
+    def handle(self, base_context: dict[str, typing.Any]) -> response_message.ResponseBody:
         command_options = self.parse_options(base_context)
         guild = self.parse_guild(base_context)
         user = self.parse_user(base_context)
@@ -117,7 +118,7 @@ class Command:
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
-    ) -> dict[str, typing.Any]:
+    ) -> response_message.ResponseBody:
         """
         Should be implemented by subclasses to handle the command.
 

@@ -44,7 +44,8 @@ class TestRecordMatchCommand:
                     }
                 },
             }
-        )
+        ).as_dict()
+
         assert "global1" in response["data"]["content"]
         assert "global2" in response["data"]["content"]
 
@@ -83,7 +84,8 @@ class TestRecordMatchCommand:
                     }
                 },
             }
-        )
+        ).as_dict()
+
         assert "user1" in response["data"]["content"]
         assert "user2" in response["data"]["content"]
 
@@ -123,7 +125,7 @@ class TestRecordMatchCommand:
                         }
                     },
                 }
-            )
+            ).as_dict()
 
         all_match_results = storage.get_all_match_results(
             guild=core_dataclasses.Guild(guild_id="1")
@@ -165,7 +167,7 @@ class TestShowMatches:
                         }
                     },
                 }
-            )
+            ).as_dict()
 
         assert "No matches have been recorded" in response["data"]["content"]
 
@@ -194,7 +196,7 @@ class TestShowMatches:
                         }
                     },
                 }
-            )
+            ).as_dict()
 
         content = response["data"]["content"]
         assert (
@@ -221,7 +223,7 @@ class TestLeagueTable:
                         }
                     },
                 }
-            )
+            ).as_dict()
 
         assert "No matches have been recorded" in response["data"]["content"]
 
@@ -254,7 +256,7 @@ class TestLeagueTable:
                         }
                     },
                 }
-            )
+            ).as_dict()
 
         content = response["data"]["content"]
         table_data = _extract_data_from_table_string(content)
@@ -298,7 +300,7 @@ class TestLeagueTable:
                         }
                     },
                 }
-            )
+            ).as_dict()
 
         content = response["data"]["content"]
         table_data = _extract_data_from_table_string(content)

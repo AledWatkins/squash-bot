@@ -65,11 +65,13 @@ class TestCommand:
                             }
                         },
                     }
-                )
+                ).as_dict()
 
         assert response == {
-            "content": f"Any slots (25-03):\n* [25-03 21:00: 2 slots available]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
             "type": 4,
+            "data": {
+                "content": f"Any slots (25-03):\n* [25-03 21:00: 2 slots available]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
+            }
         }
 
     def test_no_available_sessions(self):
@@ -123,9 +125,11 @@ class TestCommand:
                             }
                         },
                     }
-                )
+                ).as_dict()
 
         assert response == {
-            "content": "No available sessions on 25-03",
             "type": 4,
+            "data": {
+                "content": "No available sessions on 25-03",
+            }
         }
