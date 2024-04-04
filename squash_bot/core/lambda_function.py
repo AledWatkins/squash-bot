@@ -4,7 +4,7 @@ import logging
 import typing
 
 from squash_bot.core import command as _command
-from squash_bot.core import command_registry, response, verify
+from squash_bot.core import command_registry, response, response_message, verify
 from squash_bot.settings import base as settings_base
 
 logger = logging.getLogger()
@@ -19,11 +19,6 @@ class InteractionTypeEnum(enum.Enum):
     @classmethod
     def _missing_(cls, value) -> "InteractionTypeEnum":
         return cls.UNKNOWN
-
-
-class InteractionResponseType(enum.Enum):
-    PONG = 1
-    CHANNEL_MESSAGE_WITH_SOURCE = 4
 
 
 def lambda_handler(
@@ -63,7 +58,7 @@ def ping_handler(body: dict[str, typing.Any]) -> response.Response:
     logger.info("Handling ping")
     return response.Response(
         status_code=200,
-        body_data={"type": InteractionResponseType.PONG.value},
+        body_data={"type": response_message.InteractionResponseType.PONG.value},
     )
 
 
@@ -79,7 +74,7 @@ def command_handler(body: dict[str, typing.Any]) -> response.Response:
         )
     logger.info(f"Handling command {command_name}")
     try:
-        command_response_data = command.handle(body)
+        command_response_data = command.handle(body).as_dict()
     except _command.CommandVerificationError as e:
         return response.Response(
             status_code=500,
