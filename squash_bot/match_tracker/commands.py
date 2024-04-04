@@ -3,8 +3,8 @@ import logging
 import typing
 
 from squash_bot.core import command as _command
-from squash_bot.core import command_registry, lambda_function
 from squash_bot.core.data import constants as core_constants
+from squash_bot.core import command_registry, response_message
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import filterers, formatters, orderers, queries, utils, validate
 from squash_bot.match_tracker.data import dataclasses, storage
@@ -77,12 +77,7 @@ class RecordMatchCommand(_command.Command):
         logger.info(f"Recording match: {match_result}")
         storage.store_match_result(match_result, guild)
 
-        return {
-            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
-            "data": {
-                "content": utils.build_match_string(match_result),
-            },
-        }
+        return response_message.ChannelMessageResponseBody(utils.build_match_string(match_result)).as_dict()
 
 
 class FilterOrderFormatMatchesMixin:
@@ -107,12 +102,7 @@ class FilterOrderFormatMatchesMixin:
         else:
             content = "No matches have been recorded."
 
-        return {
-            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
-            "data": {
-                "content": content,
-            },
-        }
+        return response_message.ChannelMessageResponseBody(content).as_dict()
 
 
 @command_registry.registry.register
@@ -146,12 +136,7 @@ class ShowMatchesCommand(_command.Command):
         else:
             content = "No matches have been recorded."
 
-        return {
-            "type": lambda_function.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
-            "data": {
-                "content": content,
-            },
-        }
+        return response_message.ChannelMessageResponseBody(content).as_dict()
 
 
 @command_registry.registry.register
