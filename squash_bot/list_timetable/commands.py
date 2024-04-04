@@ -92,22 +92,18 @@ class ListTimetableCommand(_command.Command):
             else:
                 message += f" between {from_date_str} and {to_date_str}"
 
-            return {
-                "content": message,
-                "type": response_message.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
-            }
+            return response_message.ChannelMessageResponseBody(message).as_dict()
 
         # Store the time period (default is 'from_date' if only 1 day requested) for the response message header
         time_period_str = from_date_str
         if days > 1:
             time_period_str += f" - {to_date_str}"
 
-        return {
-            "content": self._get_response_message(
+        return response_message.ChannelMessageResponseBody(
+            self._get_response_message(
                 filtered_timetable_sessions, f"{time_of_day.value} slots ({time_period_str})"
-            ),
-            "type": response_message.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE.value,
-        }
+            )
+        ).as_dict()
 
     def _get_response_message(
         self, sessions: list[timetable.TimetableSession], header: str
