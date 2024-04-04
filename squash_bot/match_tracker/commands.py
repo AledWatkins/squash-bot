@@ -50,7 +50,7 @@ class RecordMatchCommand(_command.Command):
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
-    ) -> dict[str, typing.Any]:
+    ) -> response_message.ResponseBody:
         loser, winner = sorted(
             [
                 (options["player-one"], options["player-one-score"]),
@@ -77,7 +77,7 @@ class RecordMatchCommand(_command.Command):
         logger.info(f"Recording match: {match_result}")
         storage.store_match_result(match_result, guild)
 
-        return response_message.ChannelMessageResponseBody(utils.build_match_string(match_result)).as_dict()
+        return response_message.ChannelMessageResponseBody(utils.build_match_string(match_result))
 
 
 class FilterOrderFormatMatchesMixin:
@@ -91,7 +91,7 @@ class FilterOrderFormatMatchesMixin:
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
-    ) -> dict[str, typing.Any]:
+    ) -> response_message.ResponseBody:
         matches = queries.get_matches(guild)
 
         filtered_matches = self.filterer.filter(matches, **options)
@@ -102,7 +102,7 @@ class FilterOrderFormatMatchesMixin:
         else:
             content = "No matches have been recorded."
 
-        return response_message.ChannelMessageResponseBody(content).as_dict()
+        return response_message.ChannelMessageResponseBody(content)
 
 
 @command_registry.registry.register
@@ -125,7 +125,7 @@ class ShowMatchesCommand(_command.Command):
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
-    ) -> dict[str, typing.Any]:
+    ) -> response_message.ResponseBody:
         matches = queries.get_matches(guild)
 
         sort_by = options["sort-by"]
@@ -136,7 +136,7 @@ class ShowMatchesCommand(_command.Command):
         else:
             content = "No matches have been recorded."
 
-        return response_message.ChannelMessageResponseBody(content).as_dict()
+        return response_message.ChannelMessageResponseBody(content)
 
 
 @command_registry.registry.register

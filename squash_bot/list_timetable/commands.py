@@ -50,7 +50,7 @@ class ListTimetableCommand(_command.Command):
         base_context: dict[str, typing.Any],
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
-    ) -> dict[str, typing.Any]:
+    ) -> response_message.ResponseBody:
         # From today's date
         from_date = datetime.datetime.now()
 
@@ -92,7 +92,7 @@ class ListTimetableCommand(_command.Command):
             else:
                 message += f" between {from_date_str} and {to_date_str}"
 
-            return response_message.ChannelMessageResponseBody(message).as_dict()
+            return response_message.ChannelMessageResponseBody(message)
 
         # Store the time period (default is 'from_date' if only 1 day requested) for the response message header
         time_period_str = from_date_str
@@ -103,7 +103,7 @@ class ListTimetableCommand(_command.Command):
             self._get_response_message(
                 filtered_timetable_sessions, f"{time_of_day.value} slots ({time_period_str})"
             )
-        ).as_dict()
+        )
 
     def _get_response_message(
         self, sessions: list[timetable.TimetableSession], header: str
