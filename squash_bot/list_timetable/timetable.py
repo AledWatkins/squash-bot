@@ -53,7 +53,7 @@ class Timetable(abc.ABC):
         time_of_day: TimeOfDayType,
         show_unavailable_slots: bool = False,
     ) -> list[TimetableSession]:
-        if len(sessions) == 0 or time_of_day is TimeOfDayType.ANY:
+        if not sessions or time_of_day is TimeOfDayType.ANY:
             return sessions
 
         target_hours = {
