@@ -33,7 +33,7 @@ class CommandOptionType(enum.Enum):
 class CommandOptionChoice:
     """
     A predetermined choice for a command option.
-    Note: type MUST match the CommandOption.type otherwise the choices will fail
+    Note: type MUST match the CommandOption.type otherwise the choices will fail to be included
     """
     name: str
     value: str | int | float
