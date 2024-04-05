@@ -35,6 +35,10 @@ class ListTimetableCommand(_command.Command):
             type=_command.CommandOptionType.STRING,
             default=timetable.TimeOfDayType.ANY.value,
             required=False,
+            choices=(
+                _command.CommandOptionChoice(time_of_day.value, time_of_day.value)
+                for time_of_day in timetable.TimeOfDayType
+            ),
         ),
     )
     _timetable = timetable.CelticLeisureTimetable()
