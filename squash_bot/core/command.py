@@ -35,6 +35,7 @@ class CommandOptionChoice:
     A predetermined choice for a command option.
     Note: type MUST match the CommandOption.type otherwise the choices will fail to be included
     """
+
     name: str
     value: str | int | float
     type: CommandOptionType
@@ -50,7 +51,7 @@ class CommandOption:
     type: CommandOptionType
     required: bool
     default: typing.Any | None = None
-    choices: tuple[CommandOptionChoice]
+    choices: tuple[CommandOptionChoice] | None = None
 
     @property
     def is_user(self) -> bool:
