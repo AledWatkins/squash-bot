@@ -37,7 +37,11 @@ def _build_dict_for_option(
         "description": command_option.description,
         "type": command_option.type.value,
         "required": command_option.required,
-        "choices": [choice.as_dict() for choice in command_option.choices if choice.type is command_option.type]
+        "choices": [
+            choice.as_dict()
+            for choice in command_option.choices
+            if choice.type is command_option.type
+        ],
     }
 
 
