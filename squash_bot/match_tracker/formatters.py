@@ -2,8 +2,10 @@ import abc
 import collections
 import itertools
 
+import attrs
 import tabulate
 
+from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses
 
 
@@ -36,6 +38,21 @@ class PlayedAtFormatter(Formatter):
         return f"```{inner_message}```"
 
 
+@attrs.frozen
+class LeagueTableRow:
+    player: core_dataclasses.User
+    wins: int
+    losses: int
+    win_percentage: int
+
+    def as_display_row(self) -> list[str]:
+        return [self.player.name, str(self.wins), str(self.losses), f"{self.win_percentage}%"]
+
+    @classmethod
+    def display_headers(cls) -> list[str]:
+        return ["Player", "Wins", "Losses", "Win %"]
+
+
 class LeagueTable(Formatter):
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
@@ -53,13 +70,18 @@ class LeagueTable(Formatter):
             total_games = wins + losses
             win_percentage = int((wins / total_games) * 100)
 
-            player_rows.append([player.name, wins, losses, win_percentage])
+            player_rows.append(
+                LeagueTableRow(
+                    player=player, wins=wins, losses=losses, win_percentage=win_percentage
+                )
+            )
 
         # Sort by descending win percentage
-        player_rows = sorted(player_rows, key=lambda row: row[3], reverse=True)
+        player_rows = sorted(player_rows, key=lambda row: row.win_percentage, reverse=True)
 
+        player_rows_display = [row.as_display_row() for row in player_rows]
         inner_message = tabulate.tabulate(
-            player_rows, ["Player", "Wins", "Losses", "Win %"], tablefmt="rounded_grid"
+            player_rows_display, LeagueTableRow.display_headers(), tablefmt="rounded_grid"
         )
 
         return f"```{inner_message}```"
