@@ -30,12 +30,27 @@ class CommandOptionType(enum.Enum):
 
 
 @attrs.frozen
+class CommandOptionChoice:
+    """
+    A predetermined choice for a command option.
+    Note: type MUST match the CommandOption.type otherwise the choices will fail
+    """
+    name: str
+    value: str | int | float
+    type: CommandOptionType
+
+    def as_dict(self) -> dict[str, str | int | float]:
+        return {"name": self.name, "value": self.value}
+
+
+@attrs.frozen
 class CommandOption:
     name: str
     description: str
     type: CommandOptionType
     required: bool
     default: typing.Any | None = None
+    choices: tuple[CommandOptionChoice]
 
     @property
     def is_user(self) -> bool:
