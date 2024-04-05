@@ -55,6 +55,9 @@ class LeagueTable(Formatter):
 
             player_rows.append([player.name, wins, losses, win_percentage])
 
+        # Sort by descending win percentage
+        player_rows = sorted(player_rows, key=lambda row: row[3], reverse=True)
+
         inner_message = tabulate.tabulate(
             player_rows, ["Player", "Wins", "Losses", "Win %"], tablefmt="rounded_grid"
         )
