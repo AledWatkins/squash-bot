@@ -50,11 +50,13 @@ class LeagueTable(Formatter):
         for player, results in player_results.items():
             wins = results.get("wins", 0)
             losses = results.get("losses", 0)
+            total_games = wins + losses
+            win_percentage = int((wins / total_games) * 100)
 
-            player_rows.append([player.name, wins, losses])
+            player_rows.append([player.name, wins, losses, win_percentage])
 
         inner_message = tabulate.tabulate(
-            player_rows, ["Player", "Wins", "Losses"], tablefmt="rounded_grid"
+            player_rows, ["Player", "Wins", "Losses", "Win %"], tablefmt="rounded_grid"
         )
 
         return f"```{inner_message}```"
