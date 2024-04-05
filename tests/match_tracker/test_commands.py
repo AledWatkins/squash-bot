@@ -257,8 +257,9 @@ class TestLeagueTable:
             )
 
         content = response["data"]["content"]
-        assert "global-user1 │      1 │        1" in content
-        assert "global-user2 │      1 │        1" in content
+        table_data = _extract_data_from_table_string(content)
+        assert ["global-user2", "1", "1", "50%"] in table_data
+        assert ["global-user1", "1", "1", "50%"] in table_data
 
     def test_league_table_with_datetime_filter(self):
         user_one = core_dataclasses.User(id="1", username="user1", global_name="global-user1")
@@ -300,5 +301,16 @@ class TestLeagueTable:
             )
 
         content = response["data"]["content"]
-        assert "global-user2 │      1 │        0" in content
-        assert "global-user1 │      0 │        1" in content
+        table_data = _extract_data_from_table_string(content)
+        assert ["global-user2", "1", "0", "100%"] in table_data
+        assert ["global-user1", "0", "1", "0%"] in table_data
+
+
+def _extract_data_from_table_string(
+    table_string: str, column_separator: str = "│"
+) -> list[list[str]]:
+    data = []
+    for line in table_string.replace("```", "").split("\n"):
+        parts = line.split(column_separator)
+        data.append([part.strip() for part in parts if part.strip()])
+    return data
