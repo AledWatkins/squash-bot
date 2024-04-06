@@ -89,3 +89,11 @@ extend-immutable-calls = [
     "float",
     "frozendict",
 ]
+
+
+# ----
+# Mypy
+# ----
+[tool.mypy]
+ignore_missing_imports = true
+disable_error_code = "import-untyped"
