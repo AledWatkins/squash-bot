@@ -1,6 +1,7 @@
 import importlib
 import os
 import pathlib
+import typing
 
 from envparse import env
 
@@ -68,7 +69,10 @@ settings = importlib.import_module(settings_module).Settings()
 settings.install_commands()
 
 
-def get_class_from_string(class_path: str) -> type[object]:
+T_excepted_class = typing.TypeVar("T_excepted_class")
+
+
+def get_class_from_string(class_path: str, expected_class: T_excepted_class) -> T_excepted_class:
     module_name, class_name = class_path.rsplit(".", 1)
     module = importlib.import_module(module_name)
     return getattr(module, class_name)
