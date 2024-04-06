@@ -32,6 +32,7 @@ class MatchRow:
     def as_display_row(self) -> list[str]:
         score_string = f"{self.first_player_score} - {self.second_player_score}"
         return [
+            "\t",
             self.first_player.name,
             score_string,
             self.second_player.name,
