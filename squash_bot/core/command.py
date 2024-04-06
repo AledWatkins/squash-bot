@@ -1,6 +1,5 @@
-import typing
-
 import attrs
+import typing
 
 from squash_bot.core import response_message
 from squash_bot.core.data import constants as core_constants

@@ -77,7 +77,9 @@ class RecordMatchCommand(_command.Command):
         logger.info(f"Recording match: {match_result}")
         storage.store_match_result(match_result, guild)
 
-        return response_message.ChannelMessageResponseBody(utils.build_match_string(match_result))
+        return response_message.ChannelMessageResponseBody(
+            content=utils.build_match_string(match_result)
+        )
 
 
 class FilterOrderFormatMatchesMixin:
@@ -102,7 +104,7 @@ class FilterOrderFormatMatchesMixin:
         else:
             content = "No matches have been recorded."
 
-        return response_message.ChannelMessageResponseBody(content)
+        return response_message.ChannelMessageResponseBody(content=content)
 
 
 @command_registry.registry.register
@@ -136,7 +138,7 @@ class ShowMatchesCommand(_command.Command):
         else:
             content = "No matches have been recorded."
 
-        return response_message.ChannelMessageResponseBody(content)
+        return response_message.ChannelMessageResponseBody(content=content)
 
 
 @command_registry.registry.register

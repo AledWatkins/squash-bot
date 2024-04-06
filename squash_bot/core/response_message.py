@@ -1,3 +1,4 @@
+import attrs
 import enum
 import typing
 
@@ -17,31 +18,29 @@ class ResponseFlags(enum.Enum):
     LOADING = 1 << 7
 
 
+@attrs.frozen(kw_only=True)
 class ResponseBody:
-    def __init__(self, response_type: InteractionResponseType, content: str):
-        self._response_type = response_type
-        self.content = content
+    _response_type: InteractionResponseType
+    content: str
 
     def as_dict(self) -> dict[str, typing.Any]:
         return {"type": self._response_type.value, "data": {"content": self.content}}
 
 
+@attrs.frozen(kw_only=True)
 class ChannelMessageResponseBody(ResponseBody):
     """
     A message response to the channel where the command was called
     """
 
-    def __init__(self, content):
-        super().__init__(InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, content)
+    _response_type: InteractionResponseType = InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE
 
 
+@attrs.frozen(kw_only=True)
 class EphemeralChannelMessageResponseBody(ChannelMessageResponseBody):
     """
     A message response to only the user that called the command in the channel where the command was called
     """
-
-    def __init__(self, content):
-        super().__init__(content)
 
     def as_dict(self) -> dict[str, typing.Any]:
         base_dict = super().as_dict()
