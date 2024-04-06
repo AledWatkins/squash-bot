@@ -32,17 +32,20 @@ def _build_dict_for_command(command: _command.Command) -> dict[str, typing.Any]:
 def _build_dict_for_option(
     command_option: _command.CommandOption,
 ) -> dict[str, typing.Any]:
-    return {
+    option_dict = {
         "name": command_option.name,
         "description": command_option.description,
         "type": command_option.type.value,
         "required": command_option.required,
-        "choices": [
-            choice.as_dict()
-            for choice in command_option.choices
-            if choice.type is command_option.type
-        ],
     }
+    if not command_option.choices:
+        return option_dict
+
+    if choices := [
+        choice.as_dict() for choice in command_option.choices if choice.type is command_option.type
+    ]:
+        option_dict["choices"] = choices
+    return option_dict
 
 
 def _outputer_from_settings() -> outputer.Outputer:
