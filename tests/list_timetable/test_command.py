@@ -38,7 +38,7 @@ class TestCommand:
                                 {
                                     "type": 3,
                                     "name": "time-of-day",
-                                    "value": "Any",
+                                    "value": "All",
                                 },
                             ],
                             "resolved": {
@@ -70,7 +70,7 @@ class TestCommand:
         assert response == {
             "type": 4,
             "data": {
-                "content": f"Any slots (25-03):\n* [25-03 21:00: 2 slots available]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
+                "content": f"All slots (25-03):\n* [25-03 21:00: 2 slots available]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
             },
         }
 
@@ -98,7 +98,7 @@ class TestCommand:
                                 {
                                     "type": 3,
                                     "name": "time-of-day",
-                                    "value": "Any",
+                                    "value": "All",
                                 },
                             ],
                             "resolved": {

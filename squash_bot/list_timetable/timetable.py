@@ -14,7 +14,9 @@ class TimeOfDayType(enum.Enum):
     MORNING = "Morning"
     AFTERNOON = "Afternoon"
     EVENING = "Evening"
-    ANY = "Any"
+    POST_WORK_SESH = "PostWorkSesh"
+    POST_WORK_SESH_PLUS = "PostWorkSeshPlus"
+    ALL = "All"
 
 
 @attrs.frozen
@@ -51,13 +53,15 @@ class Timetable(abc.ABC):
         time_of_day: TimeOfDayType,
         show_unavailable_slots: bool = False,
     ) -> list[TimetableSession]:
-        if not sessions or time_of_day is TimeOfDayType.ANY:
+        if not sessions or time_of_day is TimeOfDayType.ALL:
             return sessions
 
         target_hours = {
             TimeOfDayType.MORNING: range(0, 12),
             TimeOfDayType.AFTERNOON: range(12, 17),
             TimeOfDayType.EVENING: range(17, 24),
+            TimeOfDayType.POST_WORK_SESH: 19,
+            TimeOfDayType.POST_WORK_SESH_PLUS: range(18, 21),
         }[time_of_day]
 
         return [
