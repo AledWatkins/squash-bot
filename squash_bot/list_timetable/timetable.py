@@ -7,7 +7,7 @@ import urllib.parse
 import attrs
 import requests
 
-SESSION_DATETIME_FORMAT = "%d-%m %H:%M"
+SESSION_DATETIME_FORMAT = "%H:%M"
 
 
 class TimeOfDayType(enum.Enum):
@@ -26,7 +26,7 @@ class TimetableSession:
     schedule_id: int
 
     def __str__(self) -> str:
-        return f"{self.start_datetime.strftime(SESSION_DATETIME_FORMAT)}: {self.available_slots} slots available"
+        return f"{self.start_datetime.strftime(SESSION_DATETIME_FORMAT)}"
 
 
 class Timetable(abc.ABC):

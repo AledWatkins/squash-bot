@@ -1,5 +1,6 @@
 import datetime
 import enum
+import itertools
 import typing
 
 from squash_bot.core import command as _command
@@ -92,27 +93,19 @@ class ListTimetableCommand(_command.Command):
                 message += f" on {from_date_str}"
             else:
                 message += f" between {from_date_str} and {to_date_str}"
-
             return response_message.ChannelMessageResponseBody(content=message)
 
-        # Store the time period (default is 'from_date' if only 1 day requested) for the response message header
-        time_period_str = from_date_str
-        if days > 1:
-            time_period_str += f" - {to_date_str}"
+        content = self._get_response_message(filtered_timetable_sessions)
+        return response_message.ChannelMessageResponseBody(content=content)
 
-        return response_message.ChannelMessageResponseBody(
-            content=self._get_response_message(
-                filtered_timetable_sessions, f"{time_of_day.value} slots ({time_period_str})"
-            )
-        )
+    @staticmethod
+    def _get_response_message(sessions: list[timetable.TimetableSession]) -> str:
+        session_groups = itertools.groupby(sessions, key=lambda s: s.start_datetime.date())
 
-    def _get_response_message(
-        self, sessions: list[timetable.TimetableSession], header: str
-    ) -> str:
-        message = f"{header}:\n"
-        message += "\n".join(
-            f"* [{session}]({self._timetable.get_booking_link(session.schedule_id)})"
-            for session in sessions
-        )
+        session_dates = []
+        for session_date, sessions in session_groups:
+            pretty_date = session_date.strftime("%A (%d-%m)")
+            session_str = ", ".join([str(session) for session in sessions])
+            session_dates.append(f"{pretty_date}:\n  {session_str}")
 
-        return message
+        return "\n\n".join(session_dates)
