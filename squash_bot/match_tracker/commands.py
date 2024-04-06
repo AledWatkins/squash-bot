@@ -3,8 +3,8 @@ import logging
 import typing
 
 from squash_bot.core import command as _command
-from squash_bot.core.data import constants as core_constants
 from squash_bot.core import command_registry, response_message
+from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import filterers, formatters, orderers, queries, utils, validate
 from squash_bot.match_tracker.data import dataclasses, storage
