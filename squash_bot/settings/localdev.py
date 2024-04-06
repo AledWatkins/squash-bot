@@ -16,7 +16,7 @@ class Settings(base.BaseSettings):
     STORAGE_BACKEND = "squash_bot.storage.base.LocalStorage"
 
     # Match tracker settings
-    MATCH_RESULTS_PATH = base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing"
+    MATCH_RESULTS_PATH = str(base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing")
     MATCH_RESULTS_FILE = "match_results.json"
 
     API_URL = "foo"
