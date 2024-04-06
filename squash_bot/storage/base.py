@@ -80,6 +80,6 @@ def read_file(file_path: str, file_name: str, create_if_missing: bool = False) -
 
 
 def get_storage_backend() -> StorageBackend:
-    return settings_base.get_class_from_string(
+    return settings_base.get_class_from_string(  # type: ignore[abstract]
         settings_base.settings.STORAGE_BACKEND, StorageBackend
     )()
