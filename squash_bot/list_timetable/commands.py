@@ -2,13 +2,12 @@ import datetime
 import enum
 import typing
 
-from . import timetable
-
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
 from squash_bot.core.command import CommandVerificationError
 from squash_bot.core.data import dataclasses as core_dataclasses
 
+from . import timetable
 
 DISCORD_COMMAND_DATETIME_FORMAT = "%d-%m"
 
