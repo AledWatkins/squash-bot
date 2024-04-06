@@ -22,6 +22,22 @@ class BasicFormatter(Formatter):
         return f"```{inner_message}```"
 
 
+@attrs.frozen
+class MatchRow:
+    first_player: core_dataclasses.User
+    first_player_score: int
+    second_player_score: int
+    second_player: core_dataclasses.User
+
+    def as_display_row(self) -> list[str]:
+        score_string = f"{self.first_player_score} - {self.second_player_score}"
+        return [
+            self.first_player.name,
+            score_string,
+            self.second_player.name,
+        ]
+
+
 class PlayedAtFormatter(Formatter):
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
@@ -30,10 +46,19 @@ class PlayedAtFormatter(Formatter):
         inner_message = ""
         for played_at, match_results in groups:
             pretty_date = played_at.strftime("%A, %-d %B %Y")
-            inner_message += f"\n\n{pretty_date}:"
-            for match in match_results:
-                match_string = _match_string(match)
-                inner_message += f"\n\t{match_string}"
+            inner_message += f"\n\n{pretty_date}:\n"
+            inner_message += tabulate.tabulate(
+                [
+                    MatchRow(
+                        first_player=match.winner,
+                        first_player_score=match.winner_score,
+                        second_player_score=match.loser_score,
+                        second_player=match.loser,
+                    ).as_display_row()
+                    for match in match_results
+                ],
+                tablefmt="plain",
+            )
 
         return f"```{inner_message}```"
 
