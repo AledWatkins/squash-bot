@@ -105,4 +105,4 @@ def unknown_handler(body: dict[str, typing.Any]) -> response.Response:
 
 def _verifier_from_settings() -> verify.Verifier:
     verifier_class = settings_base.settings.VERIFIER
-    return settings_base.get_class_from_string(verifier_class)()
+    return settings_base.get_class_from_string(verifier_class, verify.Verifier)()

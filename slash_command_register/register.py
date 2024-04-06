@@ -50,4 +50,4 @@ def _build_dict_for_option(
 
 def _outputer_from_settings() -> outputer.Outputer:
     outputer_class = settings_base.settings.OUTPUTER
-    return settings_base.get_class_from_string(outputer_class)()
+    return settings_base.get_class_from_string(outputer_class, outputer.Outputer)()
