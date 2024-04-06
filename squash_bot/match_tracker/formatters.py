@@ -88,12 +88,4 @@ class LeagueTable(Formatter):
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
-    served_marker = "*"
-    if match.served == match.winner:
-        winner_name = f"{match.winner.name}{served_marker}"
-        loser_name = f"{match.loser.name}"
-    else:
-        winner_name = f"{match.winner.name}"
-        loser_name = f"{match.loser.name}{served_marker}"
-
-    return f"{winner_name}\t{match.winner_score} - {match.loser_score}\t{loser_name}"
+    return f"{match.served.name}\t{match.server_score} - {match.receiver_score}\t{match.receiver.name}"
