@@ -1,6 +1,7 @@
-import attrs
 import enum
 import typing
+
+import attrs
 
 
 class InteractionResponseType(enum.Enum):
