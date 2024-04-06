@@ -108,7 +108,7 @@ class FilterOrderFormatMatchesMixin:
 
 
 @command_registry.registry.register
-class ShowMatchesCommand(_command.Command):
+class ShowMatchesCommand(FilterOrderFormatMatchesMixin, _command.Command):
     name = "show-matches"
     description = "Show saved matches."
     options = (
@@ -121,24 +121,8 @@ class ShowMatchesCommand(_command.Command):
         ),
     )
 
-    def _handle(
-        self,
-        options: dict[str, typing.Any],
-        base_context: dict[str, typing.Any],
-        guild: core_dataclasses.Guild,
-        user: core_dataclasses.User,
-    ) -> response_message.ResponseBody:
-        matches = queries.get_matches(guild)
-
-        sort_by = options["sort-by"]
-        matches = matches.sort_by(sort_by)
-
-        if matches:
-            content = formatters.PlayedAtFormatter.format_matches(matches)
-        else:
-            content = "No matches have been recorded."
-
-        return response_message.ChannelMessageResponseBody(content=content)
+    orderer = orderers.OptionalByMatchesField
+    formatter = formatters.PlayedAtFormatter
 
 
 @command_registry.registry.register
