@@ -70,7 +70,7 @@ class ListTimetableCommand(_command.Command):
                 options[ListTimetableOptionType.TIME_OF_DAY.value].upper()
             ]
         except KeyError:
-            raise CommandVerificationError(f"Invalid time of day")
+            raise CommandVerificationError("Invalid time of day")
 
         to_date = from_date + datetime.timedelta(days=days)
 
