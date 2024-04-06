@@ -5,6 +5,7 @@ import typing
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
 from squash_bot.core.command import CommandVerificationError
+from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 
 from . import timetable
@@ -25,13 +26,13 @@ class ListTimetableCommand(_command.Command):
         _command.CommandOption(
             name=ListTimetableOptionType.DAYS.value,
             description="The amount of days to check for squash sessions",
-            type=_command.CommandOptionType.INTEGER,
+            type=core_constants.CommandOptionType.INTEGER,
             required=True,
         ),
         _command.CommandOption(
             name=ListTimetableOptionType.TIME_OF_DAY.value,
             description="The specified time of day to filter specific squash sessions. Default = Any",
-            type=_command.CommandOptionType.STRING,
+            type=core_constants.CommandOptionType.STRING,
             default=timetable.TimeOfDayType.ANY.value,
             required=False,
         ),

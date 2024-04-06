@@ -4,6 +4,7 @@ import typing
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
+from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import filterers, formatters, orderers, queries, utils, validate
 from squash_bot.match_tracker.data import dataclasses, storage
@@ -20,25 +21,25 @@ class RecordMatchCommand(_command.Command):
         _command.CommandOption(
             name="player-one",
             description="Player one",
-            type=_command.CommandOptionType.USER,
+            type=core_constants.CommandOptionType.USER,
             required=True,
         ),
         _command.CommandOption(
             name="player-one-score",
             description="Player one's score",
-            type=_command.CommandOptionType.INTEGER,
+            type=core_constants.CommandOptionType.INTEGER,
             required=True,
         ),
         _command.CommandOption(
             name="player-two",
             description="Player two",
-            type=_command.CommandOptionType.USER,
+            type=core_constants.CommandOptionType.USER,
             required=True,
         ),
         _command.CommandOption(
             name="player-two-score",
             description="Player two's score",
-            type=_command.CommandOptionType.INTEGER,
+            type=core_constants.CommandOptionType.INTEGER,
             required=True,
         ),
     )
@@ -122,7 +123,7 @@ class ShowMatchesCommand(_command.Command):
         _command.CommandOption(
             name="sort-by",
             description="The field to sort the matches by. Defaults to `played_at`.",
-            type=_command.CommandOptionType.STRING,
+            type=core_constants.CommandOptionType.STRING,
             required=False,
             default="played_at",
         ),
@@ -161,7 +162,7 @@ class LeagueTableCommand(FilterOrderFormatMatchesMixin, _command.Command):
         _command.CommandOption(
             name="include-matches-from",
             description="Only include matches played on or after this date. Defaults to all time.",
-            type=_command.CommandOptionType.STRING,
+            type=core_constants.CommandOptionType.STRING,
             required=False,
         ),
     )

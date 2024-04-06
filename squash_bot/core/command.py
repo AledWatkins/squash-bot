@@ -1,8 +1,8 @@
-import enum
 import typing
 
 import attrs
 
+from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 
 
@@ -18,28 +18,17 @@ class CommandVerificationError(CommandError):
     """
 
 
-class CommandOptionType(enum.Enum):
-    SUB_COMMAND = 1
-    SUB_COMMAND_GROUP = 2
-    STRING = 3
-    INTEGER = 4
-    BOOLEAN = 5
-    USER = 6
-    CHANNEL = 7
-    ROLE = 8
-
-
 @attrs.frozen
 class CommandOption:
     name: str
     description: str
-    type: CommandOptionType
+    type: core_constants.CommandOptionType
     required: bool
     default: typing.Any | None = None
 
     @property
     def is_user(self) -> bool:
-        return self.type == CommandOptionType.USER
+        return self.type == core_constants.CommandOptionType.USER
 
 
 class Command:

@@ -1,6 +1,7 @@
 import pytest
 
 from squash_bot.core import command as _command
+from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 
 
@@ -13,7 +14,7 @@ class TestParseOptions:
                 _command.CommandOption(
                     name="required-option",
                     description="A required option",
-                    type=_command.CommandOptionType.STRING,
+                    type=core_constants.CommandOptionType.STRING,
                     required=True,
                 ),
             )
@@ -33,7 +34,7 @@ class TestParseOptions:
                 _command.CommandOption(
                     name="required-option",
                     description="A required option",
-                    type=_command.CommandOptionType.STRING,
+                    type=core_constants.CommandOptionType.STRING,
                     required=True,
                 ),
             )
@@ -65,7 +66,7 @@ class TestParseOptions:
                 _command.CommandOption(
                     name="user",
                     description="User",
-                    type=_command.CommandOptionType.USER,
+                    type=core_constants.CommandOptionType.USER,
                     required=True,
                 ),
             )
@@ -108,7 +109,7 @@ class TestParseOptions:
                 _command.CommandOption(
                     name="required-option",
                     description="A required option",
-                    type=_command.CommandOptionType.STRING,
+                    type=core_constants.CommandOptionType.STRING,
                     required=False,
                     default="default-value",
                 ),
@@ -127,7 +128,7 @@ class TestParseOptions:
                 _command.CommandOption(
                     name="required-option",
                     description="A required option",
-                    type=_command.CommandOptionType.STRING,
+                    type=core_constants.CommandOptionType.STRING,
                     required=False,
                     default="default-value",
                 ),
