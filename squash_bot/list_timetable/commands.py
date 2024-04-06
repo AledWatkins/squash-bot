@@ -24,15 +24,16 @@ class ListTimetableCommand(_command.Command):
     options = (
         _command.CommandOption(
             name=ListTimetableOptionType.DAYS.value,
-            description="The amount of days to check for squash sessions",
+            description="The amount of days to check for squash sessions. Default=7",
             type=core_constants.CommandOptionType.INTEGER,
-            required=True,
+            required=False,
+            default=7,
         ),
         _command.CommandOption(
             name=ListTimetableOptionType.TIME_OF_DAY.value,
-            description="The specified time of day to filter specific squash sessions. Default = Any",
+            description=f"The specified time of day to filter specific squash sessions. Default={timetable.TimeOfDayType.POST_WORK_SESH.value}",
             type=core_constants.CommandOptionType.STRING,
-            default=timetable.TimeOfDayType.ANY.value,
+            default=timetable.TimeOfDayType.POST_WORK_SESH.value,
             required=False,
             choices=tuple(
                 _command.CommandOptionChoice(
