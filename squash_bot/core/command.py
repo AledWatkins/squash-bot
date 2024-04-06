@@ -65,7 +65,7 @@ class Command:
                 f"Missing required options: {','.join(missing_required_options)}"
             )
 
-        return_options = {}
+        return_options: dict[str, typing.Any] = {}
         for option in options:
             option_name = option["name"]
             command_option = command_options_by_name[option_name]
