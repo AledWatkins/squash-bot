@@ -7,8 +7,6 @@ import urllib.parse
 import attrs
 import requests
 
-from squash_bot.settings import base as settings_base
-
 SESSION_DATETIME_FORMAT = "%d-%m %H:%M"
 
 
@@ -34,8 +32,8 @@ class Timetable(abc.ABC):
     An abstract class used to define squash timetable session implementations
     """
 
-    _API_URL = settings_base.settings.API_URL
-    _API_TIMETABLE_ENDPOINT = ""
+    _API_URL: str = ""
+    _API_TIMETABLE_ENDPOINT: str = ""
 
     @abc.abstractmethod
     def get_sessions(
@@ -75,9 +73,13 @@ class CelticLeisureTimetable(Timetable):
     A subclass of Timetable to obtain squash timetable information specific to Celtic Leisure
     """
 
-    _API_TIMETABLE_ENDPOINT = "enterprise/Timetable/GetClassTimeTable"
-    _API_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
-    _API_TIMETABLE_BOOKING_ENDPOINT = "enterprise/bookingscentre/membertimetable#Details?"
+    _API_URL: str = "https://celticleisure.legendonlineservices.co.uk"
+    _API_TIMETABLE_ENDPOINT: str = "enterprise/Timetable/GetClassTimeTable"
+    _API_DATETIME_FORMAT: str = "%Y-%m-%dT%H:%M:%S"
+    _API_TIMETABLE_BOOKING_ENDPOINT: str = "enterprise/bookingscentre/membertimetable#Details?"
+
+    _ACTIVITY_ID: str = "87"
+    _LOCATION_ID: str = "1917"
 
     def get_sessions(
         self, from_date: datetime.datetime, to_date: datetime.datetime
@@ -100,8 +102,8 @@ class CelticLeisureTimetable(Timetable):
         return requests.post(
             urllib.parse.urljoin(self._API_URL, self._API_TIMETABLE_ENDPOINT),
             json={
-                "ResourceSubTypeIdList": settings_base.settings.ACTIVITY_ID,
-                "FacilityLocationIdList": settings_base.settings.LOCATION_ID,
+                "ResourceSubTypeIdList": self._ACTIVITY_ID,
+                "FacilityLocationIdList": self._LOCATION_ID,
                 "DateFrom": from_date.strftime(self._API_DATETIME_FORMAT),
                 "DateTo": to_date.strftime(self._API_DATETIME_FORMAT),
             },

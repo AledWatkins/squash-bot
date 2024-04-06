@@ -18,7 +18,3 @@ class Settings(base.BaseSettings):
     # Match tracker settings
     MATCH_RESULTS_PATH = "squash-bot"
     MATCH_RESULTS_FILE = "match_tracker/results/match_results.json"
-
-    API_URL = "https://celticleisure.legendonlineservices.co.uk"
-    ACTIVITY_ID = "87"
-    LOCATION_ID = "1917"
