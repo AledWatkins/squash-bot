@@ -21,7 +21,7 @@ class BaseSettings:
     Base settings class
     """
 
-    installed_commands: tuple[str] = ()
+    installed_commands: tuple[str]
 
     APP_ID: str = env.str("APP_ID", default="")
     SERVER_ID: str = env.str("SERVER_ID", default="")
