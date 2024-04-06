@@ -1,13 +1,13 @@
 import abc
-import attrs
 import datetime
 import enum
-import requests
 import typing
 import urllib.parse
 
-from squash_bot.settings import base as settings_base
+import attrs
+import requests
 
+from squash_bot.settings import base as settings_base
 
 SESSION_DATETIME_FORMAT = "%d-%m %H:%M"
 
