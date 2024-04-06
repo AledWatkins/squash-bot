@@ -29,6 +29,18 @@ class MatchResult:
     def played_on(self) -> datetime.date:
         return self.played_at.date()
 
+    @property
+    def server_score(self) -> int:
+        return self.winner_score if self.served == self.winner else self.loser_score
+
+    @property
+    def receiver(self) -> core_dataclasses.User:
+        return self.loser if self.served == self.winner else self.winner
+
+    @property
+    def receiver_score(self) -> int:
+        return self.winner_score if self.receiver == self.winner else self.loser_score
+
     def __str__(self):
         return f"{self.winner.username} beat {self.loser.username} {self.winner_score}-{self.loser_score} on {self.played_on.isoformat()}"
 

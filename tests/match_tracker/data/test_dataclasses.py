@@ -82,6 +82,18 @@ class TestMatchResult:
             result_id=uuid.UUID("00000000-0000-0000-0000-000000000000"),
         )
 
+    def test_receiver(self):
+        match_result = match_tracker_factories.MatchResultFactory()
+        assert match_result.receiver == match_result.winner
+
+    def test_receiver_score(self):
+        match_result = match_tracker_factories.MatchResultFactory()
+        assert match_result.receiver_score == match_result.winner_score
+
+    def test_server_score(self):
+        match_result = match_tracker_factories.MatchResultFactory()
+        assert match_result.server_score == match_result.loser_score
+
 
 class TestMatches:
     def test_sort_by_datetime(self):
