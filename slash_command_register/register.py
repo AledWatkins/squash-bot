@@ -41,9 +41,7 @@ def _build_dict_for_option(
     if not command_option.choices:
         return option_dict
 
-    if choices := [
-        choice.as_dict() for choice in command_option.choices if choice.type is command_option.type
-    ]:
+    if choices := [choice.as_dict() for choice in command_option.choices]:
         option_dict["choices"] = choices
     return option_dict
 
