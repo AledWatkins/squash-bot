@@ -70,7 +70,7 @@ class TestCommand:
         assert response == {
             "type": 4,
             "data": {
-                "content": f"All slots (25-03):\n* [25-03 21:00: 2 slots available]({api_url}/enterprise/bookingscentre/membertimetable#Details?&ResourceScheduleId=1900373)",
+                "content": "Monday (25-03):\n  21:00",
             },
         }
 
