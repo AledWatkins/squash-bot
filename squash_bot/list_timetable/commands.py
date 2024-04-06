@@ -35,7 +35,7 @@ class ListTimetableCommand(_command.Command):
             type=core_constants.CommandOptionType.STRING,
             default=timetable.TimeOfDayType.ANY.value,
             required=False,
-            choices=(
+            choices=tuple(
                 _command.CommandOptionChoice(
                     time_of_day.value, time_of_day.value, core_constants.CommandOptionType.STRING
                 )
