@@ -50,7 +50,7 @@ class CommandOption:
 class Command:
     name: str
     description: str
-    options: tuple[CommandOption]
+    options: tuple[CommandOption, ...]
 
     def parse_options(self, base_context: dict[str, typing.Any]) -> dict[str, typing.Any]:
         data = base_context["data"]

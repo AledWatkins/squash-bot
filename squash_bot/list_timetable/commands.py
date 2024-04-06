@@ -37,7 +37,7 @@ class ListTimetableCommand(_command.Command):
             required=False,
             choices=(
                 _command.CommandOptionChoice(
-                    time_of_day.value, time_of_day.value, _command.CommandOptionType.STRING
+                    time_of_day.value, time_of_day.value, core_constants.CommandOptionType.STRING
                 )
                 for time_of_day in timetable.TimeOfDayType
             ),
