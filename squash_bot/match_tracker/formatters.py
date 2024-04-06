@@ -28,10 +28,10 @@ class PlayedAtFormatter(Formatter):
         groups = itertools.groupby(matches.match_results, key=lambda match: match.played_on)
 
         inner_message = ""
-        for played_at, matches in groups:
+        for played_at, match_results in groups:
             pretty_date = played_at.strftime("%A, %-d %B %Y")
             inner_message += f"\n\n{pretty_date}:"
-            for match in matches:
+            for match in match_results:
                 match_string = _match_string(match)
                 inner_message += f"\n\t{match_string}"
 
