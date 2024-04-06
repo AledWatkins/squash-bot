@@ -51,10 +51,10 @@ class PlayedAtFormatter(Formatter):
             inner_message += tabulate.tabulate(
                 [
                     MatchRow(
-                        first_player=match.winner,
-                        first_player_score=match.winner_score,
-                        second_player_score=match.loser_score,
-                        second_player=match.loser,
+                        first_player=match.served,
+                        first_player_score=match.server_score,
+                        second_player_score=match.receiver_score,
+                        second_player=match.receiver,
                     ).as_display_row()
                     for match in match_results
                 ],
