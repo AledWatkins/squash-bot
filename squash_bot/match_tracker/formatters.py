@@ -56,7 +56,7 @@ class LeagueTableRow:
 class LeagueTable(Formatter):
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
-        player_results = collections.defaultdict(dict)
+        player_results: dict[core_dataclasses.User, dict] = collections.defaultdict(dict)
         for match in matches.match_results:
             player_results[match.winner]["wins"] = player_results[match.winner].get("wins", 0) + 1
             player_results[match.loser]["losses"] = (
