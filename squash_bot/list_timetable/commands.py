@@ -4,7 +4,6 @@ import typing
 
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, lambda_function
-from squash_bot.core.command import CommandVerificationError
 from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 
@@ -59,12 +58,12 @@ class ListTimetableCommand(_command.Command):
         try:
             days = int(options["days"])
         except ValueError as e:
-            raise CommandVerificationError(
+            raise _command.CommandVerificationError(
                 f"Don't be daft now.. {options['days']} must be an integer"
             ) from e
 
         if days < 1:
-            raise CommandVerificationError(f"Don't be daft now.. {days} must be > 0")
+            raise _command.CommandVerificationError(f"Don't be daft now.. {days} must be > 0")
 
         # Check time of day - as it is not required (or could be invalid), default to ANY
         try:
@@ -72,7 +71,7 @@ class ListTimetableCommand(_command.Command):
                 options[ListTimetableOptionType.TIME_OF_DAY.value].upper()
             ]
         except KeyError as e:
-            raise CommandVerificationError("Invalid time of day") from e
+            raise _command.CommandVerificationError("Invalid time of day") from e
 
         to_date = from_date + datetime.timedelta(days=days)
 
