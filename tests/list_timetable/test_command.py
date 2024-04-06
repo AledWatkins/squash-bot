@@ -1,11 +1,12 @@
-import json
-import responses
 import datetime
+import json
+
+import responses
 import time_machine
 
-from tests import utils
-
 from squash_bot.list_timetable import commands, timetable
+
+from tests import utils
 
 TEST_DATETIME = datetime.datetime(2024, 3, 25, 12)
 
