@@ -49,3 +49,18 @@ class TestAllCommands:
 
         command_names = sorted([command.name for command in all_commands])
         assert command_names == ["test-one", "test-two"]
+
+
+class TestRegisteredCommands:
+    def test_command_choices_are_correct_type(self):
+        """
+        All `choices` on command options must have the same type as the option itself
+        """
+        commands = command_registry.all_commands()
+
+        for command in commands:
+            for option in command.options:
+                if not option.choices:
+                    continue
+
+                assert all(choice.type == option.type for choice in option.choices)
