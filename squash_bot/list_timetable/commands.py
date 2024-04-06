@@ -52,10 +52,10 @@ class ListTimetableCommand(_command.Command):
         # Check days is valid
         try:
             days = int(options["days"])
-        except ValueError:
+        except ValueError as e:
             raise CommandVerificationError(
                 f"Don't be daft now.. {options['days']} must be an integer"
-            )
+            ) from e
 
         if days < 1:
             raise CommandVerificationError(f"Don't be daft now.. {days} must be > 0")
@@ -65,8 +65,8 @@ class ListTimetableCommand(_command.Command):
             time_of_day = timetable.TimeOfDayType[
                 options[ListTimetableOptionType.TIME_OF_DAY.value].upper()
             ]
-        except KeyError:
-            raise CommandVerificationError("Invalid time of day")
+        except KeyError as e:
+            raise CommandVerificationError("Invalid time of day") from e
 
         to_date = from_date + datetime.timedelta(days=days)
 
