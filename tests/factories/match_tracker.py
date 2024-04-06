@@ -9,11 +9,15 @@ from tests.factories import core as core_factories
 
 
 class MatchResultFactory(factory.Factory):
-    winner = factory.SubFactory(core_factories.UserFactory)
+    winner = factory.SubFactory(
+        core_factories.UserFactory, id=1, username="Paul", global_name="Paul!"
+    )
     winner_score = 11
     loser_score = 3
-    loser = factory.SubFactory(core_factories.UserFactory)
-    served = factory.SubFactory(core_factories.UserFactory)
+    loser = factory.SubFactory(
+        core_factories.UserFactory, id=2, username="John", global_name="John!"
+    )
+    served = factory.SelfAttribute("loser")
     played_at = factory.LazyFunction(datetime.datetime.now)
     logged_at = factory.LazyFunction(datetime.datetime.now)
     logged_by = factory.SubFactory(core_factories.UserFactory)
