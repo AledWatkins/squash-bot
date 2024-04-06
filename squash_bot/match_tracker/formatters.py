@@ -33,9 +33,9 @@ class MatchRow:
         return [
             "\t",
             self.first_player.name,
-            self.first_player_score,
+            str(self.first_player_score),
             "-",
-            self.second_player_score,
+            str(self.second_player_score),
             self.second_player.name,
         ]
 
