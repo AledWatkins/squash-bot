@@ -27,7 +27,7 @@ class CommandOptionChoice:
 
     name: str
     value: str | int | float
-    type: CommandOptionType
+    type: core_constants.CommandOptionType
 
     def as_dict(self) -> dict[str, str | int | float]:
         return {"name": self.name, "value": self.value}
