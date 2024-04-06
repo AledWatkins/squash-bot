@@ -51,7 +51,7 @@ class CommandOption:
     type: CommandOptionType
     required: bool
     default: typing.Any | None = None
-    choices: tuple[CommandOptionChoice] | None = None
+    choices: tuple[CommandOptionChoice, ...] | None = None
 
     @property
     def is_user(self) -> bool:
