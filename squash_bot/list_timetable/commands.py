@@ -106,6 +106,6 @@ class ListTimetableCommand(_command.Command):
         for session_date, grouped_sessions in session_groups:
             pretty_date = session_date.strftime("%A (%d-%m)")
             session_str = ", ".join(str(session) for session in grouped_sessions)
-            session_dates.append(f"{pretty_date}:\n  {session_str}")
+            session_dates.append(f"{pretty_date}:\n\t{session_str}")
 
         return "\n\n".join(session_dates)

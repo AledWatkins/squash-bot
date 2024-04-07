@@ -70,7 +70,7 @@ class TestCommand:
         assert response == {
             "type": 4,
             "data": {
-                "content": "Monday (25-03):\n  21:00",
+                "content": "Monday (25-03):\n\t21:00",
             },
         }
 
