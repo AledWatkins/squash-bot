@@ -282,8 +282,10 @@ class HeadToHead(Formatter):
         ]
 
     @classmethod
-    def _emoji(cls, value_one: int, value_two: int) -> str:
-        if value_one > value_two:
+    def _emoji(cls, value_one: int | None, value_two: int | None) -> str:
+        if value_one is None or value_two is None:
+            return ""
+        elif value_one > value_two:
             return cls.UP_ARROW_EMOJI
         elif value_one == value_two:
             return cls.PAUSE_EMOJI
