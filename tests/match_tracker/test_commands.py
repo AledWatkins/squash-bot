@@ -1,6 +1,8 @@
 import datetime
 from unittest import mock
 
+import time_machine
+
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import commands, queries
 from squash_bot.match_tracker.data import dataclasses, storage
@@ -369,6 +371,68 @@ class TestHeadToHead:
         assert "Last win" in content
 
         assert "Last 5 matches" in content
+
+    def test_head_to_head_last_win(self):
+        player_one = core_factories.UserFactory(id="1", username="player one")
+        player_two = core_factories.UserFactory(id="2", username="player two")
+        player_three = core_factories.UserFactory(id="3", username="player three")
+        player_four = core_factories.UserFactory(id="4", username="player four")
+
+        # Build a match history between all the players to make sure only the ones we want are returned
+        matches = match_tracker_factories.build_match_history_between(player_one, player_three, 1)
+        matches += match_tracker_factories.build_match_history_between(player_one, player_four, 1)
+        matches += match_tracker_factories.build_match_history_between(player_two, player_three, 1)
+        matches += match_tracker_factories.build_match_history_between(player_two, player_four, 1)
+
+        match_one = match_tracker_factories.MatchResultFactory(
+            winner=player_one, loser=player_two, played_at=datetime.datetime(2021, 1, 1, 12, 0)
+        )
+        match_two = match_tracker_factories.MatchResultFactory(
+            winner=player_one, loser=player_two, played_at=datetime.datetime(2021, 1, 7, 12, 0)
+        )
+        match_three = match_tracker_factories.MatchResultFactory(
+            winner=player_two, loser=player_one, played_at=datetime.datetime(2021, 1, 14, 12, 0)
+        )
+        matches += dataclasses.Matches([match_one, match_two, match_three])
+
+        command = commands.HeadToHeadCommand()
+        with mock.patch.object(queries, "get_matches", return_value=matches):
+            with time_machine.travel(datetime.datetime(2021, 1, 15, 11, 0)):
+                response = command.handle(
+                    {
+                        "data": {
+                            "options": [
+                                {"name": "player-one", "type": 6, "value": "1"},
+                                {"name": "player-two", "type": 6, "value": "2"},
+                            ],
+                            "resolved": {
+                                "users": {
+                                    "1": {
+                                        "id": "1",
+                                        "username": "player one",
+                                        "global_name": "Player One",
+                                    },
+                                    "2": {
+                                        "id": "2",
+                                        "username": "player two",
+                                        "global_name": "Player Two",
+                                    },
+                                }
+                            },
+                            "guild_id": "1",
+                        },
+                        "member": {
+                            "user": {
+                                "id": "1",
+                                "username": "different-name",
+                                "global_name": "different-global-name",
+                            }
+                        },
+                    }
+                ).as_dict()
+
+        content = response["data"]["content"]
+        assert "8 days ago        Last win        Yesterday" in content
 
 
 def _extract_data_from_table_string(

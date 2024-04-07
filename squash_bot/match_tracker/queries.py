@@ -56,7 +56,7 @@ class MatchesTallyData:
     @property
     def last_win_days_ago(self) -> int | None:
         if self.last_win_datetime:
-            return (datetime.datetime.now() - self.last_win_datetime).days
+            return (datetime.date.today() - self.last_win_datetime.date()).days
         return None
 
     def record_win(self, match: dataclasses.MatchResult) -> None:
