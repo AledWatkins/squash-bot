@@ -134,10 +134,17 @@ class TestMatches:
     def test_last(self):
         player_one = core_factories.UserFactory()
         player_two = core_factories.UserFactory()
+        player_three = core_factories.UserFactory()
 
         match_one = match_tracker_factories.MatchResultFactory(winner=player_one, loser=player_two)
         match_two = match_tracker_factories.MatchResultFactory(winner=player_two, loser=player_one)
-        matches = dataclasses.Matches([match_one, match_two])
+        match_three = match_tracker_factories.MatchResultFactory(
+            winner=player_three, loser=player_one
+        )
+        match_four = match_tracker_factories.MatchResultFactory(
+            winner=player_three, loser=player_two
+        )
+        matches = dataclasses.Matches([match_one, match_two, match_three, match_four])
 
-        assert matches.last() == dataclasses.Matches([match_two])
-        assert matches.last(n=2) == matches
+        assert matches.last() == dataclasses.Matches([match_four])
+        assert matches.last(n=2) == dataclasses.Matches([match_three, match_four])
