@@ -11,4 +11,3 @@ aws ecr get-login-password --region eu-north-1 | docker login --username AWS --p
 docker build --tag "$CONTAINER_STRING" .
 docker tag $CONTAINER_STRING:latest "$ECR_IMAGE_URI"
 docker push "$ECR_IMAGE_URI"
-
