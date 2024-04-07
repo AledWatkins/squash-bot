@@ -118,3 +118,6 @@ class Matches:
                 if user in (match_result.winner, match_result.loser)
             ]
         )
+
+    def last(self, n: int = 1) -> "Matches":
+        return Matches(match_results=self.match_results[-n:])
