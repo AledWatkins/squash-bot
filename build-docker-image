@@ -3,6 +3,25 @@ URL_STRING=".dkr.ecr.eu-north-1.amazonaws.com"
 CONTAINER_STRING="squash-bot"
 IMAGE_STRING="latest"
 ECR_IMAGE_URI="$AWS_ACCOUNT_ID$URL_STRING/$CONTAINER_STRING:$IMAGE_STRING"
+USE_CURRENT_BRANCH=0
+
+while getopts c opt;
+do
+    case $opt
+        in
+        c)USE_CURRENT_BRANCH=1;;
+    esac
+done
+
+if [ $USE_CURRENT_BRANCH -eq 1 ]; then
+    echo "Skipping master branch checkout"
+else
+    # Checkout master branch and update it
+    echo "Checking out master branch"
+    git checkout master
+    echo "Pulling master"
+    git pull origin master
+fi
 
 # Login to ECR and Docker
 aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID$URL_STRING"
