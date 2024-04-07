@@ -4,6 +4,7 @@ import uuid
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses
 
+from tests.factories import core as core_factories
 from tests.factories import match_tracker as match_tracker_factories
 
 
@@ -108,3 +109,24 @@ class TestMatches:
         sorted_matches = matches.sort_by("played_at")
 
         assert sorted_matches == dataclasses.Matches([match_two, match_one])
+
+    def test_involves(self):
+        player_one = core_factories.UserFactory()
+        player_two = core_factories.UserFactory()
+        player_three = core_factories.UserFactory()
+
+        match_one = match_tracker_factories.MatchResultFactory(winner=player_one, loser=player_two)
+        match_two = match_tracker_factories.MatchResultFactory(winner=player_two, loser=player_one)
+        match_three = match_tracker_factories.MatchResultFactory(
+            winner=player_three, loser=player_two
+        )
+        matches = dataclasses.Matches([match_one, match_two, match_three])
+
+        involves_player_one = matches.involves(player_one)
+        assert len(involves_player_one) == 2
+
+        involves_player_two = matches.involves(player_two)
+        assert len(involves_player_two) == 3
+
+        involves_player_three = matches.involves(player_three)
+        assert len(involves_player_three) == 1
