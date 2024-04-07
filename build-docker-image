@@ -4,12 +4,14 @@ CONTAINER_STRING="squash-bot"
 IMAGE_STRING="latest"
 ECR_IMAGE_URI="$AWS_ACCOUNT_ID$URL_STRING/$CONTAINER_STRING:$IMAGE_STRING"
 USE_CURRENT_BRANCH=0
+SKIP_TESTS=0
 
-while getopts c opt;
+while getopts cs opt;
 do
     case $opt
         in
         c)USE_CURRENT_BRANCH=1;;
+        s)SKIP_TESTS=1;;
     esac
 done
 
@@ -21,6 +23,14 @@ else
     git checkout master
     echo "Pulling master"
     git pull origin master
+fi
+
+if [ $SKIP_TESTS -eq 0 ]; then
+  # Run tests
+  export SETTINGS_MODULE=squash_bot.settings.localdev
+  pytest
+else
+  echo "Skipping tests"
 fi
 
 # Login to ECR and Docker
