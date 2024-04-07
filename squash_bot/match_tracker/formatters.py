@@ -189,16 +189,8 @@ class HeadToHead(Formatter):
             else f"{player_two_point_diff}"
         )
 
-        player_one_last_win_days_ago_str = (
-            f"{player_one_tally_data.last_win_days_ago} days ago"
-            if player_one_tally_data.last_win_days_ago is not None
-            else "Never"
-        )
-        player_two_last_win_days_ago_str = (
-            f"{player_two_tally_data.last_win_days_ago} days ago"
-            if player_two_tally_data.last_win_days_ago is not None
-            else "Never"
-        )
+        player_one_last_win_days_ago_str = cls._days_ago(player_one_tally_data.last_win_days_ago)
+        player_two_last_win_days_ago_str = cls._days_ago(player_two_tally_data.last_win_days_ago)
 
         return [
             [
@@ -286,6 +278,16 @@ class HeadToHead(Formatter):
             return cls.PAUSE_EMOJI
         else:
             return cls.DOWN_ARROW_EMOJI
+
+    @classmethod
+    def _days_ago(cls, days: int | None) -> str:
+        if days is None:
+            return "Never"
+        elif days == 0:
+            return "Today"
+        elif days == 1:
+            return "Yesterday"
+        return f"{days} days ago"
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
