@@ -1,4 +1,5 @@
 import datetime
+import random
 import uuid
 
 import factory
@@ -17,7 +18,7 @@ class MatchResultFactory(factory.Factory):
     loser = factory.SubFactory(
         core_factories.UserFactory, id=2, username="John", global_name="John!"
     )
-    served = factory.SelfAttribute("loser")
+    served = factory.LazyAttribute(lambda r: random.choice([r.winner, r.loser]))
     played_at = factory.LazyFunction(datetime.datetime.now)
     logged_at = factory.LazyFunction(datetime.datetime.now)
     logged_by = factory.SubFactory(core_factories.UserFactory)
@@ -25,3 +26,7 @@ class MatchResultFactory(factory.Factory):
 
     class Meta:
         model = dataclasses.MatchResult
+
+    class Params:
+        loser_served = factory.Trait(served=factory.SelfAttribute("loser"))
+        winner_served = factory.Trait(served=factory.SelfAttribute("winner"))

@@ -83,15 +83,15 @@ class TestMatchResult:
         )
 
     def test_receiver(self):
-        match_result = match_tracker_factories.MatchResultFactory()
+        match_result = match_tracker_factories.MatchResultFactory(loser_served=True)
         assert match_result.receiver == match_result.winner
 
     def test_receiver_score(self):
-        match_result = match_tracker_factories.MatchResultFactory()
+        match_result = match_tracker_factories.MatchResultFactory(loser_served=True)
         assert match_result.receiver_score == match_result.winner_score
 
     def test_server_score(self):
-        match_result = match_tracker_factories.MatchResultFactory()
+        match_result = match_tracker_factories.MatchResultFactory(loser_served=True)
         assert match_result.server_score == match_result.loser_score
 
 
