@@ -15,6 +15,12 @@ class NoopOrderer(Orderer):
         return matches
 
 
+class PlayedAt(Orderer):
+    @classmethod
+    def order(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
+        return matches.sort_by("played_at")
+
+
 class OptionalByMatchesField(Orderer):
     @classmethod
     def order(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
