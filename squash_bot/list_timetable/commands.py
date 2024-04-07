@@ -67,12 +67,12 @@ class ListTimetableCommand(_command.Command):
         if days < 1:
             raise _command.CommandVerificationError(f"Don't be daft now.. {days} must be > 0")
 
-        # Check time of day - as it is not required (or could be invalid), default to ANY
+        # Check time of day is valid
         try:
-            time_of_day = timetable.TimeOfDayType[
-                options[ListTimetableOptionType.TIME_OF_DAY.value].upper()
-            ]
-        except KeyError as e:
+            time_of_day = timetable.TimeOfDayType(
+                options[ListTimetableOptionType.TIME_OF_DAY.value]
+            )
+        except ValueError as e:
             raise _command.CommandVerificationError("Invalid time of day") from e
 
         to_date = from_date + datetime.timedelta(days=days)
