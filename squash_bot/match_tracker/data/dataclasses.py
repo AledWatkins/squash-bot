@@ -109,3 +109,12 @@ class Matches:
                 if match_result.played_on >= from_date
             ]
         )
+
+    def involves(self, user: core_dataclasses.User) -> "Matches":
+        return Matches(
+            match_results=[
+                match_result
+                for match_result in self.match_results
+                if user in (match_result.winner, match_result.loser)
+            ]
+        )
