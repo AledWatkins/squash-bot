@@ -82,6 +82,11 @@ class Matches:
     def __len__(self) -> int:
         return len(self.match_results)
 
+    def __add__(self, other: typing.Any) -> "Matches":
+        if not isinstance(other, Matches):
+            raise NotImplementedError
+        return Matches(match_results=self.match_results + other.match_results)
+
     @classmethod
     def from_match_results(cls, match_results: list[dict[str, typing.Any]]) -> "Matches":
         return Matches(
