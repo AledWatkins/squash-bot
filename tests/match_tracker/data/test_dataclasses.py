@@ -130,3 +130,14 @@ class TestMatches:
 
         involves_player_three = matches.involves(player_three)
         assert len(involves_player_three) == 1
+
+    def test_last(self):
+        player_one = core_factories.UserFactory()
+        player_two = core_factories.UserFactory()
+
+        match_one = match_tracker_factories.MatchResultFactory(winner=player_one, loser=player_two)
+        match_two = match_tracker_factories.MatchResultFactory(winner=player_two, loser=player_one)
+        matches = dataclasses.Matches([match_one, match_two])
+
+        assert matches.last() == dataclasses.Matches([match_two])
+        assert matches.last(n=2) == matches
