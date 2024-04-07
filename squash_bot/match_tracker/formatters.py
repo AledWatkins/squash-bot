@@ -169,6 +169,13 @@ class HeadToHead(Formatter):
         player_one_tally_data: queries.MatchesTallyData,
         player_two_tally_data: queries.MatchesTallyData,
     ) -> list[list[str]]:
+        player_one_win_rate_serving_str = cls._nullable_percentage_string(
+            player_one_tally_data.win_rate_serving
+        )
+        player_two_win_rate_serving_str = cls._nullable_percentage_string(
+            player_two_tally_data.win_rate_serving
+        )
+
         player_one_point_diff = (
             player_one_tally_data.total_score - player_two_tally_data.total_score
         )
@@ -201,9 +208,9 @@ class HeadToHead(Formatter):
                 f"{player_two_tally_data.win_rate}%",
             ],
             [
-                f"{player_one_tally_data.win_rate_serving}%",
+                player_one_win_rate_serving_str,
                 "Win rate (serving)",
-                f"{player_two_tally_data.win_rate_serving}%",
+                player_two_win_rate_serving_str,
             ],
             [
                 player_one_point_diff_str,
@@ -243,8 +250,15 @@ class HeadToHead(Formatter):
         player_one_recent_win_rate_str = f"{cls._emoji(player_one_recent.win_rate, player_one_all_time.win_rate)} {player_one_recent.win_rate}%"
         player_two_recent_win_rate_str = f"{player_two_recent.win_rate}% {cls._emoji(player_two_recent.win_rate, player_two_all_time.win_rate)}"
 
-        player_one_recent_win_rate_serving_str = f"{cls._emoji(player_one_recent.win_rate_serving, player_one_all_time.win_rate_serving)} {player_one_recent.win_rate_serving}%"
-        player_two_recent_win_rate_serving_str = f"{player_two_recent.win_rate_serving}% {cls._emoji(player_two_recent.win_rate_serving, player_two_all_time.win_rate_serving)}"
+        player_one_win_rate_serving_str = cls._nullable_percentage_string(
+            player_one_recent.win_rate_serving
+        )
+        player_two_win_rate_serving_str = cls._nullable_percentage_string(
+            player_two_recent.win_rate_serving
+        )
+
+        player_one_recent_win_rate_serving_str = f"{cls._emoji(player_one_recent.win_rate_serving, player_one_all_time.win_rate_serving)} {player_one_win_rate_serving_str}"
+        player_two_recent_win_rate_serving_str = f"{player_two_win_rate_serving_str} {cls._emoji(player_two_recent.win_rate_serving, player_two_all_time.win_rate_serving)}"
 
         player_one_recent_avg_score_str = f"{cls._emoji(player_one_recent.average_score, player_one_all_time.average_score)} {player_one_recent.average_score}"
         player_two_recent_avg_score_str = f"{player_two_recent.average_score} {cls._emoji(player_two_recent.average_score, player_two_all_time.average_score)}"
@@ -285,6 +299,10 @@ class HeadToHead(Formatter):
         elif days == 1:
             return "Yesterday"
         return f"{days} days ago"
+
+    @classmethod
+    def _nullable_percentage_string(cls, value: int | None) -> str:
+        return f"{value}%" if value is not None else "-"
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
