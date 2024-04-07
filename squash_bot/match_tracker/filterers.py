@@ -23,3 +23,9 @@ class OptionalFromDateFilterer(Filterer):
             from_date = datetime.date.fromisoformat(from_date_string)
             matches = matches.from_date(from_date)
         return matches
+
+
+class HeadToHead(Filterer):
+    @classmethod
+    def filter(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
+        return matches.involves(kwargs["player-one"]).involves(kwargs["player-two"])
