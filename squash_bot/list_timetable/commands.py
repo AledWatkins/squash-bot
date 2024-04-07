@@ -103,9 +103,9 @@ class ListTimetableCommand(_command.Command):
         session_groups = itertools.groupby(sessions, key=lambda s: s.start_datetime.date())
 
         session_dates = []
-        for session_date, sessions in session_groups:
+        for session_date, grouped_sessions in session_groups:
             pretty_date = session_date.strftime("%A (%d-%m)")
-            session_str = ", ".join([str(session) for session in sessions])
+            session_str = ", ".join(str(session) for session in grouped_sessions)
             session_dates.append(f"{pretty_date}:\n  {session_str}")
 
         return "\n\n".join(session_dates)

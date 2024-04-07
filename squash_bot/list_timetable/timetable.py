@@ -60,7 +60,7 @@ class Timetable(abc.ABC):
             TimeOfDayType.MORNING: range(0, 12),
             TimeOfDayType.AFTERNOON: range(12, 17),
             TimeOfDayType.EVENING: range(17, 24),
-            TimeOfDayType.POST_WORK_SESH: 19,
+            TimeOfDayType.POST_WORK_SESH: range(19, 20),
             TimeOfDayType.POST_WORK_SESH_PLUS: range(18, 21),
         }[time_of_day]
 
