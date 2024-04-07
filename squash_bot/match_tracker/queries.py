@@ -44,8 +44,10 @@ class MatchesTallyData:
         return int((self.wins / self.number_matches) * 100)
 
     @property
-    def win_rate_serving(self) -> int:
-        return int((self.wins_served / self.number_matches) * 100)
+    def win_rate_serving(self) -> int | None:
+        if not self.matches_served:
+            return None
+        return int((self.wins_served / self.matches_served) * 100)
 
     @property
     def average_score(self) -> int:
