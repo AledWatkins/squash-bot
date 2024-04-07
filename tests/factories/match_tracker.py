@@ -4,6 +4,7 @@ import uuid
 
 import factory
 
+from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses
 
 from tests.factories import core as core_factories
@@ -30,3 +31,24 @@ class MatchResultFactory(factory.Factory):
     class Params:
         loser_served = factory.Trait(served=factory.SelfAttribute("loser"))
         winner_served = factory.Trait(served=factory.SelfAttribute("winner"))
+
+
+def build_match_history_between(
+    user_one: core_dataclasses.User, user_two: core_dataclasses.User, games_played: int = 10
+) -> dataclasses.Matches:
+    """
+    Build a realistic match history between two users, where the winner is randomly chosen.
+    """
+    results = []
+    for _ in range(games_played):
+        winner_score = 11
+        loser_score = random.randint(0, 9)
+        winner = random.choice([user_one, user_two])
+        loser = user_one if winner == user_two else user_two
+        results.append(
+            MatchResultFactory(
+                winner=winner, winner_score=winner_score, loser=loser, loser_score=loser_score
+            )
+        )
+
+    return dataclasses.Matches(match_results=results)
