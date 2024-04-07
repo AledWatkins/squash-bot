@@ -6,6 +6,7 @@ import attrs
 import tabulate
 
 from squash_bot.core.data import dataclasses as core_dataclasses
+from squash_bot.match_tracker import queries, utils
 from squash_bot.match_tracker.data import dataclasses
 
 
@@ -112,6 +113,179 @@ class LeagueTable(Formatter):
         )
 
         return f"```{inner_message}```"
+
+
+class HeadToHead(Formatter):
+    RECENT_MATCHES = 5
+    UP_ARROW_EMOJI = "🔼"
+    PAUSE_EMOJI = " ⏸️ "
+    DOWN_ARROW_EMOJI = "🔽"
+
+    @classmethod
+    def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
+        player_one = kwargs["player-one"]
+        player_two = kwargs["player-two"]
+
+        all_time_tally_data = queries.build_tally_data_by_player(matches)
+        player_one_all_time = all_time_tally_data[player_one]
+        player_two_all_time = all_time_tally_data[player_two]
+
+        all_time_table_data = cls._all_time_table_data(player_one_all_time, player_two_all_time)
+        table_data = all_time_table_data
+
+        # If there are enough recent matches, display recent data
+        recent_matches = matches.last(cls.RECENT_MATCHES)
+        available_recent_matches = len(recent_matches)
+        if available_recent_matches >= cls.RECENT_MATCHES:
+            recent_tally_data = queries.build_tally_data_by_player(recent_matches)
+            player_one_recent = recent_tally_data[player_one]
+            player_two_recent = recent_tally_data[player_two]
+
+            spacer = [["", "", ""]]
+            recent_matches_header = [[f"Last {available_recent_matches} matches", "", ""]]
+            recent_table_data = cls._recent_table_data(
+                player_one_recent, player_two_recent, player_one_all_time, player_two_all_time
+            )
+
+            table_data += spacer + recent_matches_header + recent_table_data
+
+        table_string = tabulate.tabulate(
+            table_data,
+            headers=(
+                player_one.name,
+                f"{player_one_all_time.number_matches}",
+                player_two.name,
+            ),
+            stralign="center",
+            numalign="center",
+            maxcolwidths=[None, None, None],
+            tablefmt="firstrow",
+        )
+        recent_match_strings = "\n".join(
+            utils.build_match_string(match) for match in recent_matches.match_results
+        )
+        return f"```{table_string}```{recent_match_strings}"
+
+    @classmethod
+    def _all_time_table_data(
+        cls,
+        player_one_tally_data: queries.MatchesTallyData,
+        player_two_tally_data: queries.MatchesTallyData,
+    ) -> list[list[str]]:
+        player_one_point_diff = (
+            player_one_tally_data.total_score - player_two_tally_data.total_score
+        )
+        player_one_point_diff_str = (
+            f"+{player_one_point_diff}"
+            if player_one_point_diff > 0
+            else f"{player_one_point_diff}"
+        )
+        player_two_point_diff = (
+            player_two_tally_data.total_score - player_one_tally_data.total_score
+        )
+        player_two_point_diff_str = (
+            f"+{player_two_point_diff}"
+            if player_two_point_diff > 0
+            else f"{player_two_point_diff}"
+        )
+
+        player_one_last_win_days_ago_str = (
+            f"{player_one_tally_data.last_win_days_ago} days ago"
+            if player_one_tally_data.last_win_days_ago is not None
+            else "Never"
+        )
+        player_two_last_win_days_ago_str = (
+            f"{player_two_tally_data.last_win_days_ago} days ago"
+            if player_two_tally_data.last_win_days_ago is not None
+            else "Never"
+        )
+
+        return [
+            [
+                f"{player_one_tally_data.wins}",
+                "Wins",
+                f"{player_two_tally_data.wins}",
+            ],
+            [
+                f"{player_one_tally_data.win_rate}%",
+                "Win rate",
+                f"{player_two_tally_data.win_rate}%",
+            ],
+            [
+                f"{player_one_tally_data.win_rate_serving}%",
+                "Win rate (serving)",
+                f"{player_two_tally_data.win_rate_serving}%",
+            ],
+            [
+                player_one_point_diff_str,
+                "Point diff.",
+                player_two_point_diff_str,
+            ],
+            [
+                f"{player_one_tally_data.average_score}",
+                "Avg. score",
+                f"{player_two_tally_data.average_score}",
+            ],
+            [
+                f"{player_one_tally_data.current_win_streak}",
+                "Current win streak",
+                f"{player_two_tally_data.current_win_streak}",
+            ],
+            [
+                f"{player_one_tally_data.highest_win_streak}",
+                "Highest win streak",
+                f"{player_two_tally_data.highest_win_streak}",
+            ],
+            [
+                player_one_last_win_days_ago_str,
+                "Last win",
+                player_two_last_win_days_ago_str,
+            ],
+        ]
+
+    @classmethod
+    def _recent_table_data(
+        cls,
+        player_one_recent: queries.MatchesTallyData,
+        player_two_recent: queries.MatchesTallyData,
+        player_one_all_time: queries.MatchesTallyData,
+        player_two_all_time: queries.MatchesTallyData,
+    ) -> list[list[str]]:
+        player_one_recent_win_rate_str = f"{cls._emoji(player_one_recent.win_rate, player_one_all_time.win_rate)} {player_one_recent.win_rate}%"
+        player_two_recent_win_rate_str = f"{player_two_recent.win_rate}% {cls._emoji(player_two_recent.win_rate, player_two_all_time.win_rate)}"
+
+        player_one_recent_win_rate_serving_str = f"{cls._emoji(player_one_recent.win_rate_serving, player_one_all_time.win_rate_serving)} {player_one_recent.win_rate_serving}%"
+        player_two_recent_win_rate_serving_str = f"{player_two_recent.win_rate_serving}% {cls._emoji(player_two_recent.win_rate_serving, player_two_all_time.win_rate_serving)}"
+
+        player_one_recent_avg_score_str = f"{cls._emoji(player_one_recent.average_score, player_one_all_time.average_score)} {player_one_recent.average_score}"
+        player_two_recent_avg_score_str = f"{player_two_recent.average_score} {cls._emoji(player_two_recent.average_score, player_two_all_time.average_score)}"
+
+        return [
+            [
+                player_one_recent_win_rate_str,
+                "Win rate",
+                player_two_recent_win_rate_str,
+            ],
+            [
+                player_one_recent_win_rate_serving_str,
+                "Win rate (serving)",
+                player_two_recent_win_rate_serving_str,
+            ],
+            [
+                player_one_recent_avg_score_str,
+                "Avg. score",
+                player_two_recent_avg_score_str,
+            ],
+        ]
+
+    @classmethod
+    def _emoji(cls, value_one: int, value_two: int) -> str:
+        if value_one > value_two:
+            return cls.UP_ARROW_EMOJI
+        elif value_one == value_two:
+            return cls.PAUSE_EMOJI
+        else:
+            return cls.DOWN_ARROW_EMOJI
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
