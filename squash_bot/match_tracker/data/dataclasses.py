@@ -79,6 +79,9 @@ class Matches:
     def __bool__(self) -> bool:
         return bool(self.match_results)
 
+    def __len__(self) -> int:
+        return len(self.match_results)
+
     @classmethod
     def from_match_results(cls, match_results: list[dict[str, typing.Any]]) -> "Matches":
         return Matches(
