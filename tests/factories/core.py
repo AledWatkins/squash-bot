@@ -4,9 +4,9 @@ from squash_bot.core.data import dataclasses
 
 
 class UserFactory(factory.Factory):
-    id = 1
+    id = factory.Sequence(lambda n: n)
     username = "paul"
-    global_name = "Paul"
+    global_name = factory.LazyAttribute(lambda user: user.username.title())
 
     class Meta:
         model = dataclasses.User
