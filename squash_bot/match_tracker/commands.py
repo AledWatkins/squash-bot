@@ -140,3 +140,27 @@ class LeagueTableCommand(FilterOrderFormatMatchesMixin, _command.Command):
 
     filterer = filterers.OptionalFromDateFilterer
     formatter = formatters.LeagueTable
+
+
+@command_registry.registry.register
+class HeadToHeadCommand(FilterOrderFormatMatchesMixin, _command.Command):
+    name = "head-to-head"
+    description = "Show head-to-head stats."
+    options = (
+        _command.CommandOption(
+            name="player-one",
+            description="Player one",
+            type=core_constants.CommandOptionType.USER,
+            required=True,
+        ),
+        _command.CommandOption(
+            name="player-two",
+            description="Player two",
+            type=core_constants.CommandOptionType.USER,
+            required=True,
+        ),
+    )
+
+    filterer = filterers.HeadToHead
+    orderer = orderers.PlayedAt
+    formatter = formatters.HeadToHead
