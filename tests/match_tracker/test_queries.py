@@ -91,25 +91,29 @@ class TestBuildTallyDataByPlayer:
     def test_returns_correct_last_win_data(self):
         player_one = core_factories.UserFactory(username="player one")
         player_two = core_factories.UserFactory(username="player two")
+        player_three = core_factories.UserFactory(username="player three")
 
         # Build a match history where player one wins three games in a row
         match_one = match_tracker_factories.MatchResultFactory(
             winner=player_one, loser=player_two, played_at=datetime.datetime(2021, 1, 1, 12, 0)
         )
         match_two = match_tracker_factories.MatchResultFactory(
-            winner=player_two, loser=player_one, played_at=datetime.datetime(2021, 1, 1, 13, 0)
+            winner=player_two, loser=player_one, played_at=datetime.datetime(2021, 1, 3, 13, 0)
         )
-        matches = dataclasses.Matches(match_results=[match_one, match_two])
+        match_three = match_tracker_factories.MatchResultFactory(
+            winner=player_three, loser=player_one, played_at=datetime.datetime(2021, 1, 15, 13, 0)
+        )
+        matches = dataclasses.Matches(match_results=[match_one, match_two, match_three])
 
         tally_data = queries.build_tally_data_by_player(matches)
-        assert len(tally_data.keys()) == 2
+        assert len(tally_data.keys()) == 3
 
         player_one_tally = tally_data[player_one]
         player_two_tally = tally_data[player_two]
 
         assert player_one_tally.last_win_datetime == datetime.datetime(2021, 1, 1, 12, 0)
-        assert player_two_tally.last_win_datetime == datetime.datetime(2021, 1, 1, 13, 0)
+        assert player_two_tally.last_win_datetime == datetime.datetime(2021, 1, 3, 13, 0)
 
-        with time_machine.travel(datetime.datetime(2021, 1, 2, 14, 0)):
-            assert player_one_tally.last_win_days_ago == 1
-            assert player_two_tally.last_win_days_ago == 1
+        with time_machine.travel(datetime.datetime(2021, 2, 1, 14, 0)):
+            assert player_one_tally.last_win_days_ago == 31
+            assert player_two_tally.last_win_days_ago == 29
