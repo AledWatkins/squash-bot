@@ -5,6 +5,7 @@ from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import commands, queries
 from squash_bot.match_tracker.data import dataclasses, storage
 
+from tests.factories import core as core_factories
 from tests.factories import match_tracker as match_tracker_factories
 
 
@@ -312,6 +313,62 @@ class TestLeagueTable:
         table_data = _extract_data_from_table_string(content)
         assert ["global-user2", "1", "0", "100%"] in table_data
         assert ["global-user1", "0", "1", "0%"] in table_data
+
+
+class TestHeadToHead:
+    def test_head_to_head_with_matches(self):
+        player_one = core_factories.UserFactory(id="1", username="player one")
+        player_two = core_factories.UserFactory(id="2", username="player two")
+        matches = match_tracker_factories.build_match_history_between(player_one, player_two)
+
+        command = commands.HeadToHeadCommand()
+        with mock.patch.object(queries, "get_matches", return_value=matches):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [
+                            {"name": "player-one", "type": 6, "value": "1"},
+                            {"name": "player-two", "type": 6, "value": "2"},
+                        ],
+                        "resolved": {
+                            "users": {
+                                "1": {
+                                    "id": "1",
+                                    "username": "player one",
+                                    "global_name": "Player One",
+                                },
+                                "2": {
+                                    "id": "2",
+                                    "username": "player two",
+                                    "global_name": "Player Two",
+                                },
+                            }
+                        },
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            ).as_dict()
+
+        content = response["data"]["content"]
+
+        # Check that the table contains the expected headers
+        assert "Wins" in content
+        assert "Win rate" in content
+        assert "Win rate (serving)" in content
+        assert "Point diff." in content
+        assert "Avg. score" in content
+        assert "Current win streak" in content
+        assert "Highest win streak" in content
+        assert "Last win" in content
+
+        assert "Last 5 matches" in content
 
 
 def _extract_data_from_table_string(
