@@ -17,7 +17,7 @@ class MatchResultFactory(factory.Factory):
     loser = factory.SubFactory(
         core_factories.UserFactory, id=2, username="John", global_name="John!"
     )
-    served = factory.SelfAttribute("loser")
+    served = factory.LazyAttribute(lambda r: random.choice([r.winner, r.loser]))
     played_at = factory.LazyFunction(datetime.datetime.now)
     logged_at = factory.LazyFunction(datetime.datetime.now)
     logged_by = factory.SubFactory(core_factories.UserFactory)

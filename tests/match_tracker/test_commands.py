@@ -173,10 +173,14 @@ class TestShowMatches:
 
     def test_show_matches(self):
         match_one_played_at = datetime.datetime(2021, 1, 1, 12, 0)
-        match_one = match_tracker_factories.MatchResultFactory(played_at=match_one_played_at)
+        match_one = match_tracker_factories.MatchResultFactory(
+            played_at=match_one_played_at, served="..loser"
+        )
 
         match_two_played_at = datetime.datetime(2021, 1, 2, 12, 0)
-        match_two = match_tracker_factories.MatchResultFactory(played_at=match_two_played_at)
+        match_two = match_tracker_factories.MatchResultFactory(
+            played_at=match_two_played_at, served="..loser"
+        )
 
         matches = dataclasses.Matches(match_results=[match_one, match_two])
 
