@@ -6,7 +6,7 @@ import attrs
 import tabulate
 
 from squash_bot.core.data import dataclasses as core_dataclasses
-from squash_bot.match_tracker import queries, utils
+from squash_bot.match_tracker import queries
 from squash_bot.match_tracker.data import dataclasses
 
 
@@ -161,10 +161,7 @@ class HeadToHead(Formatter):
             maxcolwidths=[None, None, None],
             tablefmt="firstrow",
         )
-        recent_match_strings = "\n".join(
-            utils.build_match_string(match) for match in recent_matches.match_results
-        )
-        return f"```{table_string}```{recent_match_strings}"
+        return f"```{table_string}```"
 
     @classmethod
     def _all_time_table_data(
