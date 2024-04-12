@@ -119,6 +119,12 @@ class ShowMatchesCommand(FilterOrderFormatMatchesMixin, _command.Command):
             required=False,
             default="played_at",
         ),
+        _command.CommandOption(
+            name="with-ids",
+            description="Show match IDs",
+            type=core_constants.CommandOptionType.BOOLEAN,
+            required=False,
+        ),
     )
 
     orderer = orderers.OptionalByMatchesField

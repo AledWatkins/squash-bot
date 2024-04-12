@@ -29,8 +29,12 @@ class MatchRow:
     first_player_score: int
     second_player_score: int
     second_player: core_dataclasses.User
+    result_id: str | None = None
 
     def as_display_row(self) -> list[str]:
+        additional_columns = []
+        if self.result_id:
+            additional_columns.append(f"({self.result_id})")
         return [
             "\t",
             self.first_player.name,
@@ -38,12 +42,13 @@ class MatchRow:
             "-",
             str(self.second_player_score),
             self.second_player.name,
-        ]
+        ] + additional_columns
 
 
 class PlayedAtFormatter(Formatter):
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
+        with_ids = kwargs.get("with-ids", False)
         groups = itertools.groupby(matches.match_results, key=lambda match: match.played_on)
 
         inner_message = ""
@@ -57,6 +62,7 @@ class PlayedAtFormatter(Formatter):
                         first_player_score=match.server_score,
                         second_player_score=match.receiver_score,
                         second_player=match.receiver,
+                        result_id=str(match.result_id) if with_ids else None,
                     ).as_display_row()
                     for match in match_results
                 ],
