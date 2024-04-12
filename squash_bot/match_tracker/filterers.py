@@ -19,7 +19,7 @@ class NoopFilterer(Filterer):
 class LastN(Filterer):
     @classmethod
     def filter(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
-        n = 30
+        n = 15
         return matches.last(n)
 
 
