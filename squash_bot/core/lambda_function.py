@@ -73,7 +73,6 @@ def command_handler(body: dict[str, typing.Any]) -> response.Response:
             body_data="Unknown command",
         )
     logger.info(f"Handling command {command_name}")
-    logger.info(f"Data: {body['data']}")
     try:
         command_response_data = command.handle(body).as_dict()
     except _command.CommandVerificationError as e:

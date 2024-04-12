@@ -82,9 +82,6 @@ class Command:
                     username=user_data["username"],
                     global_name=user_data["global_name"],
                 )
-            elif command_option.is_bool:
-                # Convert the string to a python boolean
-                value = option["value"] == "true"
             else:
                 value = option["value"]
 
