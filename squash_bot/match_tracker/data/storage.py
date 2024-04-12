@@ -40,5 +40,23 @@ def store_match_result(
     )
 
 
+def replace_match_result(
+    match_result: dataclasses.MatchResult, guild: core_dataclasses.Guild
+) -> None:
+    """
+    Get the current match results, replace the existing result with the new one, and store the updated list
+    """
+    all_results = get_all_match_results(guild)
+
+    modified_results = all_results.replace(match_result)
+
+    match_results_as_dicts = convert_match_results_to_dicts(modified_results)
+    base.store_file(
+        file_path=settings_base.settings.MATCH_RESULTS_PATH,
+        file_name=_results_file_name(guild),
+        contents=json.dumps(match_results_as_dicts),
+    )
+
+
 def _results_file_name(guild: core_dataclasses.Guild) -> str:
     return f"{guild.guild_id}/{settings_base.settings.MATCH_RESULTS_FILE}"

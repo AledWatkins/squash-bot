@@ -6,6 +6,9 @@ from squash_bot.match_tracker.data import dataclasses, storage
 from squash_bot.settings import base as settings_base
 from squash_bot.storage import base as storage_base
 
+from tests.factories import core as core_factories
+from tests.factories import match_tracker as match_tracker_factories
+
 
 class TestGetAllMatchResultsAsDict:
     def test_gets_results(self):
@@ -63,3 +66,37 @@ class TestGetAllMatchResults:
         )
 
         assert storage.get_all_match_results(guild).match_results == [result]
+
+
+class TestReplaceMatchResult:
+    def test_can_replace_result(self):
+        ricky = core_factories.UserFactory(username="ricky")
+        steve = core_factories.UserFactory(username="steve")
+        karl = core_factories.UserFactory(username="karl")
+
+        # Build three matches
+        match_one = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+        match_two = match_tracker_factories.MatchResultFactory(winner=steve, loser=ricky)
+        match_three = match_tracker_factories.MatchResultFactory(winner=karl, loser=steve)
+
+        # Store those matches
+        fake_results = [match_one.to_dict(), match_two.to_dict(), match_three.to_dict()]
+        guild = core_dataclasses.Guild(guild_id="1")
+        storage_base.LocalStorage().store_file(
+            file_path=settings_base.settings.MATCH_RESULTS_PATH,
+            file_name=storage._results_file_name(guild),
+            contents=json.dumps(fake_results),
+        )
+
+        # Build a replacement match to replace the third match
+        new_match_three = match_tracker_factories.MatchResultFactory(
+            winner=steve, loser=karl, result_id=match_three.result_id
+        )
+
+        # Replace the third match with the new match
+        storage.replace_match_result(match_result=new_match_three, guild=guild)
+
+        # Check that the third match has been replaced
+        assert storage.get_all_match_results(guild) == dataclasses.Matches(
+            [match_one, match_two, new_match_three]
+        )
