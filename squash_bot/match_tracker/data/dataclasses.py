@@ -96,6 +96,9 @@ class Matches:
     def add(self, match_result: MatchResult) -> "Matches":
         return Matches(match_results=self.match_results + [match_result])
 
+    # Queries
+    # -------
+
     def sort_by(self, field: str, reverse: bool = False) -> "Matches":
         try:
             return Matches(
