@@ -213,6 +213,42 @@ class TestShowMatches:
             == "```\n\nFriday, 1 January 2021:\n  John!  3  -  11  Paul!\n\nSaturday, 2 January 2021:\n  John!  3  -  11  Paul!```"
         )
 
+    def test_show_matches_with_id(self):
+        match_one_played_at = datetime.datetime(2021, 1, 1, 12, 0)
+        paul = core_factories.UserFactory(id="1", username="Paul", global_name="Paul!")
+        john = core_factories.UserFactory(id="2", username="John", global_name="John!")
+        match_one = match_tracker_factories.MatchResultFactory(
+            winner=paul, loser=john, served=john, played_at=match_one_played_at
+        )
+        matches = dataclasses.Matches(match_results=[match_one])
+
+        command = commands.ShowMatchesCommand()
+        with mock.patch.object(queries, "get_matches", return_value=matches):
+            response = command.handle(
+                {
+                    "data": {
+                        "options": [
+                            {"name": "sort-by", "value": ""},
+                            {"name": "with-ids", "value": "true"},
+                        ],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            ).as_dict()
+
+        content = response["data"]["content"]
+        assert (
+            content
+            == f"```\n\nFriday, 1 January 2021:\n  John!  3  -  11  Paul!  ({match_one.result_id})```"
+        )
+
 
 class TestLeagueTable:
     def test_league_table_with_no_matches(self):
