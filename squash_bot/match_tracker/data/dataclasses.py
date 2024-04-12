@@ -93,8 +93,26 @@ class Matches:
             match_results=[MatchResult.from_dict(match_result) for match_result in match_results]
         )
 
+    # Mutations
+    # ---------
+
     def add(self, match_result: MatchResult) -> "Matches":
         return Matches(match_results=self.match_results + [match_result])
+
+    def replace(self, match_result_to_replace: MatchResult) -> "Matches":
+        """
+        Replace a match result in the list of match results.
+
+        The match result to replace is identified by its result_id.
+        """
+        return Matches(
+            match_results=[
+                match_result_to_replace
+                if match_result_to_replace.result_id == match.result_id
+                else match
+                for match in self.match_results
+            ]
+        )
 
     # Queries
     # -------

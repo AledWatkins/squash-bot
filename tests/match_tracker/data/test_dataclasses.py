@@ -148,3 +148,15 @@ class TestMatches:
 
         assert matches.last() == dataclasses.Matches([match_four])
         assert matches.last(n=2) == dataclasses.Matches([match_three, match_four])
+
+    def test_replace(self):
+        match_one = match_tracker_factories.MatchResultFactory(loser_score=5)
+        match_two = match_tracker_factories.MatchResultFactory(loser_score=3)
+        matches = dataclasses.Matches([match_one, match_two])
+
+        match_three = match_tracker_factories.MatchResultFactory(
+            loser_score=1, result_id=match_one.result_id
+        )
+        replaced_matches = matches.replace(match_three)
+
+        assert replaced_matches == dataclasses.Matches([match_three, match_two])
