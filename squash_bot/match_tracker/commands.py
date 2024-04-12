@@ -127,6 +127,7 @@ class ShowMatchesCommand(FilterOrderFormatMatchesMixin, _command.Command):
         ),
     )
 
+    filterer = filterers.LastN
     orderer = orderers.OptionalByMatchesField
     formatter = formatters.PlayedAtFormatter
 

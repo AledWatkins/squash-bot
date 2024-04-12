@@ -16,6 +16,13 @@ class NoopFilterer(Filterer):
         return matches
 
 
+class LastN(Filterer):
+    @classmethod
+    def filter(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
+        n = 30
+        return matches.last(n)
+
+
 class OptionalFromDateFilterer(Filterer):
     @classmethod
     def filter(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
