@@ -32,6 +32,22 @@ class OptionalFromDateFilterer(Filterer):
         return matches
 
 
+class LastSessionOrDate(Filterer):
+    """
+    Filter matches for a specific date or all the matches from the last day of play.
+    """
+
+    @classmethod
+    def filter(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
+        if date_string := kwargs.get("date"):
+            date = datetime.date.fromisoformat(date_string)
+        else:
+            # This is going to be a problem if there are no matches, but I don't care right now
+            date = matches.match_results[0].played_on
+
+        return matches.on_date(date)
+
+
 class HeadToHead(Filterer):
     @classmethod
     def filter(cls, matches: dataclasses.Matches, **kwargs) -> dataclasses.Matches:
