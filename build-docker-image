@@ -36,6 +36,9 @@ fi
 # Login to ECR and Docker
 aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID$URL_STRING"
 
+# Delete old image
+aws ecr batch-delete-image --repository-name $CONTAINER_STRING --image-ids imageTag=latest > /dev/null 2>&1
+
 # Build and push new image
 docker build --tag "$CONTAINER_STRING" .
 docker tag $CONTAINER_STRING:latest "$ECR_IMAGE_URI"
