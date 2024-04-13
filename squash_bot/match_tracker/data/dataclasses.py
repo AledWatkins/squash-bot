@@ -142,6 +142,15 @@ class Matches:
             ]
         )
 
+    def on_date(self, on_date: datetime.date) -> "Matches":
+        return Matches(
+            match_results=[
+                match_result
+                for match_result in self.match_results
+                if match_result.played_on == on_date
+            ]
+        )
+
     def involves(self, user: core_dataclasses.User) -> "Matches":
         return Matches(
             match_results=[

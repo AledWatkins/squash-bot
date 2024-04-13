@@ -110,6 +110,19 @@ class TestMatches:
 
         assert sorted_matches == dataclasses.Matches([match_two, match_one])
 
+    def test_on_date(self):
+        match_one = match_tracker_factories.MatchResultFactory(
+            played_at=datetime.datetime(2021, 1, 1, 12, 0)
+        )
+        match_two = match_tracker_factories.MatchResultFactory(
+            played_at=datetime.datetime(2021, 1, 2, 12, 0)
+        )
+        matches = dataclasses.Matches([match_one, match_two])
+
+        matches_on_date = matches.on_date(datetime.date(2021, 1, 1))
+
+        assert matches_on_date == dataclasses.Matches([match_one])
+
     def test_involves(self):
         player_one = core_factories.UserFactory()
         player_two = core_factories.UserFactory()
