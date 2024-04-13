@@ -183,22 +183,7 @@ class HeadToHead(Formatter):
             player_two_tally_data.win_rate_serving
         )
 
-        player_one_point_diff = (
-            player_one_tally_data.total_score - player_two_tally_data.total_score
-        )
-        player_one_point_diff_str = (
-            f"+{player_one_point_diff}"
-            if player_one_point_diff > 0
-            else f"{player_one_point_diff}"
-        )
-        player_two_point_diff = (
-            player_two_tally_data.total_score - player_one_tally_data.total_score
-        )
-        player_two_point_diff_str = (
-            f"+{player_two_point_diff}"
-            if player_two_point_diff > 0
-            else f"{player_two_point_diff}"
-        )
+        total_point_diff = player_one_tally_data.total_score - player_two_tally_data.total_score
 
         player_one_last_win_days_ago_str = cls._days_ago(player_one_tally_data.last_win_days_ago)
         player_two_last_win_days_ago_str = cls._days_ago(player_two_tally_data.last_win_days_ago)
@@ -220,9 +205,9 @@ class HeadToHead(Formatter):
                 player_two_win_rate_serving_str,
             ],
             [
-                player_one_point_diff_str,
+                f"{total_point_diff:+}",
                 "Point diff.",
-                player_two_point_diff_str,
+                f"{total_point_diff*-1:+}",
             ],
             [
                 f"{player_one_tally_data.average_score}",
