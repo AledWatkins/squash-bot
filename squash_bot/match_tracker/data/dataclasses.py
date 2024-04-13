@@ -13,6 +13,12 @@ class FieldDoesNotExist(Exception):
     """
 
 
+class MatchNotFound(Exception):
+    """
+    Error raised when a match is not found
+    """
+
+
 @attrs.frozen
 class MatchResult:
     winner: core_dataclasses.User
@@ -147,3 +153,10 @@ class Matches:
 
     def last(self, n: int = 1) -> "Matches":
         return Matches(match_results=self.match_results[-n:])
+
+    def match_by_id(self, result_id_str: str) -> MatchResult:
+        result_id = uuid.UUID(result_id_str)
+        for match_result in self.match_results:
+            if match_result.result_id == result_id:
+                return match_result
+        raise MatchNotFound
