@@ -43,7 +43,7 @@ class LastSessionOrDate(Filterer):
             date = datetime.date.fromisoformat(date_string)
         else:
             # This is going to be a problem if there are no matches, but I don't care right now
-            date = matches.match_results[0].played_on
+            date = matches.match_results[-1].played_on
 
         return matches.on_date(date)
 

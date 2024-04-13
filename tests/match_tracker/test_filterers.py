@@ -17,7 +17,7 @@ class TestLastSessionOrDateFilterer:
 
         matches = dataclasses.Matches(match_results=[match_one, match_two])
 
-        filtered_matches = filterers.LastSessionOrDateFilterer.filter(
+        filtered_matches = filterers.LastSessionOrDate.filter(
             matches=matches,
             date="2021-01-01",
         )
@@ -37,6 +37,6 @@ class TestLastSessionOrDateFilterer:
 
         matches = dataclasses.Matches(match_results=[match_one, match_two, match_three])
 
-        filtered_matches = filterers.LastSessionOrDateFilterer.filter(matches=matches)
+        filtered_matches = filterers.LastSessionOrDate.filter(matches=matches)
 
         assert filtered_matches == dataclasses.Matches([match_two, match_three])
