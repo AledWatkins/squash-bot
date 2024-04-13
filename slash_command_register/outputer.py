@@ -2,6 +2,7 @@ import logging
 import typing
 
 import requests
+import tabulate
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -14,7 +15,16 @@ class Outputer:
 
 class PrintOutputer(Outputer):
     def send(self, data: dict[str, typing.Any]) -> None:
-        print(data)  # noqa: T201
+        commands_data = data["json"]
+        command_list = []
+        for command_data in commands_data:
+            command_options_str = ", ".join(
+                f"{option['name']}{'*' if option['required'] else ''}"
+                for option in command_data["options"]
+            )
+            command_list.append([command_data["name"], command_options_str])
+
+        print(tabulate.tabulate(command_list, headers=["Command", "Options"], tablefmt="simple"))  # noqa: T201
 
 
 class RequestsOutputer(Outputer):
