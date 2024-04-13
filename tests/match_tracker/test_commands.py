@@ -401,6 +401,7 @@ class TestHeadToHead:
         assert "Win rate" in content
         assert "Win rate (serving)" in content
         assert "Point diff." in content
+        assert "Avg. point diff." in content
         assert "Avg. score" in content
         assert "Current win streak" in content
         assert "Highest win streak" in content
