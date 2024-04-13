@@ -1,6 +1,7 @@
 import abc
 import collections
 import itertools
+from decimal import Decimal
 
 import attrs
 import tabulate
@@ -288,7 +289,7 @@ class HeadToHead(Formatter):
         ]
 
     @classmethod
-    def _emoji(cls, value_one: int | None, value_two: int | None) -> str:
+    def _emoji(cls, value_one: Decimal | int | None, value_two: Decimal | int | None) -> str:
         if value_one is None or value_two is None:
             return ""
         elif value_one > value_two:
