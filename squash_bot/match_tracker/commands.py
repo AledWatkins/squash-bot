@@ -203,6 +203,7 @@ class SingleMatchMixin:
         raise NotImplementedError
 
 
+@command_registry.registry.register
 class EditMatchScore(SingleMatchMixin, _command.Command):
     name = "edit-match-score"
     description = "Edit the score of a match."
