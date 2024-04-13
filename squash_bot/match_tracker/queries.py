@@ -89,7 +89,7 @@ class MatchesTallyData:
     def record_loss(self, match: dataclasses.MatchResult) -> None:
         self.number_matches += 1
         self.total_score += match.loser_score
-        self.point_difference += match.winner_score - match.loser_score
+        self.point_difference += match.loser_score - match.winner_score
 
         served = match.served == match.loser
         self.matches_served += int(served)
