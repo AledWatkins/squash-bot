@@ -471,6 +471,57 @@ class TestHeadToHead:
         assert "8 days ago        Last win        Yesterday" in content
 
 
+class TestEditMatchScore:
+    def test_can_edit_score(self):
+        ricky = core_factories.UserFactory(username="ricky")
+        steve = core_factories.UserFactory(username="steve")
+
+        match_one = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+        match_two = match_tracker_factories.MatchResultFactory(winner=steve, loser=ricky)
+
+        matches = dataclasses.Matches([match_one, match_two])
+
+        command = commands.EditMatchScore()
+        with mock.patch.object(storage, "get_all_match_results", return_value=matches):
+            command.handle(
+                {
+                    "data": {
+                        "options": [
+                            {"name": "match-id", "type": 3, "value": f"{match_one.result_id}"},
+                            {"name": "winner-score", "type": 4, "value": 5},
+                            {"name": "loser-score", "type": 4, "value": 11},
+                        ],
+                        "guild_id": "1",
+                    },
+                    "member": {
+                        "user": {
+                            "id": "1",
+                            "username": "different-name",
+                            "global_name": "different-global-name",
+                        }
+                    },
+                }
+            ).as_dict()
+
+        all_match_results = storage.get_all_match_results(
+            guild=core_dataclasses.Guild(guild_id="1")
+        )
+        assert len(all_match_results.match_results) == 2
+
+        new_match = match_tracker_factories.MatchResultFactory(
+            winner=steve,
+            loser=ricky,
+            winner_score=11,
+            loser_score=5,
+            served=match_one.served,
+            played_at=match_one.played_at,
+            logged_at=mock.ANY,
+            logged_by=mock.ANY,
+            result_id=match_one.result_id,
+        )
+        assert all_match_results.match_results == [new_match, match_two]
+
+
 def _extract_data_from_table_string(
     table_string: str, column_separator: str = "│"
 ) -> list[list[str]]:

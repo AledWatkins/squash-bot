@@ -171,3 +171,101 @@ class HeadToHeadCommand(FilterOrderFormatMatchesMixin, _command.Command):
     filterer = filterers.HeadToHead
     orderer = orderers.PlayedAt
     formatter = formatters.HeadToHead
+
+
+class SingleMatchMixin:
+    def _handle(
+        self,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
+    ) -> response_message.ResponseBody:
+        match_id = options["match-id"]
+        matches = queries.get_matches(guild)
+        match = matches.match_by_id(match_id)
+        return self._handle_match(
+            match,
+            options,
+            base_context,
+            guild,
+            user,
+        )
+
+    def _handle_match(
+        self,
+        match: dataclasses.MatchResult,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
+    ) -> response_message.ResponseBody:
+        raise NotImplementedError
+
+
+class EditMatchScore(SingleMatchMixin, _command.Command):
+    name = "edit-match-score"
+    description = "Edit the score of a match."
+    options = (
+        _command.CommandOption(
+            name="match-id",
+            description="Match ID",
+            type=core_constants.CommandOptionType.STRING,
+            required=True,
+        ),
+        _command.CommandOption(
+            name="winner-score",
+            description="Winner's new score",
+            type=core_constants.CommandOptionType.INTEGER,
+            required=True,
+        ),
+        _command.CommandOption(
+            name="loser-score",
+            description="Loser's new score",
+            type=core_constants.CommandOptionType.INTEGER,
+            required=True,
+        ),
+    )
+
+    def _handle_match(
+        self,
+        match: dataclasses.MatchResult,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
+    ) -> response_message.ResponseBody:
+        winner = match.winner
+        new_winner_score = options["winner-score"]
+
+        loser = match.loser
+        new_loser_score = options["loser-score"]
+
+        # Decide who the winner and loser are with the new scores
+        new_loser, new_winner = sorted(
+            [
+                (winner, new_winner_score),
+                (loser, new_loser_score),
+            ],
+            key=lambda x: x[1],
+        )
+        new_match = dataclasses.MatchResult(
+            winner=new_winner[0],
+            winner_score=new_winner[1],
+            loser_score=new_loser[1],
+            loser=new_loser[0],
+            served=match.served,
+            played_at=match.played_at,
+            logged_at=datetime.datetime.now(),
+            logged_by=user,
+            # We must keep the same result ID so that the match gets replaced correctly
+            result_id=match.result_id,
+        )
+
+        # Validate the match result
+        validate.validate_match_result(new_match)
+
+        # Replace the match result
+        storage.replace_match_result(match_result=new_match, guild=guild)
+
+        return response_message.ChannelMessageResponseBody(content="Match score updated.")
