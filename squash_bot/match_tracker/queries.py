@@ -1,5 +1,6 @@
 import collections
 import datetime
+from decimal import Decimal
 
 import attrs
 
@@ -16,6 +17,7 @@ class MatchesTallyData:
     number_matches: int = 0
     wins: int = 0
     total_score: int = 0
+    point_difference: int = 0
     matches_served: int = 0
     wins_served: int = 0
     matches_received: int = 0
@@ -54,6 +56,14 @@ class MatchesTallyData:
         return self.total_score // self.number_matches
 
     @property
+    def average_point_difference(self) -> Decimal:
+        return Decimal(self.point_difference / self.number_matches).quantize(Decimal("0.01"))
+
+    @property
+    def average_point_difference_str(self) -> str:
+        return f"{self.average_point_difference:+}"
+
+    @property
     def last_win_days_ago(self) -> int | None:
         if self.last_win_datetime:
             return (datetime.date.today() - self.last_win_datetime.date()).days
@@ -62,6 +72,7 @@ class MatchesTallyData:
     def record_win(self, match: dataclasses.MatchResult) -> None:
         self.number_matches += 1
         self.total_score += match.winner_score
+        self.point_difference += match.winner_score - match.loser_score
         self.wins += 1
 
         served = match.served == match.winner
@@ -78,6 +89,7 @@ class MatchesTallyData:
     def record_loss(self, match: dataclasses.MatchResult) -> None:
         self.number_matches += 1
         self.total_score += match.loser_score
+        self.point_difference += match.winner_score - match.loser_score
 
         served = match.served == match.loser
         self.matches_served += int(served)
