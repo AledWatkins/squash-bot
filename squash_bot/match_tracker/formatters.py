@@ -252,8 +252,8 @@ class HeadToHead(Formatter):
         player_one_recent_win_rate_serving_str = f"{cls._emoji(player_one_recent.win_rate_serving, player_one_all_time.win_rate_serving)} {player_one_win_rate_serving_str}"
         player_two_recent_win_rate_serving_str = f"{player_two_win_rate_serving_str} {cls._emoji(player_two_recent.win_rate_serving, player_two_all_time.win_rate_serving)}"
 
-        player_one_recent_avg_score_str = f"{cls._emoji(player_one_recent.average_score, player_one_all_time.average_score)} {player_one_recent.average_score}"
-        player_two_recent_avg_score_str = f"{player_two_recent.average_score} {cls._emoji(player_two_recent.average_score, player_two_all_time.average_score)}"
+        player_one_recent_avg_pt_diff_str = f"{cls._emoji(player_one_recent.average_point_difference, player_one_all_time.average_point_difference)} {player_one_recent.average_point_difference_str}"
+        player_two_recent_avg_pt_diff_str = f"{player_two_recent.average_point_difference_str} {cls._emoji(player_two_recent.average_point_difference, player_two_all_time.average_point_difference)}"
 
         return [
             [
@@ -267,9 +267,9 @@ class HeadToHead(Formatter):
                 player_two_recent_win_rate_serving_str,
             ],
             [
-                player_one_recent_avg_score_str,
-                "Avg. score",
-                player_two_recent_avg_score_str,
+                player_one_recent_avg_pt_diff_str,
+                "Avg. point diff.",
+                player_two_recent_avg_pt_diff_str,
             ],
         ]
 
