@@ -1,4 +1,5 @@
 import decimal
+import typing
 
 from . import badge, badge_definitions
 
@@ -13,6 +14,15 @@ base_priority: dict[type[badge.Badge], decimal.Decimal] = {
     badge_definitions.MVP: decimal.Decimal("2"),
 }
 
+priority_modifiers: dict[type[badge.Badge], typing.Callable] = {
+    # Scale the priority based on the streak length
+    badge_definitions.WinStreak: lambda badge_: badge_.streak_length / 10,
+    badge_definitions.LossStreak: lambda badge_: badge_.streak_length / 10,
+}
+
 
 def get_priority(badge_: badge.Badge) -> decimal.Decimal:
-    return base_priority[badge_.__class__]
+    additional_priority = 0
+    if priority_modifier := priority_modifiers.get(badge_.__class__):
+        additional_priority = priority_modifier(badge_)
+    return base_priority[badge_.__class__] + additional_priority
