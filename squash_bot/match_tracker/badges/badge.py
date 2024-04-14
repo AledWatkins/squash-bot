@@ -13,7 +13,7 @@ class Badge:
 
     badge_earned_in: dataclasses.MatchResult = attrs.field(eq=False, hash=False)
 
-    emoji: str = attrs.field(eq=False, hash=False, default="🏅")
+    emoji: str | None = attrs.field(eq=False, hash=False)
 
     @property
     def display(self) -> str:

@@ -304,6 +304,8 @@ class HeadToHead(Formatter):
 
 
 class SessionSummary(Formatter):
+    default_badge_emoji = "🏆"
+
     @classmethod
     def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
         # We pass in all matches so we can build all-time badges but we only display the last session worth of matches
@@ -345,7 +347,9 @@ class SessionSummary(Formatter):
         badges_to_show = sorted(
             badges, key=lambda badge: priority.get_priority(badge), reverse=True
         )[:5]
-        badges_text = "\n".join(f"{badge.emoji} {badge.display}" for badge in badges_to_show)
+        badges_text = "\n".join(
+            f"{badge.emoji or cls.default_badge_emoji} {badge.display}" for badge in badges_to_show
+        )
 
         return f"Session: {session_date_pretty}```{table_str}```\n{badges_text}"
 

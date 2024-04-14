@@ -18,6 +18,8 @@ class Crush(badge.Badge):
     player: core_dataclasses.User
     opponent: core_dataclasses.User
 
+    emoji = "💥"
+
     @property
     def display(self):
         return f"{self.player.name} crushed {self.opponent.name} 11-0"
@@ -45,6 +47,7 @@ class CleanSweep(badge.Badge):
     """
 
     player: core_dataclasses.User
+    emoji = "🧹"
 
     @property
     def display(self):
@@ -78,6 +81,8 @@ class WoodenSpoon(badge.Badge):
 
     player: core_dataclasses.User
 
+    emoji = "🥄"
+
     @property
     def display(self):
         return f"{self.player.name} lost all of their games"
@@ -110,6 +115,8 @@ class WinStreak(badge.Badge):
 
     player: core_dataclasses.User
     streak_length: int
+
+    emoji = "🔥"
 
     @property
     def display(self):
@@ -162,6 +169,8 @@ class LossStreak(badge.Badge):
 
     player: core_dataclasses.User
     streak_length: int
+
+    emoji = "❄️"
 
     @property
     def display(self):
@@ -216,6 +225,8 @@ class StreakBreaker(badge.Badge):
     opponent: core_dataclasses.User
     streak_length: int
 
+    emoji = "🔨"
+
     @property
     def display(self):
         return (
@@ -260,6 +271,8 @@ class FirstWinAgainst(badge.Badge):
     player: core_dataclasses.User
     opponent: core_dataclasses.User
 
+    emoji = "🎉"
+
     @property
     def display(self):
         return f"{self.player.name} won their first game against {self.opponent.name}"
@@ -295,6 +308,8 @@ class MVP(badge.Badge):
 
     player: core_dataclasses.User
     average_point_difference: Decimal
+
+    emoji = "🏅"
 
     @property
     def display(self):
