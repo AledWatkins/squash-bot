@@ -16,7 +16,9 @@ class TestCrushCollector:
         returned_badges = queries.collect_badges(matches=matches, badges=[badge_definitions.Crush])
 
         assert len(returned_badges) == 1
-        assert returned_badges[0] == badge_definitions.Crush(badge_earned_in=match_one)
+        assert returned_badges[0] == badge_definitions.Crush(
+            player=match_one.winner, opponent=match_one.loser, badge_earned_in=match_one
+        )
 
 
 class TestCleanSweepCollector:
