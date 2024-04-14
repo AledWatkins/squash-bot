@@ -270,3 +270,18 @@ class EditMatchScore(SingleMatchMixin, _command.Command):
         storage.replace_match_result(match_result=new_match, guild=guild)
 
         return response_message.ChannelMessageResponseBody(content="Match score updated.")
+
+
+class SessionSummaryCommand(FilterOrderFormatMatchesMixin, _command.Command):
+    name = "session-summary"
+    description = "Show a summary of the session."
+    options = (
+        _command.CommandOption(
+            name="date",
+            description="The date of the session. Defaults to the last session.",
+            type=core_constants.CommandOptionType.STRING,
+            required=False,
+        ),
+    )
+
+    formatter = formatters.SessionSummary
