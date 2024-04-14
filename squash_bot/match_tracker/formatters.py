@@ -327,7 +327,7 @@ class SessionSummary(Formatter):
         table_str = tabulate.tabulate(
             [row.as_display_row() for row in sorted_player_rows],
             LeagueTableRow.display_headers(),
-            tablefmt="plain",
+            tablefmt="firstrow",
         )
 
         # Collect badges
@@ -347,7 +347,7 @@ class SessionSummary(Formatter):
         )[:5]
         badges_text = "\n".join(f"{cls.badge_emoji} {badge.display}" for badge in badges_to_show)
 
-        return f"```{table_str}```{badges_text}"
+        return f"```{table_str}```\n{badges_text}"
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
