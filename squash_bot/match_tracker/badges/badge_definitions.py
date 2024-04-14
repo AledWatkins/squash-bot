@@ -18,11 +18,9 @@ class Crush(badge.Badge):
     player: core_dataclasses.User
     opponent: core_dataclasses.User
 
-    emoji = "💥"
-
     @property
     def display(self):
-        return f"{self.player.name} crushed {self.opponent.name} 11-0"
+        return f"💥 {self.player.name} crushed {self.opponent.name} 11-0"
 
 
 class CrushCollector(badge.BadgeCollector[Crush]):
@@ -47,11 +45,10 @@ class CleanSweep(badge.Badge):
     """
 
     player: core_dataclasses.User
-    emoji = "🧹"
 
     @property
     def display(self):
-        return f"{self.player.name} won all of their games"
+        return f"🧹 {self.player.name} won all of their games"
 
 
 class CleanSweepCollector(badge.BadgeCollector[CleanSweep]):
@@ -81,11 +78,9 @@ class WoodenSpoon(badge.Badge):
 
     player: core_dataclasses.User
 
-    emoji = "🥄"
-
     @property
     def display(self):
-        return f"{self.player.name} lost all of their games"
+        return f"🥄 {self.player.name} lost all of their games"
 
 
 class WoodenSpoonCollector(badge.BadgeCollector[WoodenSpoon]):
@@ -116,11 +111,9 @@ class WinStreak(badge.Badge):
     player: core_dataclasses.User
     streak_length: int
 
-    emoji = "🔥"
-
     @property
     def display(self):
-        return f"{self.player.name} had a {self.streak_length} game win streak"
+        return f"🔥 {self.player.name} had a {self.streak_length} game win streak"
 
 
 class WinStreakCollector(badge.BadgeCollector[WinStreak]):
@@ -170,11 +163,9 @@ class LossStreak(badge.Badge):
     player: core_dataclasses.User
     streak_length: int
 
-    emoji = "❄️"
-
     @property
     def display(self):
-        return f"{self.player.name} had a {self.streak_length} game loss streak"
+        return f"❄️ {self.player.name} had a {self.streak_length} game loss streak"
 
 
 class LossStreakCollector(badge.BadgeCollector[LossStreak]):
@@ -225,13 +216,9 @@ class StreakBreaker(badge.Badge):
     opponent: core_dataclasses.User
     streak_length: int
 
-    emoji = "🔨"
-
     @property
     def display(self):
-        return (
-            f"{self.player.name} broke {self.opponent.name}'s {self.streak_length} game win streak"
-        )
+        return f"🔨 {self.player.name} broke {self.opponent.name}'s {self.streak_length} game win streak"
 
 
 class StreakBreakerCollector(badge.BadgeCollector[StreakBreaker]):
@@ -271,11 +258,9 @@ class FirstWinAgainst(badge.Badge):
     player: core_dataclasses.User
     opponent: core_dataclasses.User
 
-    emoji = "🎉"
-
     @property
     def display(self):
-        return f"{self.player.name} won their first game against {self.opponent.name}"
+        return f"🎉 {self.player.name} won their first game against {self.opponent.name}"
 
 
 class FirstWinAgainstCollector(badge.BadgeCollector[FirstWinAgainst]):
@@ -309,11 +294,9 @@ class MVP(badge.Badge):
     player: core_dataclasses.User
     average_point_difference: Decimal
 
-    emoji = "🏅"
-
     @property
     def display(self):
-        return f"{self.player.name} had the highest average point difference of {self.average_point_difference:+}"
+        return f"🏅 {self.player.name} had the highest average point difference of {self.average_point_difference:+}"
 
 
 class MVPCollector(badge.BadgeCollector[MVP]):
