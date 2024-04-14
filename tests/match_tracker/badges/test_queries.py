@@ -20,4 +20,7 @@ class TestDeduplicateBadges:
 
         badges = [crush_1, crush_2, crush_3]
         deduped_badges = queries.deduplicate_badges(badges)
-        assert deduped_badges == [crush_2, crush_3]
+        assert deduped_badges == [
+            badge_definitions.Crush(player=ricky, opponent=steve, badge_earned_in=match_two),
+            badge_definitions.Crush(player=steve, opponent=ricky, badge_earned_in=match_three),
+        ]
