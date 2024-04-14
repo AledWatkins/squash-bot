@@ -25,7 +25,7 @@ class Crush(badge.Badge):
 
 class CrushCollector(badge.BadgeCollector[Crush]):
     def __init__(self) -> None:
-        self._crushed_matches = set()
+        self._crushed_matches: set[dataclasses.MatchResult] = set()
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         if match.loser_score == 0:
@@ -54,9 +54,9 @@ class CleanSweep(badge.Badge):
 class CleanSweepCollector(badge.BadgeCollector[CleanSweep]):
     def __init__(self) -> None:
         # Track the last win so we can associate it to the badge
-        self._players_last_win = {}
-        self._players = set()
-        self._players_with_loss = set()
+        self._players_last_win: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
+        self._players: set[core_dataclasses.User] = set()
+        self._players_with_loss: set[core_dataclasses.User] = set()
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         self._players.add(match.winner)
@@ -86,9 +86,9 @@ class WoodenSpoon(badge.Badge):
 class WoodenSpoonCollector(badge.BadgeCollector[WoodenSpoon]):
     def __init__(self) -> None:
         # Track the last loss so we can associate it to the badge
-        self._players_last_loss = {}
-        self._players = set()
-        self._players_with_win = set()
+        self._players_last_loss: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
+        self._players: set[core_dataclasses.User] = set()
+        self._players_with_win: set[core_dataclasses.User] = set()
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         self._players.add(match.loser)
@@ -120,9 +120,9 @@ class WinStreakCollector(badge.BadgeCollector[WinStreak]):
     min_streak_length = 3
 
     def __init__(self) -> None:
-        self._streaks = []
-        self._players_last_win = {}
-        self._current_streaks = defaultdict(int)
+        self._streaks: list[WinStreak] = []
+        self._players_last_win: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
+        self._current_streaks: dict[core_dataclasses.User, int] = defaultdict(int)
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         ended_streak = self._current_streaks[match.loser]
@@ -172,9 +172,9 @@ class LossStreakCollector(badge.BadgeCollector[LossStreak]):
     min_streak_length = 3
 
     def __init__(self) -> None:
-        self._streaks = []
-        self._players_last_loss = {}
-        self._current_streaks = defaultdict(int)
+        self._streaks: list[LossStreak] = []
+        self._players_last_loss: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
+        self._current_streaks: dict[core_dataclasses.User, int] = defaultdict(int)
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         ended_streak = self._current_streaks[match.winner]
@@ -191,7 +191,7 @@ class LossStreakCollector(badge.BadgeCollector[LossStreak]):
         self._current_streaks[match.loser] += 1
         self._players_last_loss[match.loser] = match
 
-    def collect(self) -> list[WinStreak]:
+    def collect(self) -> list[LossStreak]:
         # Collect any ongoing streaks
         for player, streak_length in self._current_streaks.items():
             if streak_length >= self.min_streak_length:
@@ -227,9 +227,9 @@ class StreakBreakerCollector(badge.BadgeCollector[StreakBreaker]):
     min_streak_length = 3
 
     def __init__(self) -> None:
-        self._streaks = []
-        self._players_last_win = {}
-        self._current_streaks = defaultdict(int)
+        self._streaks: list[StreakBreaker] = []
+        self._players_last_win: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
+        self._current_streaks: dict[core_dataclasses.User, int] = defaultdict(int)
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         ended_streak = self._current_streaks[match.loser]
@@ -267,7 +267,9 @@ class FirstWinAgainst(badge.Badge):
 
 class FirstWinAgainstCollector(badge.BadgeCollector[FirstWinAgainst]):
     def __init__(self) -> None:
-        self._first_wins = {}
+        self._first_wins: dict[
+            tuple[core_dataclasses.User, core_dataclasses.User], dataclasses.MatchResult
+        ] = {}
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         winner_loser = (match.winner, match.loser)
@@ -301,10 +303,10 @@ class MVP(badge.Badge):
 
 class MVPCollector(badge.BadgeCollector[MVP]):
     def __init__(self) -> None:
-        self._point_differences = defaultdict(int)
-        self._num_matches = defaultdict(int)
+        self._point_differences: dict[core_dataclasses.User, int] = defaultdict(int)
+        self._num_matches: dict[core_dataclasses.User, int] = defaultdict(int)
         # We associate the badge with the last match played by the player
-        self._player_last_match = {}
+        self._player_last_match: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
 
     def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
         point_difference = match.winner_score - match.loser_score
@@ -318,7 +320,7 @@ class MVPCollector(badge.BadgeCollector[MVP]):
         self._player_last_match[match.loser] = match
 
     def collect(self) -> list[MVP]:
-        highest_point_diff = 0
+        highest_point_diff = Decimal(0)
         player_with_highest = None
         for player in self._point_differences:
             avg_point_diff = Decimal(
@@ -327,6 +329,9 @@ class MVPCollector(badge.BadgeCollector[MVP]):
             if avg_point_diff > highest_point_diff:
                 highest_point_diff = avg_point_diff
                 player_with_highest = player
+
+        if not player_with_highest:
+            return []
 
         return [
             MVP(
