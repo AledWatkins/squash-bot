@@ -344,8 +344,11 @@ class SessionSummary(Formatter):
         badges_in_priority_order = sorted(
             badges, key=lambda badge: priority.get_priority(badge), reverse=True
         )
-        badges_to_show = badge_queries.deduplicate_badges(badges_in_priority_order)[:5]
-        badges_text = "\n".join(badge.display for badge in badges_to_show)
+        badges_to_show = badge_queries.deduplicate_badges(badges_in_priority_order)
+        sorted_badges_to_show = sorted(
+            badges_to_show, key=lambda badge: priority.get_priority(badge), reverse=True
+        )[:5]
+        badges_text = "\n".join(badge.display for badge in sorted_badges_to_show)
 
         return f"Session: {session_date_pretty}```{table_str}```\n{badges_text}"
 
