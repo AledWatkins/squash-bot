@@ -4,6 +4,22 @@ from squash_bot.match_tracker.data import dataclasses as dataclasses
 
 from . import badge, badge_definitions
 
+# Define the default badges that are most interesting when looking over all time
+default_all_time_badges = [
+    badge_definitions.LossStreak,
+    badge_definitions.WinStreak,
+    badge_definitions.StreakBreaker,
+    badge_definitions.FirstWinAgainst,
+]
+
+# Define the default badges that are most interesting when looking over a single session
+default_session_badges = [
+    badge_definitions.Crush,
+    badge_definitions.CleanSweep,
+    badge_definitions.WoodenSpoon,
+    badge_definitions.MVP,
+]
+
 
 def collect_badges(
     matches: dataclasses.Matches, badges: list[type[badge.Badge]]
