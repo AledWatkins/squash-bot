@@ -20,7 +20,23 @@ class TestDeduplicateBadges:
 
         badges = [crush_1, crush_2, crush_3]
         deduped_badges = queries.deduplicate_badges(badges)
+        assert len(deduped_badges) == 2
+
+    def test_deduplicate_win_streak_badges(self):
+        ricky = core_factories.UserFactory(username="ricky")
+        steve = core_factories.UserFactory(username="steve")
+        match_one = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+        match_two = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+
+        win_streak_1 = badge_definitions.WinStreak(
+            player=ricky, streak_length=5, badge_earned_in=match_one
+        )
+        win_streak_2 = badge_definitions.WinStreak(
+            player=ricky, streak_length=3, badge_earned_in=match_two
+        )
+
+        badges = [win_streak_1, win_streak_2]
+        deduped_badges = queries.deduplicate_badges(badges)
         assert deduped_badges == [
-            badge_definitions.Crush(player=ricky, opponent=steve, badge_earned_in=match_two),
-            badge_definitions.Crush(player=steve, opponent=ricky, badge_earned_in=match_three),
+            badge_definitions.WinStreak(player=ricky, streak_length=5, badge_earned_in=match_one),
         ]
