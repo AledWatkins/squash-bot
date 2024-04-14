@@ -16,8 +16,8 @@ base_priority: dict[type[badge.Badge], decimal.Decimal] = {
 
 priority_modifiers: dict[type[badge.Badge], typing.Callable] = {
     # Scale the priority based on the streak length
-    badge_definitions.WinStreak: lambda badge_: badge_.streak_length / 10,
-    badge_definitions.LossStreak: lambda badge_: badge_.streak_length / 10,
+    badge_definitions.WinStreak: lambda badge_: decimal.Decimal(badge_.streak_length / 10),
+    badge_definitions.LossStreak: lambda badge_: decimal.Decimal(badge_.streak_length / 10),
 }
 
 
