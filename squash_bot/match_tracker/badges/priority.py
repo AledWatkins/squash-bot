@@ -10,7 +10,7 @@ base_priority: dict[type[badge.Badge], decimal.Decimal] = {
     badge_definitions.LossStreak: decimal.Decimal("1"),
     badge_definitions.StreakBreaker: decimal.Decimal("3"),
     badge_definitions.FirstWinAgainst: decimal.Decimal("4"),
-    badge_definitions.MVP: decimal.Decimal("1"),
+    badge_definitions.MVP: decimal.Decimal("2"),
 }
 
 
