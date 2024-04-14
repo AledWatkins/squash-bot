@@ -8,7 +8,11 @@ import tabulate
 
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker import queries
+from squash_bot.match_tracker.badges import priority
+from squash_bot.match_tracker.badges import queries as badge_queries
 from squash_bot.match_tracker.data import dataclasses
+
+from . import filterers
 
 
 class Formatter(abc.ABC):
@@ -297,6 +301,53 @@ class HeadToHead(Formatter):
     @classmethod
     def _nullable_percentage_string(cls, value: int | None) -> str:
         return f"{value}%" if value is not None else "-"
+
+
+class SessionSummary(Formatter):
+    badge_emoji = "🎖"
+
+    @classmethod
+    def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
+        # We pass in all matches so we can build all-time badges but we only display the last session worth of matches
+        session_matches = filterers.LastSessionOrDate().filter(matches, **kwargs)
+
+        tally_data = queries.build_tally_data_by_player(session_matches)
+        player_rows = []
+        for player, data in tally_data.items():
+            player_rows.append(
+                LeagueTableRow(
+                    player=player,
+                    wins=data.wins,
+                    losses=data.losses,
+                    win_percentage=data.win_rate,
+                )
+            )
+
+        sorted_player_rows = sorted(player_rows, key=lambda row: row.win_percentage, reverse=True)
+        table_str = tabulate.tabulate(
+            [row.as_display_row() for row in sorted_player_rows],
+            LeagueTableRow.display_headers(),
+            tablefmt="plain",
+        )
+
+        # Collect badges
+        badges = []
+        badges += badge_queries.collect_badges(matches, badge_queries.default_all_time_badges)
+        badges += badge_queries.collect_badges(
+            session_matches, badge_queries.default_session_badges
+        )
+        badges = badge_queries.deduplicate_badges(badges)
+        badges = badge_queries.filter_badges_by_session(
+            badges, session_matches.match_results[-1].played_on
+        )
+
+        # Sort by priority and only show the top 5
+        badges_to_show = sorted(
+            badges, key=lambda badge: priority.get_priority(badge), reverse=True
+        )[:5]
+        badges_text = "\n".join(f"{cls.badge_emoji} {badge.display}" for badge in badges_to_show)
+
+        return f"```{table_str}```{badges_text}"
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
