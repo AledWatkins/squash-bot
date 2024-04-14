@@ -310,6 +310,8 @@ class SessionSummary(Formatter):
     def format_matches(cls, matches: dataclasses.Matches, **kwargs) -> str:
         # We pass in all matches so we can build all-time badges but we only display the last session worth of matches
         session_matches = filterers.LastSessionOrDate().filter(matches, **kwargs)
+        session_date = session_matches.match_results[0].played_on
+        session_date_pretty = session_date.strftime("%A, %-d %B %Y")
 
         tally_data = queries.build_tally_data_by_player(session_matches)
         player_rows = []
@@ -347,7 +349,7 @@ class SessionSummary(Formatter):
         )[:5]
         badges_text = "\n".join(f"{cls.badge_emoji} {badge.display}" for badge in badges_to_show)
 
-        return f"```{table_str}```\n{badges_text}"
+        return f"Session: {session_date_pretty}```{table_str}```\n{badges_text}"
 
 
 def _match_string(match: dataclasses.MatchResult) -> str:
