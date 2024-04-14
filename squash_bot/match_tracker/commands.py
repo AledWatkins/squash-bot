@@ -272,6 +272,7 @@ class EditMatchScore(SingleMatchMixin, _command.Command):
         return response_message.ChannelMessageResponseBody(content="Match score updated.")
 
 
+@command_registry.registry.register
 class SessionSummaryCommand(FilterOrderFormatMatchesMixin, _command.Command):
     name = "session-summary"
     description = "Show a summary of the session."
