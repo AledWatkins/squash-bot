@@ -13,6 +13,8 @@ class Badge:
 
     badge_earned_in: dataclasses.MatchResult = attrs.field(eq=False, hash=False)
 
+    emoji: str = attrs.field(eq=False, hash=False, default="🏅")
+
     @property
     def display(self) -> str:
         raise NotImplementedError
