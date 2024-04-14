@@ -57,3 +57,13 @@ def filter_badges_by_result_id(badges: list[badge.Badge], result_id: str) -> lis
     This function will filter the badges to only include those that were earned in the specified match.
     """
     return [badge for badge in badges if badge.badge_earned_in.result_id == result_id]
+
+
+def deduplicate_badges(badges: list[badge.Badge]) -> list[badge.Badge]:
+    """
+    This function will remove any duplicate badges from the list.
+
+    Sometimes we get the same badge but for different matches. For example, if a player gets 3 wins in a row twice in
+    one session, we will get two `WinStreak` badges. It's quite boring to show both of them, so we'll just show one.
+    """
+    return list(set(badges))
