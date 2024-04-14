@@ -11,7 +11,7 @@ class Badge:
     A class to represent a type of "badge" for a match or series of matches.
     """
 
-    badge_earned_in: dataclasses.MatchResult
+    badge_earned_in: dataclasses.MatchResult = attrs.field(eq=False, hash=False)
 
     @property
     def display(self) -> str:
