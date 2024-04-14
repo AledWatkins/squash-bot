@@ -336,15 +336,15 @@ class SessionSummary(Formatter):
         badges += badge_queries.collect_badges(
             session_matches, badge_queries.default_session_badges
         )
-        badges = badge_queries.deduplicate_badges(badges)
         badges = badge_queries.filter_badges_by_session(
             badges, session_matches.match_results[-1].played_on
         )
 
         # Sort by priority and only show the top 5
-        badges_to_show = sorted(
+        badges_in_priority_order = sorted(
             badges, key=lambda badge: priority.get_priority(badge), reverse=True
-        )[:5]
+        )
+        badges_to_show = badge_queries.deduplicate_badges(badges_in_priority_order)[:5]
         badges_text = "\n".join(badge.display for badge in badges_to_show)
 
         return f"Session: {session_date_pretty}```{table_str}```\n{badges_text}"
