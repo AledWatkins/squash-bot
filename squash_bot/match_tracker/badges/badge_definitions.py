@@ -15,9 +15,12 @@ class Crush(badge.Badge):
     A crush is a game where the winner won without the loser scoring any points.
     """
 
+    player: core_dataclasses.User
+    opponent: core_dataclasses.User
+
     @property
     def display(self):
-        return f"{self.badge_earned_in.winner.name} crushed {self.badge_earned_in.loser.name}"
+        return f"{self.player.name} crushed {self.opponent.name} 11-0"
 
 
 class CrushCollector(badge.BadgeCollector[Crush]):
@@ -29,7 +32,10 @@ class CrushCollector(badge.BadgeCollector[Crush]):
             self._crushed_matches.add(match)
 
     def collect(self) -> list[Crush]:
-        return [Crush(badge_earned_in=match_result) for match_result in self._crushed_matches]
+        return [
+            Crush(player=match.winner, opponent=match.loser, badge_earned_in=match)
+            for match in self._crushed_matches
+        ]
 
 
 @attrs.frozen
