@@ -260,7 +260,7 @@ class FirstWinAgainst(badge.Badge):
 
     @property
     def display(self):
-        return f"🎉 {self.player.name} won their first game against {self.opponent.name}"
+        return f"🎉 {self.player.name} won against {self.opponent.name} for the first time"
 
 
 class FirstWinAgainstCollector(badge.BadgeCollector[FirstWinAgainst]):
