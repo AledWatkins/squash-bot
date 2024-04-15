@@ -161,7 +161,7 @@ class LossStreak(badge.Badge):
     """
 
     player: core_dataclasses.User
-    streak_length: int
+    streak_length: int = attrs.field(eq=False, hash=False)
 
     @property
     def display(self):
