@@ -29,16 +29,16 @@ class TestDeduplicateBadges:
         match_two = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
 
         win_streak_1 = badge_definitions.WinStreak(
-            player=ricky, streak_length=5, badge_earned_in=match_one, is_current=False
+            player=ricky, streak_length=5, badge_earned_in=match_one, is_ongoing=False
         )
         win_streak_2 = badge_definitions.WinStreak(
-            player=ricky, streak_length=3, badge_earned_in=match_two, is_current=False
+            player=ricky, streak_length=3, badge_earned_in=match_two, is_ongoing=False
         )
 
         badges = [win_streak_1, win_streak_2]
         deduped_badges = queries.deduplicate_badges(badges)
         assert deduped_badges == [
             badge_definitions.WinStreak(
-                player=ricky, streak_length=5, badge_earned_in=match_one, is_current=False
+                player=ricky, streak_length=5, badge_earned_in=match_one, is_ongoing=False
             ),
         ]

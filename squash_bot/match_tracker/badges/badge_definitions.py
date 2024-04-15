@@ -110,11 +110,11 @@ class WinStreak(badge.Badge):
 
     player: core_dataclasses.User
     streak_length: int = attrs.field(eq=False, hash=False)
-    is_current: bool = attrs.field(eq=False, hash=False)
+    is_ongoing: bool = attrs.field(eq=False, hash=False)
 
     @property
     def display(self):
-        if self.is_current:
+        if self.is_ongoing:
             return f"🔥 {self.player.name} is on a {self.streak_length} game win streak"
         else:
             return f"🔥 {self.player.name} had a {self.streak_length} game win streak"
@@ -136,7 +136,7 @@ class WinStreakCollector(badge.BadgeCollector[WinStreak]):
                     player=match.loser,
                     streak_length=ended_streak,
                     badge_earned_in=self._players_last_win[match.loser],
-                    is_current=False,
+                    is_ongoing=False,
                 )
             )
 
@@ -153,7 +153,7 @@ class WinStreakCollector(badge.BadgeCollector[WinStreak]):
                         player=player,
                         streak_length=streak_length,
                         badge_earned_in=self._players_last_win[player],
-                        is_current=True,
+                        is_ongoing=True,
                     )
                 )
 

@@ -89,11 +89,11 @@ class TestWinStreakCollector:
         assert len(returned_badges) == 1
         returned_badge = returned_badges[0]
         assert returned_badge == badge_definitions.WinStreak(
-            player=karl, streak_length=3, badge_earned_in=match_five, is_current=False
+            player=karl, streak_length=3, badge_earned_in=match_five, is_ongoing=False
         )
         # We need to specifically check that the `is_current` attribute is set to True since it's not included in the
         # __eq__ method
-        assert returned_badge.is_current is False
+        assert returned_badge.is_ongoing is False
 
     def test_finds_current_streak(self):
         ricky = core_factories.UserFactory(username="ricky")
@@ -114,11 +114,11 @@ class TestWinStreakCollector:
         assert len(returned_badges) == 1
         returned_badge = returned_badges[0]
         assert returned_badge == badge_definitions.WinStreak(
-            player=steve, streak_length=3, badge_earned_in=match_four, is_current=True
+            player=steve, streak_length=3, badge_earned_in=match_four, is_ongoing=True
         )
         # We need to specifically check that the `is_current` attribute is set to True since it's not included in the
         # __eq__ method
-        assert returned_badge.is_current is True
+        assert returned_badge.is_ongoing is True
 
 
 class TestLossStreakCollector:
