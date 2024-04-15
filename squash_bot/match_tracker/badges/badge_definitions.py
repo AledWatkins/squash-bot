@@ -168,10 +168,14 @@ class LossStreak(badge.Badge):
 
     player: core_dataclasses.User
     streak_length: int = attrs.field(eq=False, hash=False)
+    is_ongoing: bool = attrs.field(eq=False, hash=False)
 
     @property
     def display(self):
-        return f"❄️ {self.player.name} had a {self.streak_length} game loss streak"
+        if self.is_ongoing:
+            return f"❄️ {self.player.name} is on a {self.streak_length} game loss streak"
+        else:
+            return f"❄️ {self.player.name} had a {self.streak_length} game loss streak"
 
 
 class LossStreakCollector(badge.BadgeCollector[LossStreak]):
@@ -190,6 +194,7 @@ class LossStreakCollector(badge.BadgeCollector[LossStreak]):
                     player=match.winner,
                     streak_length=ended_streak,
                     badge_earned_in=self._players_last_loss[match.winner],
+                    is_ongoing=False,
                 )
             )
 
@@ -206,6 +211,7 @@ class LossStreakCollector(badge.BadgeCollector[LossStreak]):
                         player=player,
                         streak_length=streak_length,
                         badge_earned_in=self._players_last_loss[player],
+                        is_ongoing=True,
                     )
                 )
 

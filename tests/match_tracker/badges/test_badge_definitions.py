@@ -144,7 +144,7 @@ class TestLossStreakCollector:
 
         assert len(returned_badges) == 1
         assert returned_badges[0] == badge_definitions.LossStreak(
-            player=ricky, streak_length=3, badge_earned_in=match_five
+            player=ricky, streak_length=3, badge_earned_in=match_five, is_ongoing=True
         )
 
 
