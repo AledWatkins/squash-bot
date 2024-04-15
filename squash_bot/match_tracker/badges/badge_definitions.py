@@ -296,7 +296,7 @@ class MVP(badge.Badge):
 
     @property
     def display(self):
-        return f"🏅 {self.player.name} had the highest average point difference of {self.average_point_difference:+}"
+        return f"🏅 {self.player.name} was MVP with an avg. point diff. of {self.average_point_difference:+}"
 
 
 class MVPCollector(badge.BadgeCollector[MVP]):
