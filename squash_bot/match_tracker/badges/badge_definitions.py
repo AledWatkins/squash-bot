@@ -360,14 +360,15 @@ class MostImprovedPlayer(badge.Badge):
 
     player: core_dataclasses.User
     win_rate_increase: Decimal
+    over_n_games: int
 
     @property
     def display(self):
-        return f"📈 {self.player.name} was the most improved player with {self.win_rate_increase:+%} win rate increase recently"
+        return f"📈 {self.player.name} has a {self.win_rate_increase:+%} win rate over the last {self.over_n_games} games"
 
 
 class MostImprovedPlayerCollector(badge.BadgeCollector[MostImprovedPlayer]):
-    n: int = 5
+    n: int = 10
 
     def __init__(self) -> None:
         self._win_rates: dict[core_dataclasses.User, list] = defaultdict(list)
@@ -420,6 +421,7 @@ class MostImprovedPlayerCollector(badge.BadgeCollector[MostImprovedPlayer]):
             MostImprovedPlayer(
                 player=most_improved_player,
                 win_rate_increase=best_win_rate_increase,
+                over_n_games=self.n,
                 badge_earned_in=self._player_last_match[most_improved_player],
             )
         ]

@@ -286,6 +286,7 @@ class TestMostImprovedPlayer:
                 player=ricky,
                 win_rate_increase=Decimal("0.50"),
                 badge_earned_in=match_ten,
+                over_n_games=5,
             ),
         ]
         assert "50%" in returned_badges[0].display

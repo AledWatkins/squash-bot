@@ -10,6 +10,7 @@ default_all_time_badges = [
     badge_definitions.WinStreak,
     badge_definitions.StreakBreaker,
     badge_definitions.FirstWinAgainst,
+    badge_definitions.MostImprovedPlayer,
 ]
 
 # Define the default badges that are most interesting when looking over a single session
