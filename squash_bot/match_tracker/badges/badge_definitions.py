@@ -352,6 +352,79 @@ class MVPCollector(badge.BadgeCollector[MVP]):
         ]
 
 
+@attrs.frozen
+class MostImprovedPlayer(badge.Badge):
+    """
+    The most improved player is the player who has the highest win rate increase in a series of matches.
+    """
+
+    player: core_dataclasses.User
+    win_rate_increase: Decimal
+
+    @property
+    def display(self):
+        return f"📈 {self.player.name} was the most improved player with {self.win_rate_increase:+%} win rate increase recently"
+
+
+class MostImprovedPlayerCollector(badge.BadgeCollector[MostImprovedPlayer]):
+    n: int = 5
+
+    def __init__(self) -> None:
+        self._win_rates: dict[core_dataclasses.User, list] = defaultdict(list)
+        self._num_matches: dict[core_dataclasses.User, int] = defaultdict(int)
+        self._num_wins: dict[core_dataclasses.User, int] = defaultdict(int)
+        # We associate the badge with the last match played by the player
+        self._player_last_match: dict[core_dataclasses.User, dataclasses.MatchResult] = {}
+
+    def mutate_context_for_match(self, match: dataclasses.MatchResult) -> None:
+        self._num_matches[match.winner] += 1
+        self._num_matches[match.loser] += 1
+
+        self._num_wins[match.winner] += 1
+
+        self._win_rates[match.winner].append(
+            Decimal(self._num_wins[match.winner] / self._num_matches[match.winner]).quantize(
+                Decimal("0.01")
+            )
+        )
+        self._win_rates[match.loser].append(
+            Decimal(self._num_wins[match.loser] / self._num_matches[match.loser]).quantize(
+                Decimal("0.01")
+            )
+        )
+
+        self._player_last_match[match.winner] = match
+        self._player_last_match[match.loser] = match
+
+    def collect(self) -> list[MostImprovedPlayer]:
+        _win_rate_changes: dict[core_dataclasses.User, Decimal] = defaultdict(Decimal)
+
+        best_win_rate_increase = Decimal(0)
+        most_improved_player: core_dataclasses.User | None = None
+        for player in self._win_rates:
+            win_rates = self._win_rates[player]
+            if len(win_rates) <= self.n:
+                continue
+
+            win_rate_n_games_ago = win_rates[-(self.n + 1)]
+            win_rate_now = win_rates[-1]
+
+            if (win_rate_change := win_rate_now - win_rate_n_games_ago) > best_win_rate_increase:
+                best_win_rate_increase = win_rate_change
+                most_improved_player = player
+
+        if not most_improved_player:
+            return []
+
+        return [
+            MostImprovedPlayer(
+                player=most_improved_player,
+                win_rate_increase=best_win_rate_increase,
+                badge_earned_in=self._player_last_match[most_improved_player],
+            )
+        ]
+
+
 badge_collector_mapping: dict[type[badge.Badge], type[badge.BadgeCollector]] = {
     Crush: CrushCollector,
     CleanSweep: CleanSweepCollector,
@@ -361,4 +434,5 @@ badge_collector_mapping: dict[type[badge.Badge], type[badge.BadgeCollector]] = {
     StreakBreaker: StreakBreakerCollector,
     FirstWinAgainst: FirstWinAgainstCollector,
     MVP: MVPCollector,
+    MostImprovedPlayer: MostImprovedPlayerCollector,
 }

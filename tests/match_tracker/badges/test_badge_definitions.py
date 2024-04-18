@@ -238,3 +238,54 @@ class TestMVP:
                 badge_earned_in=match_four,
             ),
         ]
+
+
+class TestMostImprovedPlayer:
+    def test_finds_most_improved_player(self):
+        ricky = core_factories.UserFactory(username="ricky")
+        steve = core_factories.UserFactory(username="steve")
+        karl = core_factories.UserFactory(username="karl")
+
+        match_one = match_tracker_factories.MatchResultFactory(winner=karl, loser=ricky)
+        match_two = match_tracker_factories.MatchResultFactory(winner=karl, loser=ricky)
+        match_three = match_tracker_factories.MatchResultFactory(winner=steve, loser=ricky)
+        match_four = match_tracker_factories.MatchResultFactory(winner=karl, loser=ricky)
+        match_five = match_tracker_factories.MatchResultFactory(winner=steve, loser=ricky)
+
+        match_six = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+        match_seven = match_tracker_factories.MatchResultFactory(winner=ricky, loser=karl)
+        match_eight = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+        match_nine = match_tracker_factories.MatchResultFactory(winner=ricky, loser=karl)
+        match_ten = match_tracker_factories.MatchResultFactory(winner=ricky, loser=steve)
+        matches = dataclasses.Matches(
+            [
+                match_one,
+                match_two,
+                match_three,
+                match_four,
+                match_five,
+                match_six,
+                match_seven,
+                match_eight,
+                match_nine,
+                match_ten,
+            ]
+        )
+
+        returned_badges = queries.collect_badges(
+            matches=matches, badges=[badge_definitions.MostImprovedPlayer]
+        )
+
+        # Ricky loses his first 5 games and then wins his next 5 games
+        # 5 games prior to his last game he should have a win rate of 0%
+        # At the point of his last game he has a win rate of 50%
+        # Therefore his win rate has increased by 50%
+        assert len(returned_badges) == 1
+        assert returned_badges == [
+            badge_definitions.MostImprovedPlayer(
+                player=ricky,
+                win_rate_increase=Decimal("0.50"),
+                badge_earned_in=match_ten,
+            ),
+        ]
+        assert "50%" in returned_badges[0].display
