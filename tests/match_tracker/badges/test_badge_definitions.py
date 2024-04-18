@@ -289,3 +289,27 @@ class TestMostImprovedPlayer:
             ),
         ]
         assert "50%" in returned_badges[0].display
+
+    def test_not_enough_games(self):
+        ricky = core_factories.UserFactory(username="ricky")
+        steve = core_factories.UserFactory(username="steve")
+        karl = core_factories.UserFactory(username="karl")
+
+        match_one = match_tracker_factories.MatchResultFactory(winner=karl, loser=ricky)
+        match_two = match_tracker_factories.MatchResultFactory(winner=karl, loser=ricky)
+        match_three = match_tracker_factories.MatchResultFactory(winner=steve, loser=ricky)
+        match_four = match_tracker_factories.MatchResultFactory(winner=karl, loser=ricky)
+        matches = dataclasses.Matches(
+            [
+                match_one,
+                match_two,
+                match_three,
+                match_four,
+            ]
+        )
+
+        returned_badges = queries.collect_badges(
+            matches=matches, badges=[badge_definitions.MostImprovedPlayer]
+        )
+
+        assert len(returned_badges) == 0
