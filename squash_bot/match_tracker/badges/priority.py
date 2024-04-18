@@ -12,12 +12,17 @@ base_priority: dict[type[badge.Badge], decimal.Decimal] = {
     badge_definitions.StreakBreaker: decimal.Decimal("3"),
     badge_definitions.FirstWinAgainst: decimal.Decimal("4"),
     badge_definitions.MVP: decimal.Decimal("2"),
+    badge_definitions.MostImprovedPlayer: decimal.Decimal("2"),
 }
 
 priority_modifiers: dict[type[badge.Badge], typing.Callable] = {
     # Scale the priority based on the streak length
     badge_definitions.WinStreak: lambda badge_: decimal.Decimal(badge_.streak_length / 10),
     badge_definitions.LossStreak: lambda badge_: decimal.Decimal(badge_.streak_length / 10),
+    # Scale the priority based on the win rate increase, every 10% increase is worth 1 point
+    badge_definitions.MostImprovedPlayer: lambda badge_: decimal.Decimal(
+        (badge_.win_rate_increase * 100) / 10
+    ),
 }
 
 
