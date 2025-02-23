@@ -6,7 +6,7 @@ import pathlib
 import boto3
 from botocore import exceptions as botocore_exceptions
 
-from squash_bot.settings import base as settings_base
+from common.settings import base as settings_base
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -65,7 +65,11 @@ def store_file(file_path: str, file_name: str, contents: str) -> None:
     get_storage_backend().store_file(file_path, file_name, contents)
 
 
-def read_file(file_path: str, file_name: str, create_if_missing: bool = False) -> str:
+def read_file(
+    file_path: str,
+    file_name: str,
+    create_if_missing: bool = False,
+) -> str:
     logger.info(f"Reading file: {file_path} / {file_name}")
     storage_backend = get_storage_backend()
     try:

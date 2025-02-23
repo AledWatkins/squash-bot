@@ -1,7 +1,11 @@
-from squash_bot.settings import base
+from common.settings import base
 
 
-class Settings(base.BaseSettings):
+class LocalDevSettings(base.BaseSettings):
+    pass
+
+
+class SquashBotLocalDevSettings(LocalDevSettings):
     """
     Settings class for localdev and testing
     """
@@ -13,7 +17,7 @@ class Settings(base.BaseSettings):
 
     OUTPUTER = "slash_command_register.outputer.PrintOutputer"
     VERIFIER = "squash_bot.core.verify.NoopVerifier"
-    STORAGE_BACKEND = "squash_bot.storage.base.LocalStorage"
+    STORAGE_BACKEND = "common.storage.base.LocalStorage"
 
     # Match tracker settings
     MATCH_RESULTS_PATH = str(base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing")

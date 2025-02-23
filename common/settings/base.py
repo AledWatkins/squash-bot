@@ -65,10 +65,6 @@ try:
 except KeyError as e:
     raise ImproperlyConfigured("SETTINGS_MODULE environment variable is not set") from e
 
-settings = importlib.import_module(settings_module).Settings()
-settings.install_commands()
-
-
 T_excepted_class = typing.TypeVar("T_excepted_class")
 
 
@@ -76,3 +72,7 @@ def get_class_from_string(class_path: str, expected_class: T_excepted_class) -> 
     module_name, class_name = class_path.rsplit(".", 1)
     module = importlib.import_module(module_name)
     return getattr(module, class_name)
+
+
+settings = get_class_from_string(settings_module, BaseSettings)()
+settings.install_commands()
