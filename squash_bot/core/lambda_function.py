@@ -3,9 +3,9 @@ import json
 import logging
 import typing
 
+from common.settings import base as settings_base
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, response, response_message, verify
-from squash_bot.settings import base as settings_base
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)

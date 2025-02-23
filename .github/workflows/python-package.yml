@@ -37,7 +37,7 @@ jobs:
         ruff format --check
     - name: Test with pytest
       run: |
-        SETTINGS_MODULE=squash_bot.settings.localdev pytest
+        SETTINGS_MODULE=common.settings.localdev.SquashBotLocalDevSettings pytest
     - name: Type checker
       run: |
         mypy squash_bot --config-file pyproject.toml

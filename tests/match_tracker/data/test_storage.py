@@ -1,10 +1,10 @@
 import datetime
 import json
 
+from common.settings import base as settings_base
+from common.storage import base as storage_base
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses, storage
-from squash_bot.settings import base as settings_base
-from squash_bot.storage import base as storage_base
 
 from tests.factories import core as core_factories
 from tests.factories import match_tracker as match_tracker_factories

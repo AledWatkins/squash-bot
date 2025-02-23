@@ -3,7 +3,7 @@ import typing
 
 from nacl import exceptions, signing
 
-from squash_bot.settings import base as settings_base
+from common.settings import base as settings_base
 
 
 class CouldNotVerifyRequest(Exception):

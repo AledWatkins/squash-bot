@@ -1,4 +1,4 @@
-from squash_bot.settings import base
+from common.settings import base
 
 
 class TestSettings:

@@ -1,9 +1,9 @@
 import json
 
+from common.settings import base as settings_base
+from common.storage import base
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.match_tracker.data import dataclasses
-from squash_bot.settings import base as settings_base
-from squash_bot.storage import base
 
 
 def get_all_match_results_as_list(guild: core_dataclasses.Guild) -> list:

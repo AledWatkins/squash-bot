@@ -11,7 +11,6 @@ lint.select = [  # pragma: alphabetize
     "E713",  # Test for membership should be 'not in'
     "E714",  # Test for object identity should be 'is not'
     "E722",  # Do not use bare `except:`
-    "E999",  # SyntaxError
     "F401",  # Module imported but unused
     "F541",  # F-string is missing placeholders
     "I",  # isort

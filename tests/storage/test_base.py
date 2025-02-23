@@ -1,4 +1,4 @@
-from squash_bot.storage import base
+from common.storage import base
 
 
 class TestLocalStorage:

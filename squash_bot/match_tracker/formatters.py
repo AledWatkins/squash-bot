@@ -211,7 +211,7 @@ class HeadToHead(Formatter):
             [
                 f"{total_point_diff:+}",
                 "Point diff.",
-                f"{total_point_diff*-1:+}",
+                f"{total_point_diff * -1:+}",
             ],
             [
                 f"{player_one_tally_data.average_point_difference_str}",

@@ -1,7 +1,11 @@
-from squash_bot.settings import base
+from common.settings import base
 
 
-class Settings(base.BaseSettings):
+class ProductionSettings(base.BaseSettings):
+    pass
+
+
+class SquashBotProductionSettings(ProductionSettings):
     """
     Settings class for production
     """
@@ -13,7 +17,7 @@ class Settings(base.BaseSettings):
 
     OUTPUTER = "slash_command_register.outputer.RequestsOutputer"
     VERIFIER = "squash_bot.core.verify.NACLVerifier"
-    STORAGE_BACKEND = "squash_bot.storage.base.S3Storage"
+    STORAGE_BACKEND = "common.storage.base.S3Storage"
 
     # Match tracker settings
     MATCH_RESULTS_PATH = "squash-bot"
