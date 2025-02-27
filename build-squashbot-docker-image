@@ -40,6 +40,6 @@ aws ecr get-login-password --region eu-north-1 | docker login --username AWS --p
 aws ecr batch-delete-image --repository-name $CONTAINER_STRING --image-ids imageTag=$IMAGE_STRING > /dev/null 2>&1
 
 # Build and push new image
-docker build --tag "$CONTAINER_STRING" Dockerfile .
+docker build --tag "$CONTAINER_STRING" -f Dockerfile.squashbot .
 docker tag $CONTAINER_STRING:$IMAGE_STRING "$ECR_IMAGE_URI"
 docker push "$ECR_IMAGE_URI"
