@@ -8,7 +8,7 @@ COPY squash_bot ./squash_bot
 COPY requirements.txt ./
 
 # Install packages
-RUN python3 -m pip install -r requirements.txt
+RUN python3.10 -m pip install -r requirements.txt
 
 # Run lambda handler
 CMD ["squash_bot.core.lambda_function.lambda_handler"]
