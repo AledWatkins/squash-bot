@@ -1,9 +1,9 @@
 import typing
 
+from common.settings import base as settings_base
 from slash_command_register import outputer
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry
-from squash_bot.settings import base as settings_base
 
 
 def register_commands() -> None:

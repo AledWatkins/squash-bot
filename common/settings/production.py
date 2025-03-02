@@ -1,3 +1,5 @@
+from envparse import env
+
 from common.settings import base
 
 
@@ -7,7 +9,7 @@ class ProductionSettings(base.BaseSettings):
 
 class SquashBotProductionSettings(ProductionSettings):
     """
-    Settings class for production
+    Production settings for the squash bot lambda
     """
 
     installed_commands = (
@@ -15,10 +17,18 @@ class SquashBotProductionSettings(ProductionSettings):
         "squash_bot.list_timetable.commands",
     )
 
-    OUTPUTER = "slash_command_register.outputer.RequestsOutputer"
     VERIFIER = "squash_bot.core.verify.NACLVerifier"
     STORAGE_BACKEND = "common.storage.base.S3Storage"
 
     # Match tracker settings
     MATCH_RESULTS_PATH = "squash-bot"
     MATCH_RESULTS_FILE = "match_tracker/results/match_results.json"
+
+
+class SlashCommandRegisterProductionSettings(ProductionSettings):
+    """
+    Production settings for the slash command register
+    """
+
+    OUTPUTER = "slash_command_register.outputer.RequestsOutputer"
+    SERVER_ID = env.str("SERVER_ID", default="")
