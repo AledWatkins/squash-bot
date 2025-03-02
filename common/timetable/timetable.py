@@ -46,12 +46,10 @@ class Timetable(abc.ABC):
     @abc.abstractmethod
     def get_sessions(
         self, from_date: datetime.datetime, to_date: datetime.datetime
-    ) -> list[TimetableSession]:
-        pass
+    ) -> list[TimetableSession]: ...
 
     @abc.abstractmethod
-    def get_booking_link(self, schedule_id: int) -> str:
-        pass
+    def get_booking_link(self, schedule_id: int) -> str: ...
 
     @staticmethod
     def filter_sessions(
