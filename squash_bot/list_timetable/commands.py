@@ -3,12 +3,11 @@ import enum
 import itertools
 import typing
 
+from common.timetable import timetable
 from squash_bot.core import command as _command
 from squash_bot.core import command_registry, response_message
 from squash_bot.core.data import constants as core_constants
 from squash_bot.core.data import dataclasses as core_dataclasses
-
-from . import timetable
 
 DISCORD_COMMAND_DATETIME_FORMAT = "%d-%m"
 
@@ -38,7 +37,9 @@ class ListTimetableCommand(_command.Command):
             required=False,
             choices=tuple(
                 _command.CommandOptionChoice(
-                    time_of_day.value, time_of_day.value, core_constants.CommandOptionType.STRING
+                    time_of_day.value,
+                    time_of_day.value,
+                    core_constants.CommandOptionType.STRING,
                 )
                 for time_of_day in timetable.TimeOfDayType
             ),
