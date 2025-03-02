@@ -4,7 +4,8 @@ import json
 import responses
 import time_machine
 
-from squash_bot.list_timetable import commands, timetable
+from common.timetable import timetable
+from squash_bot.list_timetable import commands
 
 from tests import utils
 
