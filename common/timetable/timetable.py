@@ -19,6 +19,12 @@ class TimeOfDayType(enum.Enum):
     ALL = "All"
 
 
+class DayType(enum.Enum):
+    WEEKDAY = "Weekday"
+    WEEKEND = "Weekend"
+    ALL = "All"
+
+
 @attrs.frozen
 class TimetableSession:
     start_datetime: datetime.datetime
@@ -50,26 +56,41 @@ class Timetable(abc.ABC):
     @staticmethod
     def filter_sessions(
         sessions: list[TimetableSession],
-        time_of_day: TimeOfDayType,
+        time_of_day: TimeOfDayType | typing.Iterable[int],
+        days: DayType = DayType.ALL,
         show_unavailable_slots: bool = False,
     ) -> list[TimetableSession]:
         if not sessions or time_of_day is TimeOfDayType.ALL:
             return sessions
 
-        target_hours = {
-            TimeOfDayType.MORNING: range(0, 12),
-            TimeOfDayType.AFTERNOON: range(12, 17),
-            TimeOfDayType.EVENING: range(17, 24),
-            TimeOfDayType.POST_WORK_SESH: range(19, 20),
-            TimeOfDayType.POST_WORK_SESH_PLUS: range(18, 21),
-        }[time_of_day]
+        target_hours: typing.Iterable[int]
+        if isinstance(time_of_day, TimeOfDayType):
+            target_hours = {
+                TimeOfDayType.MORNING: range(0, 12),
+                TimeOfDayType.AFTERNOON: range(12, 17),
+                TimeOfDayType.EVENING: range(17, 24),
+                TimeOfDayType.POST_WORK_SESH: range(19, 20),
+                TimeOfDayType.POST_WORK_SESH_PLUS: range(18, 21),
+            }[time_of_day]
+        else:
+            target_hours = time_of_day
 
-        return [
-            session
-            for session in sessions
-            if (show_unavailable_slots or session.available_slots > 0)
-            and session.start_datetime.hour in target_hours
-        ]
+        target_days = {
+            DayType.WEEKDAY: range(0, 5),
+            DayType.WEEKEND: range(5, 7),
+            DayType.ALL: range(0, 7),
+        }[days]
+
+        return sorted(
+            [
+                session
+                for session in sessions
+                if (show_unavailable_slots or session.available_slots > 0)
+                and session.start_datetime.hour in target_hours
+                and session.start_datetime.weekday() in target_days
+            ],
+            key=lambda s: s.start_datetime,
+        )
 
 
 class CelticLeisureTimetable(Timetable):

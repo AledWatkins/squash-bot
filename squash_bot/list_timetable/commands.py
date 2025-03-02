@@ -84,7 +84,7 @@ class ListTimetableCommand(_command.Command):
         # Get the available sessions
         timetable_sessions = self._timetable.get_sessions(from_date, to_date)
         filtered_timetable_sessions = self._timetable.filter_sessions(
-            timetable_sessions, time_of_day, False
+            timetable_sessions, time_of_day, show_unavailable_slots=False
         )
 
         # return early if no available sessions
