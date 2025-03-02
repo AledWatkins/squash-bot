@@ -22,3 +22,12 @@ class SquashBotLocalDevSettings(LocalDevSettings):
     # Match tracker settings
     MATCH_RESULTS_PATH = str(base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing")
     MATCH_RESULTS_FILE = "match_results.json"
+
+
+class SlashCommandRegisterLocalDevSettings(LocalDevSettings):
+    """
+    Localdev settings for the slash command register
+    """
+
+    OUTPUTER = "slash_command_register.outputer.PrintOutputer"
+    SERVER_ID = "123456789012345678"

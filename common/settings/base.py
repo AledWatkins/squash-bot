@@ -25,12 +25,12 @@ class BaseSettings:
     installed_commands: tuple[str, ...]
 
     APP_ID: str = env.str("APP_ID", default="")
-    SERVER_ID: str = env.str("SERVER_ID", default="")
     BOT_TOKEN: str = env.str("BOT_TOKEN", default="")
     PUBLIC_KEY: str = env.str("PUBLIC_KEY", default="")
 
     # Outputer for registering slash commands
     OUTPUTER: str
+    SERVER_ID: str
 
     # Verifier for verifying event body
     VERIFIER: str
