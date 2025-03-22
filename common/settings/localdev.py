@@ -29,5 +29,7 @@ class SlashCommandRegisterLocalDevSettings(LocalDevSettings):
     Localdev settings for the slash command register
     """
 
+    installed_commands = ()
+
     OUTPUTER = "slash_command_register.outputer.PrintOutputer"
     SERVER_ID = "123456789012345678"

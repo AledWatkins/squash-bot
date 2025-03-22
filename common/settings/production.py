@@ -30,5 +30,7 @@ class SlashCommandRegisterProductionSettings(ProductionSettings):
     Production settings for the slash command register
     """
 
+    installed_commands = ()
+
     OUTPUTER = "slash_command_register.outputer.RequestsOutputer"
     SERVER_ID = env.str("SERVER_ID", default="")
