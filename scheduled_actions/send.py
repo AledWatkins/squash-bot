@@ -1,3 +1,4 @@
+import json
 import logging
 
 import requests
@@ -22,13 +23,16 @@ class DiscordClient:
         self, channel: dataclasses.Channel, message: dataclasses.Message
     ) -> None:
         logger.info(f"Sending message to channel {channel.id}")
-        requests.post(
+        response = requests.post(
             self.MESSAGE_ENDPOINT.format(channel_id=channel.id),
-            data={
-                "content": message.content,
-            },
+            data=json.dumps(
+                {
+                    "content": message.content,
+                }
+            ),
             headers=self._headers(),
         )
+        response.raise_for_status()
 
     def _headers(self) -> dict[str, str]:
         return {

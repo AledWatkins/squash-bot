@@ -42,5 +42,3 @@ class ScheduledActionsProductionSettings(ProductionSettings):
     """
 
     installed_commands = ()
-
-    PROMPT_SESSION_BOOKING_CHANNEL_ID = env.str("PROMPT_SESSION_BOOKING_CHANNEL_ID", default="")
