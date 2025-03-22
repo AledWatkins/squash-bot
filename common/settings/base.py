@@ -52,6 +52,10 @@ class BaseSettings:
     ACTIVITY_ID: str = env.str("ACTIVITY_ID", default="")
     LOCATION_ID: str = env.str("LOCATION_ID", default="")
 
+    PROMPT_SESSION_BOOKING_CHANNEL_IDS: typing.Collection[str] = env.list(
+        "PROMPT_SESSION_BOOKING_CHANNEL_IDS", default=[]
+    )
+
     def install_commands(self) -> None:
         """
         Install all commands in the installed_commands list.
