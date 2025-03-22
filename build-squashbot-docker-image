@@ -28,7 +28,7 @@ fi
 if [ $SKIP_TESTS -eq 0 ]; then
   # Run tests
   export SETTINGS_MODULE=common.settings.localdev.SquashBotLocalDevSettings
-  pytest
+  pytest tests/squash_bot
 else
   echo "Skipping tests"
 fi

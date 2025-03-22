@@ -28,7 +28,7 @@ fi
 if [ $SKIP_TESTS -eq 0 ]; then
   # Run tests
   export SETTINGS_MODULE=common.settings.localdev.ScheduledActionsLocalDevSettings
-  pytest
+  pytest tests/scheduled_actions
 else
   echo "Skipping tests"
 fi
