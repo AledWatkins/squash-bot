@@ -28,7 +28,7 @@ def lambda_handler(
     try:
         action_handler.run(body_dict)
     except Exception as e:
-        logger.error(f"Error running action {action_type}")
+        logger.error(f"Error running action {action_type}: {e}")
         return {"statusCode": 500, "body": f"Error running action {action_type}"}
 
     return {"statusCode": 200}
