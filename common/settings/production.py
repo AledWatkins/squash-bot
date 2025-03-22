@@ -34,3 +34,13 @@ class SlashCommandRegisterProductionSettings(ProductionSettings):
 
     OUTPUTER = "slash_command_register.outputer.RequestsOutputer"
     SERVER_ID = env.str("SERVER_ID", default="")
+
+
+class ScheduledActionsProductionSettings(ProductionSettings):
+    """
+    Production settings for the scheduled actions lambda
+    """
+
+    installed_commands = ()
+
+    PROMPT_SESSION_BOOKING_CHANNEL_ID = env.str("PROMPT_SESSION_BOOKING_CHANNEL_ID", default="")

@@ -33,3 +33,13 @@ class SlashCommandRegisterLocalDevSettings(LocalDevSettings):
 
     OUTPUTER = "slash_command_register.outputer.PrintOutputer"
     SERVER_ID = "123456789012345678"
+
+
+class ScheduledActionsLocalDevSettings(LocalDevSettings):
+    """
+    Localdev settings for the scheduled actions lambda
+    """
+
+    installed_commands = ()
+
+    PROMPT_SESSION_BOOKING_CHANNEL_IDS = ("123456789012345678",)
