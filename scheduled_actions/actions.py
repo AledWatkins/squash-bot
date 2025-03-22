@@ -31,6 +31,9 @@ class PromptSessionBooking(Action):
             send.send_message_to_channel(channel=channel, message=message)
 
     def _channels_to_notify(self) -> Iterable[dataclasses.Channel]:
+        logger.info(
+            f"{self.__class__.__name__} - Got channels: {settings_base.settings.PROMPT_SESSION_BOOKING_CHANNEL_IDS}"
+        )
         yield from [
             dataclasses.Channel(
                 id=channel_id,
