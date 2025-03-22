@@ -22,7 +22,7 @@ class DiscordClient:
     def send_message_to_channel(
         self, channel: dataclasses.Channel, message: dataclasses.Message
     ) -> None:
-        logger.info(f"Sending message to channel {channel.id}")
+        logger.info(f"Sending message to channel {channel.id}: {message.content}")
         response = requests.post(
             self.MESSAGE_ENDPOINT.format(channel_id=channel.id),
             data=json.dumps(
