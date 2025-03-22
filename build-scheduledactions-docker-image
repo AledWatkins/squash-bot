@@ -1,0 +1,45 @@
+#!/usr/bin/env bash -e
+URL_STRING=".dkr.ecr.eu-north-1.amazonaws.com"
+CONTAINER_STRING="scheduled-actions"
+IMAGE_STRING="latest"
+ECR_IMAGE_URI="$AWS_ACCOUNT_ID$URL_STRING/$CONTAINER_STRING:$IMAGE_STRING"
+USE_CURRENT_BRANCH=0
+SKIP_TESTS=0
+
+while getopts cs opt;
+do
+    case $opt
+        in
+        c)USE_CURRENT_BRANCH=1;;
+        s)SKIP_TESTS=1;;
+    esac
+done
+
+if [ $USE_CURRENT_BRANCH -eq 1 ]; then
+    echo "Skipping master branch checkout"
+else
+    # Checkout master branch and update it
+    echo "Checking out master branch"
+    git checkout master
+    echo "Pulling master"
+    git pull origin master
+fi
+
+if [ $SKIP_TESTS -eq 0 ]; then
+  # Run tests
+  export SETTINGS_MODULE=common.settings.localdev.ScheduledActionsLocalDevSettings
+  pytest
+else
+  echo "Skipping tests"
+fi
+
+# Login to ECR and Docker
+aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID$URL_STRING"
+
+# Delete old image
+aws ecr batch-delete-image --repository-name $CONTAINER_STRING --image-ids imageTag=$IMAGE_STRING > /dev/null 2>&1
+
+# Build and push new image
+docker build --tag "$CONTAINER_STRING" -f Dockerfile.scheduledactions .
+docker tag $CONTAINER_STRING:$IMAGE_STRING "$ECR_IMAGE_URI"
+docker push "$ECR_IMAGE_URI"
