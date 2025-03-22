@@ -75,8 +75,3 @@ class PromptSessionBooking(Action):
                 base_msg
                 + f" 6pm is free on {', '.join(available_week_days[:-1]) + ' and ' + available_week_days[-1]}"
             )
-
-
-actions = [
-    PromptSessionBooking(),
-]

@@ -1,0 +1,14 @@
+# Lambda base image for Docker from AWS
+FROM public.ecr.aws/lambda/python:3.10
+
+# Copy common package
+COPY common ./common
+# Copy scheduled_actions package
+COPY scheduled_actions ./scheduled_actions
+COPY scheduled_actions/requirements.txt ./
+
+# Install packages
+RUN python3.10 -m pip install -r requirements.txt
+
+# Run lambda handler
+CMD ["scheduled_actions.lambda_handler.lambda_handler"]
