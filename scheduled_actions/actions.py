@@ -66,10 +66,10 @@ class PromptSessionBooking(Action):
             6: "Sunday",
         }
         available_week_days = [week_days[session.start_datetime.weekday()] for session in sessions]
+        non_available_days = set(week_days.values()) - set(available_week_days)
         if not available_week_days:
             return base_msg + " All 6pm sessions are already booked this week 💀"
-        elif len(available_week_days) > 3:
-            non_available_days = set(week_days.values()) - set(available_week_days)
+        elif len(non_available_days) <= 2:
             return (
                 base_msg + f" 6pm is free every day other than {' and '.join(non_available_days)}"
             )
