@@ -1,3 +1,4 @@
+import enum
 import importlib
 import os
 import pathlib
@@ -15,6 +16,12 @@ class ImproperlyConfigured(Exception):
 env.read_envfile(path=os.environ.get("ENV_FILE_PATH", ".env"))
 BASE_DIR = pathlib.Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROJECT_ROOT = BASE_DIR.parent
+
+
+class FlaggedFeature(enum.Enum):
+    """
+    Enum for flagged features.
+    """
 
 
 class BaseSettings:
@@ -64,6 +71,12 @@ class BaseSettings:
         """
         for command_module_string in self.installed_commands:
             importlib.import_module(command_module_string)
+
+    def feature_enabled(self, feature: FlaggedFeature) -> bool:
+        """
+        Check if a feature is enabled.
+        """
+        return env.bool(f"FEATURE_{feature.value}", default=False)
 
 
 try:
