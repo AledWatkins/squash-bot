@@ -3,7 +3,7 @@ import json
 import logging
 import typing
 
-from scheduled_actions import actions
+from scheduled_actions.actions import prompt_session_booking
 
 logger = logging.getLogger("scheduled_actions.lambda_handler")
 logger.setLevel(logging.INFO)
@@ -35,5 +35,5 @@ def lambda_handler(
 
 
 action_handlers = {
-    ActionTypeEnum.PROMPT_SESSION_BOOKING: actions.PromptSessionBooking(),
+    ActionTypeEnum.PROMPT_SESSION_BOOKING: prompt_session_booking.PromptSessionBooking(),
 }

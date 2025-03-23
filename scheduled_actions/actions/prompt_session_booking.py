@@ -1,24 +1,16 @@
-import abc
 import datetime
 import logging
 from collections.abc import Iterable
 
 from common.settings import base as settings_base
 from common.timetable import timetable
-from scheduled_actions import dataclasses, send
+from scheduled_actions import action, dataclasses, send
 
 logger = logging.getLogger("scheduled_actions.actions")
 logger.setLevel(logging.INFO)
 
 
-class Action(abc.ABC):
-    code: str
-
-    @abc.abstractmethod
-    def run(self, context: dict) -> None: ...
-
-
-class PromptSessionBooking(Action):
+class PromptSessionBooking(action.Action):
     code = "prompt-session-booking"
 
     def run(self, context: dict) -> None:
