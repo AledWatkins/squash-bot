@@ -23,6 +23,8 @@ class FlaggedFeature(enum.Enum):
     Enum for flagged features.
     """
 
+    USE_GPT_FOR_PROMPT_SESSION_BOOKING = "USE_GPT_FOR_PROMPT_SESSION_BOOKING"
+
 
 class BaseSettings:
     """
@@ -64,6 +66,7 @@ class BaseSettings:
     )
 
     OPENAI_API_KEY: str = env.str("OPENAI_API_KEY", default="")
+    PROMPT_SESSION_BOOKING_GPT_NOTES: str = env.str("PROMPT_SESSION_BOOKING_GPT_NOTES", default="")
 
     def install_commands(self) -> None:
         """
