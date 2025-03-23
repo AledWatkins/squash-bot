@@ -56,6 +56,8 @@ class BaseSettings:
         "PROMPT_SESSION_BOOKING_CHANNEL_IDS", default=[]
     )
 
+    OPENAI_API_KEY: str = env.str("OPENAI_API_KEY", default="")
+
     def install_commands(self) -> None:
         """
         Install all commands in the installed_commands list.
