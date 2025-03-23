@@ -1,0 +1,3 @@
+#!/usr/bin/env bash -e
+export SETTINGS_MODULE=common.settings.production.SlashCommandRegisterProductionSettings
+python register_slash_commands.py
