@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
+
 URL_STRING=".dkr.ecr.eu-north-1.amazonaws.com"
 CONTAINER_STRING="scheduled-actions"
 IMAGE_STRING="latest"

@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
+
 REAL=0
 
 while getopts r opt;
@@ -10,8 +12,10 @@ do
 done
 
 if [ $REAL -eq 1 ]; then
+    echo "Registering slash commands in production"
     export SETTINGS_MODULE=common.settings.production.SlashCommandRegisterProductionSettings
 else
+    echo "Registering slash commands in localdev"
     export SETTINGS_MODULE=common.settings.localdev.SlashCommandRegisterLocalDevSettings
 fi
 python register_slash_commands.py
