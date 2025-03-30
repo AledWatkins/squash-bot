@@ -56,6 +56,10 @@ class BaseSettings:
     MATCH_RESULTS_PATH: str = env.str("MATCH_RESULTS_PATH", default="")
     MATCH_RESULTS_FILE: str = env.str("MATCH_RESULTS_FILE", default="")
 
+    # Sessions settings
+    SESSIONS_PATH: str = env.str("SESSIONS_PATH", default="")
+    SESSIONS_FILE: str = env.str("SESSIONS_FILE", default="")
+
     # List timetable settings
     API_URL: str = env.str("API_URL", default="")
     ACTIVITY_ID: str = env.str("ACTIVITY_ID", default="")
