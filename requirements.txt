@@ -10,3 +10,4 @@ responses~=0.25.0
 botocore~=1.34.75
 requests==2.31.0
 openai
+dateparser
