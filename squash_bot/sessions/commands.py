@@ -2,7 +2,7 @@ import datetime
 import logging
 import typing
 
-import dateparser
+from dateparser import search
 
 from squash_bot.core import command, command_registry, response_message
 from squash_bot.core.data import constants
@@ -37,7 +37,7 @@ class BookSession(command.Command):
         logger.info("Booking session at '%s'", options["when"])
         now = datetime.datetime.now(tz=datetime.timezone.utc)
         logger.info("Current time is '%s'", now)
-        at = dateparser.parse(
+        results = search.search_dates(
             options["when"],
             languages=["en"],
             settings={
@@ -48,11 +48,14 @@ class BookSession(command.Command):
                 "TO_TIMEZONE": "Europe/London",
             },
         )
-        logger.info("Parsed date is '%s'", at)
-        if not at:
+        if not results:
             return response_message.EphemeralChannelMessageResponseBody(
                 content="Could not parse date, please reword and try again"
             )
+        # `search_dates` returns a list of tuples, we only want the first one, and the first element of that tuple is
+        # the datetime object
+        at = results[0][1]
+        logger.info("Parsed date is '%s'", at)
         if at < datetime.datetime.now(tz=at.tzinfo):
             return response_message.EphemeralChannelMessageResponseBody(
                 content="Parsed date is in the past, please reword and try again"
