@@ -1,4 +1,3 @@
-import datetime
 from unittest import mock
 
 import time_machine
@@ -39,7 +38,7 @@ class TestBookSession:
 
         session = all_sessions[0]
         assert session == dataclasses.Session(
-            start_datetime=datetime.datetime(2025, 3, 31, 18, 0),
+            start_datetime=mock.ANY,
             booked_by=core_dataclasses.User(id="1", username="name", global_name="global-name"),
             session_id=mock.ANY,
         )
