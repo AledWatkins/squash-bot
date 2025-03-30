@@ -38,8 +38,11 @@ class LocalStorage(StorageBackend):
 
     def read_file(self, file_path: str, file_name: str) -> str:
         full_file_path = pathlib.Path(file_path) / file_name
-        with open(full_file_path) as f:
-            return f.read()
+        try:
+            with open(full_file_path) as f:
+                return f.read()
+        except FileNotFoundError as e:
+            raise FileMissing from e
 
 
 class S3Storage(StorageBackend):
