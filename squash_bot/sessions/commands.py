@@ -1,4 +1,5 @@
 import datetime
+import logging
 import typing
 
 import dateparser
@@ -7,6 +8,9 @@ from squash_bot.core import command, command_registry, response_message
 from squash_bot.core.data import constants
 from squash_bot.core.data import dataclasses as core_dataclasses
 from squash_bot.sessions import operations
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 @command_registry.registry.register
@@ -30,6 +34,7 @@ class BookSession(command.Command):
         guild: core_dataclasses.Guild,
         user: core_dataclasses.User,
     ) -> response_message.ResponseBody:
+        logger.info("Booking session at '%s'", options["when"])
         at = dateparser.parse(
             options["when"],
             languages=["en"],
