@@ -1,3 +1,4 @@
+import datetime
 import typing
 
 import dateparser
@@ -30,8 +31,19 @@ class BookSession(command.Command):
         user: core_dataclasses.User,
     ) -> response_message.ResponseBody:
         at = dateparser.parse(
-            options["when"], settings={"PREFER_DATES_FROM": "future", "TIMEZONE": "Europe/London"}
+            options["when"],
+            languages=["en"],
+            settings={"PREFER_DATES_FROM": "future", "TIMEZONE": "Europe/London"},
         )
+        if not at:
+            return response_message.EphemeralChannelMessageResponseBody(
+                content="Could not parse date, please reword and try again"
+            )
+        if at < datetime.datetime.now():
+            return response_message.EphemeralChannelMessageResponseBody(
+                content="Parsed date is in the past, please reword and try again"
+            )
+
         session = operations.record_session_at(at=at, guild=guild, booked_by=user)
         session_start_string = session.start_datetime.strftime("%A %-I%p")
         return response_message.ChannelMessageResponseBody(

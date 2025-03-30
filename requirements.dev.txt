@@ -29,4 +29,4 @@ responses==0.25.0
 time-machine==2.14.1
 mypy==1.9.0
 openai
-dateparser
+dateparser==1.2.1
