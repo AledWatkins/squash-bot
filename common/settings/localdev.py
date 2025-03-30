@@ -34,7 +34,9 @@ class SlashCommandRegisterLocalDevSettings(LocalDevSettings):
     Localdev settings for the slash command register
     """
 
-    installed_commands = ()
+    # This is a list of command modules to be registered, they should mirror the
+    # installed_commands in the squash_bot settings
+    installed_commands = SquashBotLocalDevSettings.installed_commands
 
     OUTPUTER = "slash_command_register.outputer.PrintOutputer"
     SERVER_ID = "123456789012345678"

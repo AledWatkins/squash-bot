@@ -1,3 +1,17 @@
 #!/usr/bin/env bash -e
-export SETTINGS_MODULE=common.settings.production.SlashCommandRegisterProductionSettings
+REAL=0
+
+while getopts r opt;
+do
+    case $opt
+        in
+        r)REAL=1;;
+    esac
+done
+
+if [ $REAL -eq 1 ]; then
+    export SETTINGS_MODULE=common.settings.production.SlashCommandRegisterProductionSettings
+else
+    export SETTINGS_MODULE=common.settings.localdev.SlashCommandRegisterLocalDevSettings
+fi
 python register_slash_commands.py
