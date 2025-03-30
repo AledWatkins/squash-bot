@@ -1,6 +1,7 @@
 import datetime
 import logging
 from collections.abc import Collection, Iterable
+from typing import ClassVar
 
 import attrs
 
@@ -16,7 +17,7 @@ logger.setLevel(logging.INFO)
 class PromptSessionBooking(action.Action):
     code = "prompt-session-booking"
 
-    _week_days = {
+    _week_days: ClassVar = {
         0: "Monday",
         1: "Tuesday",
         2: "Wednesday",
@@ -74,7 +75,6 @@ class PromptSessionBooking(action.Action):
             try:
                 return self._build_content_via_openai(session_context)
             except Exception as e:
-                print(e)
                 logger.error(f"{self.__class__.__name__} - Error building content via OpenAI: {e}")
 
         return self._build_content(sessions)
@@ -144,7 +144,7 @@ class PromptSessionBooking(action.Action):
         base_msg = "Are we playing squash this week?"
 
         available_week_days = list(
-            set(self._week_days[session.start_datetime.weekday()] for session in sessions)
+            {self._week_days[session.start_datetime.weekday()] for session in sessions}
         )
         non_available_days = set(self._week_days.values()) - set(available_week_days)
         if not available_week_days:
