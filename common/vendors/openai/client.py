@@ -27,7 +27,7 @@ class OpenAIClient:
 
     def get_response(self, prompt: str, instructions: str | None = None) -> str:
         try:
-            response = self.client.responses.create(
+            response = self.client.responses.create(  # type: ignore
                 model=self.model.value,
                 instructions=instructions,
                 input=prompt,
