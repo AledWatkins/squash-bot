@@ -50,7 +50,7 @@ class BookSession(command.Command):
             return response_message.EphemeralChannelMessageResponseBody(
                 content="Could not parse date, please reword and try again"
             )
-        if at < datetime.datetime.now():
+        if at < datetime.datetime.now(tz=at.tzinfo):
             return response_message.EphemeralChannelMessageResponseBody(
                 content="Parsed date is in the past, please reword and try again"
             )
