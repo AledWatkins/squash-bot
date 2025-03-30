@@ -38,8 +38,14 @@ class BookSession(command.Command):
         at = dateparser.parse(
             options["when"],
             languages=["en"],
-            settings={"PREFER_DATES_FROM": "future", "TIMEZONE": "Europe/London"},
+            settings={
+                "PREFER_DATES_FROM": "future",
+                "TIMEZONE": "Europe/London",
+                "RETURN_AS_TIMEZONE_AWARE": True,
+                "TO_TIMEZONE": "Europe/London",
+            },
         )
+        logger.info("Parsed date is '%s'", at)
         if not at:
             return response_message.EphemeralChannelMessageResponseBody(
                 content="Could not parse date, please reword and try again"
@@ -50,6 +56,8 @@ class BookSession(command.Command):
             )
 
         session = operations.record_session_at(at=at, guild=guild, booked_by=user)
+
+        logger.info("Session booked: %s", session)
         session_start_string = session.start_datetime.strftime("%A %-I%p")
         return response_message.ChannelMessageResponseBody(
             content=f"Booked @ {session_start_string}"
