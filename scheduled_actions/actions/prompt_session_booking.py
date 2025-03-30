@@ -84,14 +84,14 @@ class PromptSessionBooking(action.Action):
         sessions: Collection[timetable.TimetableSession]
         preferred_time: str
         fallback_time: str
-        notes: Collection[str]
+        notes: str
 
     def _build_content_via_openai(self, context: SessionsContext) -> str:
         lines = [
             f"You are helping a group of friends organise a weekly squash game. The current date is {datetime.date.today().isoformat()}. ",
             "Here is a list of available court sessions for next week at their local gym:",
         ]
-        sessions_by_day = {
+        sessions_by_day: dict[str, list[datetime.datetime]] = {
             "Monday": [],
             "Tuesday": [],
             "Wednesday": [],
