@@ -15,6 +15,7 @@ class SquashBotProductionSettings(ProductionSettings):
     installed_commands = (
         "squash_bot.match_tracker.commands",
         "squash_bot.list_timetable.commands",
+        "squash_bot.sessions.commands",
     )
 
     VERIFIER = "squash_bot.core.verify.NACLVerifier"
@@ -23,6 +24,10 @@ class SquashBotProductionSettings(ProductionSettings):
     # Match tracker settings
     MATCH_RESULTS_PATH = "squash-bot"
     MATCH_RESULTS_FILE = "match_tracker/results/match_results.json"
+
+    # Sessions settings
+    SESSIONS_PATH = "squash-bot"
+    SESSIONS_FILE = "sessions/sessions.json"
 
 
 class SlashCommandRegisterProductionSettings(ProductionSettings):

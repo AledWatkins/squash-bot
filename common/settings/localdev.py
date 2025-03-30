@@ -13,6 +13,7 @@ class SquashBotLocalDevSettings(LocalDevSettings):
     installed_commands = (
         "squash_bot.match_tracker.commands",
         "squash_bot.list_timetable.commands",
+        "squash_bot.sessions.commands",
     )
 
     OUTPUTER = "slash_command_register.outputer.PrintOutputer"
@@ -22,6 +23,10 @@ class SquashBotLocalDevSettings(LocalDevSettings):
     # Match tracker settings
     MATCH_RESULTS_PATH = str(base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing")
     MATCH_RESULTS_FILE = "match_results.json"
+
+    # Sessions settings
+    SESSIONS_PATH = str(base.PROJECT_ROOT / "tests" / "fixtures" / "local_testing")
+    SESSIONS_FILE = "sessions.json"
 
 
 class SlashCommandRegisterLocalDevSettings(LocalDevSettings):
