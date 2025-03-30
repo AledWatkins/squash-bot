@@ -35,11 +35,14 @@ class BookSession(command.Command):
         user: core_dataclasses.User,
     ) -> response_message.ResponseBody:
         logger.info("Booking session at '%s'", options["when"])
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
+        logger.info("Current time is '%s'", now)
         at = dateparser.parse(
             options["when"],
             languages=["en"],
             settings={
                 "PREFER_DATES_FROM": "future",
+                "RELATIVE_BASE": now,
                 "TIMEZONE": "Europe/London",
                 "RETURN_AS_TIMEZONE_AWARE": True,
                 "TO_TIMEZONE": "Europe/London",
