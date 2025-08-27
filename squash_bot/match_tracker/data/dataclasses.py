@@ -120,6 +120,20 @@ class Matches:
             ]
         )
 
+    def remove(self, match_result_to_remove: MatchResult) -> "Matches":
+        """
+        Remove a match result from the list of match results.
+
+        The match result to remove is identified by its result_id.
+        """
+        return Matches(
+            match_results=[
+                match
+                for match in self.match_results
+                if match.result_id != match_result_to_remove.result_id
+            ]
+        )
+
     # Queries
     # -------
 
