@@ -273,6 +273,31 @@ class EditMatchScore(SingleMatchMixin, _command.Command):
 
 
 @command_registry.registry.register
+class RemoveMatch(SingleMatchMixin, _command.Command):
+    name = "remove-match"
+    description = "Remove a match."
+    options = (
+        _command.CommandOption(
+            name="match-id",
+            description="Match ID",
+            type=core_constants.CommandOptionType.STRING,
+            required=True,
+        ),
+    )
+
+    def _handle_match(
+        self,
+        match: dataclasses.MatchResult,
+        options: dict[str, typing.Any],
+        base_context: dict[str, typing.Any],
+        guild: core_dataclasses.Guild,
+        user: core_dataclasses.User,
+    ) -> response_message.ResponseBody:
+        storage.remove_match_result(match_result=match, guild=guild)
+        return response_message.ChannelMessageResponseBody(content="Match removed.")
+
+
+@command_registry.registry.register
 class SessionSummaryCommand(FilterOrderFormatMatchesMixin, _command.Command):
     name = "session-summary"
     description = "Show a summary of the session."
